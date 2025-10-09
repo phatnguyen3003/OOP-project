@@ -10,6 +10,8 @@ class EventDialog extends JDialog
 {
 
     private List<JLabel> labels = new ArrayList<>();
+    String[] iddoi = {"Đội 1", "Đội 2", "Đội 3", "Đội 4", "Đội 5", "Đội 6", "Đội 7"};
+    String[] tlctrinh = {"90 phút", "120 phút", "150 phút", "180 phút", "210 phút", "240 phút", "270 phút","300 phút"};
     private JTextField eventNameField;
     private JButton saveButton,cancelButton;
 
@@ -20,8 +22,13 @@ class EventDialog extends JDialog
         super(parent,"Thêm sự kiện",false);
         setSize(600,400);
         setLocationRelativeTo(parent);
+        setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new GridBagLayout());
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        add(scrollPane, BorderLayout.CENTER);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5,5,5,5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -179,16 +186,84 @@ class EventDialog extends JDialog
         panel.add(dateSpinner,gbcdatepicker);
 
 
+        JLabel labeldoitochuc = new JLabel("Đội phụ trách");
+        GridBagConstraints gbclabeldoitochuc=new GridBagConstraints();
+        gbclabeldoitochuc.gridx=2;
+        gbclabeldoitochuc.gridy=7+socanghesi;
+        gbclabeldoitochuc.weightx=0;
+        gbclabeldoitochuc.anchor=GridBagConstraints.WEST;
+        panel.add(labeldoitochuc,gbclabeldoitochuc);
+
+
+        JComboBox<String>id_doi_phu_trach=new JComboBox<>(iddoi);
+        id_doi_phu_trach.setPreferredSize(new Dimension(120,20));
+        GridBagConstraints gbciddoi = new GridBagConstraints();
+        gbciddoi.gridx=3;
+        gbciddoi.gridy=7+socanghesi;
+        gbciddoi.weightx=1;
+        gbciddoi.fill=GridBagConstraints.HORIZONTAL;
+        panel.add(id_doi_phu_trach);
 
         //ngang cach
-        JPanel hr3 = new JPanel();
+        JPanel hr4 = new JPanel();
+        GridBagConstraints gbchr4 = new GridBagConstraints();
+        gbchr4.gridx = 0;
+        gbchr4.gridy = 8+socanghesi;
+        gbchr4.weightx = 1.0;
+        gbchr4.gridwidth = GridBagConstraints.REMAINDER;
+        gbchr4.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(hr4, gbchr4);
+
+        //hang thu 4 (j=9)
+
+        JLabel labelThoiluongct = new JLabel("Thời lượng chương trình");
+        GridBagConstraints gbclabelthoiluong=new GridBagConstraints();
+        gbclabelthoiluong.gridx=0;
+        gbclabelthoiluong.gridy=9+socanghesi;
+        gbclabelthoiluong.weightx=0;
+        gbclabelthoiluong.anchor=GridBagConstraints.WEST;
+        panel.add(labelThoiluongct,gbclabelthoiluong);
+
+        JComboBox<String>thoiluongctrinh=new JComboBox<>(tlctrinh);
+        thoiluongctrinh.setPreferredSize(new Dimension(120,20));
+        GridBagConstraints gbctlct = new GridBagConstraints();
+        gbctlct.gridx=1;
+        gbctlct.gridy=9+socanghesi;
+        gbctlct.weightx=1;
+        gbctlct.fill=GridBagConstraints.HORIZONTAL;
+        panel.add(thoiluongctrinh,gbctlct);
+
+        JLabel labelsoluongtietmuc = new JLabel("Số lượng tiết mục");
+        GridBagConstraints gbclabelsltietmuc=new GridBagConstraints();
+        gbclabelsltietmuc.gridx=2;
+        gbclabelsltietmuc.gridy=9+socanghesi;
+        gbclabelsltietmuc.weightx=0;
+        gbclabelsltietmuc.anchor=GridBagConstraints.WEST;
+        panel.add(labelsoluongtietmuc,gbclabelsltietmuc);
+
+        JTextField eventcontentsumary = new JTextField(9);
+        GridBagConstraints gbceventsumary = new GridBagConstraints();
+        gbceventsumary.gridx = 3;
+        gbceventsumary.gridy = 9+socanghesi;
+        gbceventsumary.gridwidth = 1;
+        gbceventsumary.weightx = 0.3;
+        gbceventsumary.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(eventcontentsumary, gbceventsumary);
+
+
+    
+
+
+
+        //ngang cach
+        JPanel hr8 = new JPanel();
         GridBagConstraints gbchr3 = new GridBagConstraints();
         gbchr3.gridx = 0;
-        gbchr3.gridy = 8+socanghesi;
+        gbchr3.gridy = 12+socanghesi;
         gbchr3.weightx = 1.0;
         gbchr3.gridwidth = GridBagConstraints.REMAINDER;
         gbchr3.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(hr3, gbchr3);
+        panel.add(hr8, gbchr3);
 
 
 
@@ -197,7 +272,7 @@ class EventDialog extends JDialog
         JPanel cangiuaPanel = new JPanel();
         GridBagConstraints cangiua=new GridBagConstraints();
         cangiua.gridx=0;
-        cangiua.gridy=9+socanghesi+1;
+        cangiua.gridy=13+socanghesi+1;
         cangiua.weightx=0.4;
         panel.add(cangiuaPanel,cangiua);
 
@@ -208,7 +283,7 @@ class EventDialog extends JDialog
         GridBagConstraints callbackend=new GridBagConstraints();
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
-        callbackend.gridy = 9+socanghesi+1;
+        callbackend.gridy = 13+socanghesi+1;
         callbackend.weightx=0.6;
         callbackend.anchor=GridBagConstraints.EAST;
         panel.add(buttonPanel, callbackend);
