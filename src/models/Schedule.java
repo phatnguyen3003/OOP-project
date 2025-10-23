@@ -4,34 +4,69 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Schedule {
-    private int id;
-    private String name;
+    private int idEvent;
+    private String nameEvent;
     private List<Integer> performanceIds;
+    private List<Integer> performanceTime;
 
-    // Constructor mặc định (cần cho việc tạo đối tượng rỗng)
+
     public Schedule() {
         this.performanceIds = new ArrayList<>();
+        this.performanceTime = new ArrayList<>();
     }
 
-    // Constructor đầy đủ
-    public Schedule(int id, String name, List<Integer> performanceIds) {
-        this.id = id;
-        this.name = name;
+    public Schedule(int idEvent, String nameEvent, List<Integer> performanceIds, List<Integer> performanceTime) {
+        this.idEvent = idEvent;
+        this.nameEvent = nameEvent;
+        this.performanceIds = performanceIds;
+        this.performanceTime = performanceTime;
+    }
+
+    public int getIdEvent() {
+        return idEvent;
+    }
+
+    public String getNameEvent() {
+        return nameEvent;
+    }
+
+    public List<Integer> getPerformanceIds() {
+        return performanceIds;
+    }
+
+    public List<Integer> getPerformanceTime() {
+        return performanceTime;
+    }
+
+    public void setIdEvent(int idEvent) {
+        this.idEvent = idEvent;
+    }
+
+    public void setNameEvent(String nameEvent) {
+        this.nameEvent = nameEvent;
+    }
+
+    public void setPerformanceIds(List<Integer> performanceIds) {
         this.performanceIds = performanceIds;
     }
 
-    // Get
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public List<Integer> getPerformanceIds() { return performanceIds; }
+    public void setPerformanceTime(List<Integer> performanceTime) {
+        this.performanceTime = performanceTime;
+    }
 
-    // Set
-    public void setId(int id) { this.id = id; }
-    public void setName(String name) { this.name = name; }
-    public void setPerformanceIds(List<Integer> performanceIds) { this.performanceIds = performanceIds; }
 
     @Override
     public String toString() {
-        return String.format("%-5d %-30s ID Tiết mục: %s", id, name, performanceIds.toString());
+        return "Schedule{" +
+               "idEvent=" + idEvent +
+               ", nameEvent='" + nameEvent + '\'' +
+               ", performanceIds=" + performanceIds +
+               ", performanceTime=" + performanceTime +
+               '}';
+    }
+    
+    public void addPerformance(int id, int time) {
+        this.performanceIds.add(id);
+        this.performanceTime.add(time);
     }
 }
