@@ -1,11 +1,15 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
-import java.awt.*;
 
+
+
+//================== add event ===============================
 class EventDialog extends JDialog
 {
 
@@ -295,6 +299,14 @@ class EventDialog extends JDialog
     }
 }
 
+
+
+
+
+
+
+//===============================================================================
+
 public class ui {
 
 
@@ -302,7 +314,7 @@ public class ui {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("UI");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(600, 600);
+            frame.setSize(1000, 600);
             frame.setLocationRelativeTo(null);
 
             JPanel panel = new JPanel(new GridBagLayout());
@@ -366,16 +378,35 @@ public class ui {
             // Ô hàng 2 (còn lại 360px)
             gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 5; gbc.gridheight = 1;
             gbc.weighty = 0.6;
-            JPanel mainframe1 = new JPanel();
-            mainframe1.add(new JLabel("Ô 4 - Cell 1"));
+
+            JPanel mainframe1 = new JPanel(new BorderLayout());
+            mainframe1.setBorder(BorderFactory.createLineBorder(Color.black));
+            JPanel Listpanel1 = new JPanel();
+            Listpanel1.setLayout(new BoxLayout(Listpanel1,BoxLayout.Y_AXIS));
+            JScrollPane Scrollpane1 =new JScrollPane(Listpanel1);
+            Scrollpane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            mainframe1.add(Scrollpane1,BorderLayout.CENTER);
+            
+
+            mainframe1.add(new JLabel("Ô 4 - Cell 1"),BorderLayout.NORTH);
             mainframe1.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             panel.add(mainframe1, gbc);
 
+
+            
             // Cell thứ 2
             gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 5; gbc.gridheight = 1;
             gbc.weighty = 0.6;
-            JPanel mainframe2 = new JPanel();
-            mainframe2.add(new JLabel("Ô 4 - Cell 2"));
+            JPanel mainframe2 = new JPanel(new BorderLayout());
+            mainframe2.setBorder(BorderFactory.createLineBorder(Color.black));
+            JPanel Listpanel2 = new JPanel();
+            Listpanel2.setLayout(new BoxLayout(Listpanel2, BoxLayout.Y_AXIS));
+            JScrollPane Scrollpane2 = new JScrollPane();
+            Scrollpane2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            mainframe2.add(Scrollpane2,BorderLayout.CENTER);
+
+
+            mainframe2.add(new JLabel("Ô 4 - Cell 2"),BorderLayout.NORTH);
             mainframe2.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             mainframe2.setVisible(false);
             panel.add(mainframe2, gbc);
