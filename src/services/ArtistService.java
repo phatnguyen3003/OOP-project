@@ -1,107 +1,246 @@
 package services;
 
+
 import java.io.*;
 import java.util.*;
-import models.Artist;
 
 public class ArtistService {
     private static final String FILE_PATH = "src/database/Artist.txt";
-    private final Scanner sc = new Scanner(System.in);
 
-    public List<Artist> getAllArtists() {
-        List<Artist> artists = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+    
+    public static abstract class Person
+    {
+        String id;
+        String ten;
+        public Person()
+        {
+
+        }
+        public Person(String id, String ten)
+        {
+            this.id=id;
+            this.ten=ten;
+        }
+        public String getId()
+        {
+            return id;
+        }
+        public String getName()
+        {
+            return ten;
+        }
+        public void setId( String id)
+        {
+            this.id=id;
+        }
+        public void setName(String ten)
+        {
+            this.ten=ten;
+        }
+        @Override 
+        public abstract String toString();
+    }
+    public  static class nghesi extends Person
+    {  
+        
+
+       private String congty;
+       private int giathanh;
+       private List<String> idtietmuc = new ArrayList<>();
+       public nghesi()
+     {
+     }      
+     public nghesi(String id,String ten,String congty,int giathanh,List<String> idtietmuc)
+     {
+        super(id,ten);
+        this.congty=congty;
+        this.giathanh=giathanh;
+        this.idtietmuc=idtietmuc;
+     }
+     public String getcongty()
+     {
+        return congty;
+     }
+     public void setcongty(String congty)
+     {
+        this.congty=congty;
+     }
+     public int getgiathanh()
+     {
+        return giathanh;
+     }
+     public void setgiathanh(int giathanh)
+     {
+        this.giathanh=giathanh;
+     }
+     public List<String> getidtietmuc()
+     {
+     return idtietmuc;
+     }
+     public void setidtietmuc(List<String> idtietmuc)
+     {
+          this.idtietmuc=idtietmuc;
+     }
+     @Override 
+     public String toString()
+     {
+        return String.format("%s|%s|%s|%d|%s",id,ten,congty,giathanh,idtietmuc);
+
+     }
+   
+    }
+    public static class loadtufile
+    {
+      public static List<nghesi>loadnghesi(String filePath)
+      {
+        List<nghesi> danhsachtam = new ArrayList<>();
+        try(BufferedReader bfr= new BufferedReader(new FileReader(filePath)))
+        {
             String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length == 5) {
-                    artists.add(new Artist(
-                            Integer.parseInt(parts[0]),  // ID
-                            parts[1],                    // Name
-                            parts[2],                    // Company
-                            Integer.parseInt(parts[3]),  // Cost
-                            Integer.parseInt(parts[4])   // PerformanceID
-                    ));
+            while((line=bfr.readLine())!=null) //trong khi con doc dong
+            {
+                if(line.trim().isEmpty()) //bo dong rong
+                continue;
+                   String[] phan = line.split("\\|");
+                if(phan.length < 5)
+                continue;
+                
+                  String id = phan[0];
+                String ten = phan[1];
+                String congty= phan[2];
+                int giathanh = Integer.parseInt(phan[3]);
+
+                List<String> idtietmuc = new ArrayList<>();
+                String[] tietmucs= phan[4].split(",");
+                idtietmuc.addAll(Arrays.asList(tietmucs));
+                
+                nghesi ns = new nghesi(id, ten, congty, giathanh, idtietmuc);
+                danhsachtam.add(ns);
+            }
+        }
+        catch (IOException e) 
+        {
+                e.printStackTrace();
+        }
+        return danhsachtam;
+      }
+    }
+    public Map<String,nghesi> hienthitatcanghesi()
+    {
+        Map<String,nghesi> mapnghesi= new HashMap<>();
+        List<nghesi> danhsachtam = loadtufile.loadnghesi(FILE_PATH);
+          for( nghesi ns : danhsachtam)
+          {
+            mapnghesi.put(ns.getId(),ns);
+          }
+        return mapnghesi;
+    }
+   
+    private void ghifile(List<nghesi> ds)
+    {
+      try(BufferedWriter bfw= new BufferedWriter(new FileWriter(FILE_PATH)))
+      {
+           for(nghesi ns: ds)
+           {
+             bfw.write(ns.toString());
+             bfw.newLine();             
+           }
+      }
+      catch(IOException e)
+      {
+        e.printStackTrace();
+      }
+    }
+    
+     public  boolean themnghesi(nghesi moi)
+     {
+          List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
+          
+          for(nghesi ns: ds)
+          {
+            if(ns.getId().equalsIgnoreCase(moi.getId()) || ns.getName().equalsIgnoreCase(moi.getName()))
+            {
+                // nếu id hoặc tên trùng kiểm tra tiếp id tiet muc
+                boolean trungtietmuc= false;
+                for(String idtm : moi.getidtietmuc()) //idtm : id tiet muc
+                {
+                  if(ns.getidtietmuc().contains(idtm))
+                  {
+                    trungtietmuc=true;
+                    break;
+                  }
                 }
+                if(!trungtietmuc)
+                {
+                     // nếu chưa trùng tiết mục , ghi thêm tiết mục mới
+                    ns.getidtietmuc().addAll(moi.getidtietmuc());
+                    ghifile(ds);
+                    return true;
+                }
+                
+                else 
+                {
+                    return false;
+                }
+
             }
-        } catch (IOException e) {
-            System.err.println("⚠️ Lỗi khi đọc file nghệ sĩ: " + e.getMessage());
-        }
-        return artists;
-    }
+          }
+        ds.add(moi);
+        ghifile(ds);
+        return true;
+     }
+   public boolean xoanghesi (String ma) // mã ở đây dùng đc cho cả id cua nghệ sĩ và tên nghệ sĩ , do có cùng kiểu String
+   {
+       List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
 
-    private void saveAllArtists(List<Artist> artists) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_PATH))) {
-            for (Artist a : artists) {
-                bw.write(a.getId() + "|" + a.getName() + "|" + a.getCompany() + "|" +
-                         a.getPerformanceCost() + "|" + a.getPerformanceId());
-                bw.newLine();
+       for(int i=0;i<ds.size();i++)
+       {
+        nghesi ns = ds.get(i); // tham chiếu đối tượng nghệ sĩ thứ i trong ds
+        if(ns.getId().equalsIgnoreCase(ma) || ns.getName().equalsIgnoreCase(ma))
+        {
+            ds.remove(i);
+            ghifile(ds);
+            return true;
+        } 
+       }
+       
+    
+    return false;
+   }
+
+
+   
+
+   public boolean suaNghesi(String ma, String tenMoi, String congtyMoi, Integer giaThanhMoi, List<String> idtietMucMoi) {
+    List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
+    boolean found = false;
+
+    for (nghesi ns : ds) {
+        if (ns.getId().equalsIgnoreCase(ma) || ns.getName().equalsIgnoreCase(ma)) {
+            // Nếu tìm thấy nghệ sĩ thì cập nhật
+            if (tenMoi != null && !tenMoi.isEmpty()) {
+                ns.setName(tenMoi);
             }
-        } catch (IOException e) {
-            System.err.println("⚠️ Lỗi khi ghi file nghệ sĩ: " + e.getMessage());
+            if (congtyMoi != null && !congtyMoi.isEmpty()) {
+                ns.setcongty(congtyMoi);
+            }
+            if (giaThanhMoi != null) {
+                ns.setgiathanh(giaThanhMoi);
+            }
+            if (idtietMucMoi != null && !idtietMucMoi.isEmpty()) {
+                ns.setidtietmuc(idtietMucMoi);
+            }
+
+            found = true;
+            break;
         }
     }
 
-    public void showAllArtists() {
-        List<Artist> list = getAllArtists();
-        if (list.isEmpty()) {
-            System.out.println("❌ Không có nghệ sĩ nào.");
-            return;
-        }
-        System.out.printf("%-5s %-20s %-20s %-10s %-10s%n",
-                "ID", "Tên", "Công ty", "Giá", "Tiết mục");
-        list.forEach(System.out::println);
+    if (found) {
+        ghifile(ds); // ghi lại toàn bộ danh sách vào file
+        return true;
     }
 
-    public void addArtistFromInput() {
-        List<Artist> artists = getAllArtists();
-        System.out.print("Nhập ID: ");
-        int id = sc.nextInt(); sc.nextLine();
-        System.out.print("Tên nghệ sĩ: ");
-        String name = sc.nextLine();
-        System.out.print("Công ty: ");
-        String company = sc.nextLine();
-        System.out.print("Giá biểu diễn: ");
-        int cost = sc.nextInt();
-        System.out.print("ID tiết mục (nếu có): ");
-        int perfId = sc.nextInt(); sc.nextLine();
-
-        artists.add(new Artist(id, name, company, cost, perfId));
-        saveAllArtists(artists);
-        System.out.println("✅ Đã thêm nghệ sĩ!");
-    }
-
-    public void deleteArtistByInput() {
-        List<Artist> artists = getAllArtists();
-        System.out.print("Nhập ID cần xóa: ");
-        int id = sc.nextInt(); sc.nextLine();
-        boolean removed = artists.removeIf(a -> a.getId() == id);
-        saveAllArtists(artists);
-        System.out.println(removed ? "🗑️ Đã xóa nghệ sĩ!" : "❌ Không tìm thấy!");
-    }
-
-    public void updateArtistFromInput() {
-        List<Artist> artists = getAllArtists();
-        System.out.print("Nhập ID cần sửa: ");
-        int id = sc.nextInt(); sc.nextLine();
-
-        Artist found = artists.stream().filter(a -> a.getId() == id).findFirst().orElse(null);
-        if (found == null) {
-            System.out.println("❌ Không tìm thấy nghệ sĩ!");
-            return;
-        }
-
-        System.out.print("Tên mới: ");
-        String name = sc.nextLine();
-        System.out.print("Công ty mới: ");
-        String company = sc.nextLine();
-        System.out.print("Giá mới: ");
-        int cost = sc.nextInt();
-        System.out.print("ID tiết mục mới: ");
-        int perfId = sc.nextInt(); sc.nextLine();
-
-        artists.set(artists.indexOf(found), new Artist(id, name, company, cost, perfId));
-        saveAllArtists(artists);
-        System.out.println("✅ Đã cập nhật nghệ sĩ!");
-    }
+    return false;
+}
 }
