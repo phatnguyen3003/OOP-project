@@ -329,20 +329,20 @@ public class ui {
             JPanel cell = new JPanel();
             cell.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-            JLabel labelname = new JLabel("ADMIN");
             GridBagConstraints gbclabelname=new GridBagConstraints();
             gbclabelname.gridx=0;
             gbclabelname.gridy=0;
             gbclabelname.weightx=0;
             gbclabelname.anchor=GridBagConstraints.EAST;
             gbclabelname.insets = new Insets(0,0,0,5);
+            JLabel labelname = new JLabel("ADMIN");
             cell.add(labelname,gbclabelname);
             JPanel circlePanel = new JPanel() {
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     g.setColor(Color.GREEN);
-                    g.fillOval(0, 0, 60, 60); // 60 = 2 * bán kính
+                    g.fillOval(0, 0, 60, 60);
                 }
             };
             circlePanel.setPreferredSize(new Dimension(60, 60));
