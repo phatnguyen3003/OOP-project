@@ -7,8 +7,14 @@ import java.util.*;
 public class ArtistService {
     private static final String FILE_PATH = "src/database/Artist.txt";
 
-    
-    public static abstract class Person
+     public interface IPerson
+     {
+       String getId();
+       String getName();
+       void setId(String id);
+       void setName(String name);
+     }
+    public static abstract class Person implements IPerson
     {
         String id;
         String ten;
@@ -152,43 +158,21 @@ public class ArtistService {
       }
     }
     
-     public  boolean themnghesi(nghesi moi)
-     {
-          List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
-          
-          for(nghesi ns: ds)
-          {
-            if(ns.getId().equalsIgnoreCase(moi.getId()) || ns.getName().equalsIgnoreCase(moi.getName()))
-            {
-                // nếu id hoặc tên trùng kiểm tra tiếp id tiet muc
-                boolean trungtietmuc= false;
-                for(String idtm : moi.getidtietmuc()) //idtm : id tiet muc
-                {
-                  if(ns.getidtietmuc().contains(idtm))
-                  {
-                    trungtietmuc=true;
-                    break;
-                  }
-                }
-                if(!trungtietmuc)
-                {
-                     // nếu chưa trùng tiết mục , ghi thêm tiết mục mới
-                    ns.getidtietmuc().addAll(moi.getidtietmuc());
-                    ghifile(ds);
-                    return true;
-                }
-                
-                else 
-                {
-                    return false;
-                }
+    public boolean themnghesi(nghesi moi) {
+    List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
 
-            }
-          }
-        ds.add(moi);
-        ghifile(ds);
-        return true;
-     }
+    for (nghesi ns : ds) {
+        // Nếu trùng ID hoặc trùng tên, thì không thêm nữa
+        if (ns.getId().equalsIgnoreCase(moi.getId()) || ns.getName().equalsIgnoreCase(moi.getName())) {
+            return false;
+        }
+    }
+
+    // Nếu không trùng ai, thêm mới hoàn toàn
+    ds.add(moi);
+    ghifile(ds);
+    return true;
+}
    public boolean xoanghesi (String ma) // mã ở đây dùng đc cho cả id cua nghệ sĩ và tên nghệ sĩ , do có cùng kiểu String
    {
        List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
