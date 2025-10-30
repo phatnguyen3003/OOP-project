@@ -40,7 +40,8 @@ public class Schedule {
             id_casi.clear();
             ten_casi.clear();
             
-            Map<String,PerformanceService.tietmuc> dstietmuc = PerformanceService.hienthitatcatietmuc();
+            PerformanceService performanceService = new PerformanceService();
+            Map<String,PerformanceService.tietmuc> dstietmuc = performanceService.hienthitatcatietmuc();
             Map<String, ArtistService.nghesi> dsnghesi = new ArtistService().hienthitatcanghesi();
             
             for(String id:id_tietmuc) {
