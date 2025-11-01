@@ -90,12 +90,12 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
      {
           this.idtietmuc=idtietmuc;
      }
-     @Override 
-     public String toString()
-     {
-        return String.format("%s|%s|%s|%d|%s",id,ten,congty,giathanh,idtietmuc);
-
-     }
+    @Override
+    public String toString() 
+    {
+    String tietmucString = String.join(",", idtietmuc);
+    return String.format("%s|%s|%s|%d|%s", id, ten, congty, giathanh, tietmucString);
+    }
    
     }
     public static class loadtufile
