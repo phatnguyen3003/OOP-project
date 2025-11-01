@@ -1,12 +1,12 @@
 package Main_interface;
 
-    import java.util.*;
+import java.util.*;
 public class main_interface {
 
 
     public interface IGeneralService<T> {
 
-        Map<String, T> xuatMap();
+        Map<String, T> xuat();
 
         boolean them(T obj);
 
