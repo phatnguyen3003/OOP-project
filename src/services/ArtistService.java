@@ -131,7 +131,7 @@ public class ArtistService {
         return danhsachtam;
       }
     }
-    public Map<String,nghesi> hienthitatcanghesi()
+    public Map<String,nghesi> xuat()
     {
         Map<String,nghesi> mapnghesi= new HashMap<>();
         List<nghesi> danhsachtam = loadtufile.loadnghesi(FILE_PATH);
@@ -158,7 +158,7 @@ public class ArtistService {
       }
     }
     
-    public boolean themnghesi(nghesi moi) {
+    public boolean them(nghesi moi) {
     List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
 
     for (nghesi ns : ds) {
@@ -173,7 +173,7 @@ public class ArtistService {
     ghifile(ds);
     return true;
 }
-   public boolean xoanghesi (String ma) // mã ở đây dùng đc cho cả id cua nghệ sĩ và tên nghệ sĩ , do có cùng kiểu String
+   public boolean xoa(String ma) // mã ở đây dùng đc cho cả id cua nghệ sĩ và tên nghệ sĩ , do có cùng kiểu String
    {
        List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
 
@@ -195,36 +195,27 @@ public class ArtistService {
 
    
 
-   public boolean suaNghesi(String ma, String tenMoi, String congtyMoi, Integer giaThanhMoi, List<String> idtietMucMoi) {
+   public boolean sua(nghesi moi) {
     List<nghesi> ds = loadtufile.loadnghesi(FILE_PATH);
     boolean found = false;
 
-    for (nghesi ns : ds) {
-        if (ns.getId().equalsIgnoreCase(ma) || ns.getName().equalsIgnoreCase(ma)) {
-            // Nếu tìm thấy nghệ sĩ thì cập nhật
-            if (tenMoi != null && !tenMoi.isEmpty()) {
-                ns.setName(tenMoi);
-            }
-            if (congtyMoi != null && !congtyMoi.isEmpty()) {
-                ns.setcongty(congtyMoi);
-            }
-            if (giaThanhMoi != null) {
-                ns.setgiathanh(giaThanhMoi);
-            }
-            if (idtietMucMoi != null && !idtietMucMoi.isEmpty()) {
-                ns.setidtietmuc(idtietMucMoi);
-            }
+    for (int i = 0; i < ds.size(); i++) {
+        nghesi ns = ds.get(i);
 
+        // Tìm nghệ sĩ theo ID (đây là khóa duy nhất)
+        if (ns.getId().equalsIgnoreCase(moi.getId())) {
+            // Ghi đè đối tượng cũ bằng đối tượng mới
+            ds.set(i, moi);
             found = true;
             break;
         }
     }
 
     if (found) {
-        ghifile(ds); // ghi lại toàn bộ danh sách vào file
+        ghifile(ds); // Ghi toàn bộ danh sách xuống file
         return true;
     }
 
-    return false;
+    return false; // Không tìm thấy nghệ sĩ cần sửa
 }
 }

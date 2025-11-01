@@ -100,7 +100,7 @@ public class PerformanceService {
           return danhsachtam;
         }
     }
-     public Map<String,tietmuc> hienthitatcatietmuc()
+     public Map<String,tietmuc> xuat()
     {
         Map<String,tietmuc> maptietmuc= new HashMap<>();
         List<tietmuc> danhsachtam = loadtufile.loadtietmuc(FILE_PATH);
@@ -120,7 +120,7 @@ public class PerformanceService {
         e.printStackTrace();
     }
 }
-public boolean themTietMuc(tietmuc moi) {
+public boolean them(tietmuc moi) {
     List<tietmuc> ds = loadtufile.loadtietmuc(FILE_PATH);
 
     for (tietmuc tm : ds) {
@@ -147,7 +147,7 @@ public boolean themTietMuc(tietmuc moi) {
     ghifile(ds);
     return true;
 }
-public boolean xoatietmuc(String ma) {
+public boolean xoa(String ma) {
     List<tietmuc> ds = loadtufile.loadtietmuc(FILE_PATH);
 
     for (int i = 0; i < ds.size(); i++) {
@@ -165,38 +165,29 @@ public boolean xoatietmuc(String ma) {
 }
 
 
-public boolean suaTietMuc(String ma, String tenMoi, Integer thoiLuongMoi, String iDMoi) 
+public boolean sua(tietmuc moi)
 {
     List<tietmuc> ds = loadtufile.loadtietmuc(FILE_PATH);
     boolean found = false;
-
-    for (tietmuc tm : ds) {
-        
-        if (tm.getidtietmuc().equalsIgnoreCase(ma) || tm.gettentietmuc().equalsIgnoreCase(ma)) {
-
-            if (tenMoi != null && !tenMoi.isEmpty()) {
-                tm.settentietmuc(tenMoi);
-            }
-
-            if (thoiLuongMoi != null) {
-                tm.setthoiluong(thoiLuongMoi);
-            }
-
-            if (iDMoi != null && !iDMoi.isEmpty()) {
-                tm.setId(iDMoi);
-            }
-
+ 
+    for (int i = 0; i < ds.size(); i++) {
+        tietmuc tm = ds.get(i);
+ 
+        // Tìm tiết mục theo id
+        if (tm.getidtietmuc().equalsIgnoreCase(moi.getidtietmuc())) {
+            // Ghi đè đối tượng cũ bằng đối tượng mới
+            ds.set(i, moi);
             found = true;
             break;
         }
     }
-
+ 
     if (found) {
-        ghifile(ds); 
+        ghifile(ds);
         return true;
     }
-
-    return false; 
+ 
+    return false;
 }
 
 
@@ -206,7 +197,7 @@ public ArtistService.nghesi timNgheSiTheoTietMuc(String maTietMuc) {
 
     // 2. Tạo đối tượng ArtistService để truy danh sách nghệ sĩ
     ArtistService artistService = new ArtistService();
-    Map<String, ArtistService.nghesi> dsNgheSi = artistService.hienthitatcanghesi();
+    Map<String, ArtistService.nghesi> dsNgheSi = artistService.xuat();
 
     // 3. Duyệt tìm tiết mục có id hoặc tên trùng với mã truyền vào
     for (tietmuc tm : ds) {
@@ -221,4 +212,3 @@ public ArtistService.nghesi timNgheSiTheoTietMuc(String maTietMuc) {
     return null;
 }
 }
-
