@@ -1,13 +1,13 @@
 package services;
 
 import services.ArtistService;
-
-
+import Main_interface.main_interface.IGeneralService;
 import java.io.*;
 import java.util.*;
 
 
-public class PerformanceService {
+public class PerformanceService implements IGeneralService<PerformanceService.tietmuc>
+{
     private static final String FILE_PATH = "src/database/Performance.txt";
     
     public static  class tietmuc 

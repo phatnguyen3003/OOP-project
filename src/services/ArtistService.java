@@ -1,10 +1,13 @@
 package services;
 
+import Main_interface.main_interface;
+import Main_interface.main_interface.IGeneralService;
 
 import java.io.*;
 import java.util.*;
 
-public class ArtistService {
+public class ArtistService implements IGeneralService<ArtistService.nghesi>
+{
     private static final String FILE_PATH = "src/database/Artist.txt";
 
      public interface IPerson
@@ -131,7 +134,7 @@ public class ArtistService {
         return danhsachtam;
       }
     }
-    public Map<String,nghesi> xuat()
+    public Map<String,nghesi> xuat() 
     {
         Map<String,nghesi> mapnghesi= new HashMap<>();
         List<nghesi> danhsachtam = loadtufile.loadnghesi(FILE_PATH);
