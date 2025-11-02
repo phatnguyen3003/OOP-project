@@ -15,17 +15,17 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
        private String idtietmuc;
        private String tentietmuc;
        private int thoiluong;
-       private String id;
+       
        public tietmuc()
        {
 
        }
-       public tietmuc( String idtietmuc, String tentietmuc,int thoiluong, String id)
+       public tietmuc( String idtietmuc, String tentietmuc,int thoiluong)
        {
         this.idtietmuc=idtietmuc;
         this.tentietmuc=tentietmuc;
         this.thoiluong=thoiluong;
-        this.id=id;
+        
 
        }
        public String getidtietmuc()
@@ -52,18 +52,11 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
       {
         this.thoiluong=thoiluong;
       }
-      public String getId()
-      {
-        return id;
-      }
-      public void setId(String id)
-      {
-        this.id=id;
-      }
+      
       @Override 
       public String toString()
       {
-        return String.format("%s|%s|%d|%s",idtietmuc,tentietmuc,thoiluong,id);
+        return String.format("%s|%s|%d",idtietmuc,tentietmuc,thoiluong);
       }
     }
     public static class loadtufile
@@ -79,16 +72,16 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
                 if(line.trim().isEmpty())
                     continue;
                 String [] phan =line.split("\\|");
-                if(phan.length<4)
+                if(phan.length<3)
                 continue;
                 
                  String idtietmuc = phan[0];
                 String tentietmuc = phan[1];
                
                 int thoiluong = Integer.parseInt(phan[2]);
-                 String id = phan[3];
+                 
 
-                tietmuc tm = new tietmuc(idtietmuc,tentietmuc,thoiluong,id);
+                tietmuc tm = new tietmuc(idtietmuc,tentietmuc,thoiluong);
                 danhsachtam.add(tm);
                }
            }
@@ -125,22 +118,21 @@ public boolean them(tietmuc moi) {
 
     for (tietmuc tm : ds) {
    
-        if (tm.getidtietmuc().equalsIgnoreCase(moi.getidtietmuc()) ||
+             if (tm.getidtietmuc().equalsIgnoreCase(moi.getidtietmuc()) ||
             tm.gettentietmuc().equalsIgnoreCase(moi.gettentietmuc())) {
+              
             
-            // Nếu trùng id hoặc tên tiết mục, kiểm tra tiếp id nghệ sĩ
-            if (!tm.getId().equalsIgnoreCase(moi.getId())) {
-                // Nếu id nghệ sĩ khác  thi cho phép thêm
                 ds.add(moi);
                 ghifile(ds);
                 return true;
-            } else {
+            } 
+            else {
               
            
                 return false;
             }
         }
-    }
+    
 
     // Nếu không trùng id hoặc tên tiết mục nào thi thêm mới bình thường
     ds.add(moi);
@@ -190,25 +182,4 @@ public boolean sua(tietmuc moi)
     return false;
 }
 
-
-public ArtistService.nghesi timNgheSiTheoTietMuc(String maTietMuc) {
-    // 1. Tải toàn bộ danh sách tiết mục
-    List<tietmuc> ds = loadtufile.loadtietmuc(FILE_PATH);
-
-    // 2. Tạo đối tượng ArtistService để truy danh sách nghệ sĩ
-    ArtistService artistService = new ArtistService();
-    Map<String, ArtistService.nghesi> dsNgheSi = artistService.xuat();
-
-    // 3. Duyệt tìm tiết mục có id hoặc tên trùng với mã truyền vào
-    for (tietmuc tm : ds) {
-        if (tm.getidtietmuc().equalsIgnoreCase(maTietMuc) || tm.gettentietmuc().equalsIgnoreCase(maTietMuc)) {
-            
-            // 4. Lấy id nghệ sĩ từ tiết mục và tìm trong map nghệ sĩ
-            return dsNgheSi.get(tm.getId());
-        }
-    }
-
-    // 5. Nếu không thấy thì trả về null
-    return null;
-}
 }
