@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
 
-
+import function.artist_manage;
 import function.framefunction;
+import function.performance_manage;
 
 
 
@@ -132,15 +133,22 @@ public class ui {
             locationDataButton.setPreferredSize(new Dimension(300,60));
 
 
+
+            artistDataButton.addActionListener(e->{
+                artist_manage.ArtistDialog artistdialog = new artist_manage.ArtistDialog(frame);
+                artistdialog.setVisible(true);
+            });
+
+            performanceDataButton.addActionListener(e ->{
+                performance_manage.PerformanceDialog performancedialog = new performance_manage.PerformanceDialog(frame);
+                performancedialog.setVisible(true);
+            });
+
+
             ButtonContainer.add(artistDataButton,grid);
             ButtonContainer.add(performanceDataButton,grid);
             ButtonContainer.add(employeeDataButton,grid);
             ButtonContainer.add(locationDataButton,grid);
-
-            artistDataButton.addActionListener(e->{
-                framefunction.ArtistDialog artistdialog = new framefunction.ArtistDialog(frame);
-                artistdialog.setVisible(true);
-            });
 
 
             mainframe2.add(ButtonContainer,BorderLayout.CENTER);
