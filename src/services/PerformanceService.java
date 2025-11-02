@@ -121,19 +121,12 @@ public boolean them(tietmuc moi) {
              if (tm.getidtietmuc().equalsIgnoreCase(moi.getidtietmuc()) ||
             tm.gettentietmuc().equalsIgnoreCase(moi.gettentietmuc())) {
               
-            
-                ds.add(moi);
-                ghifile(ds);
-                return true;
-            } 
-            else {
-              
-           
+                // trung thi khong them moi
                 return false;
-            }
+            } 
+           
         }
     
-
     // Nếu không trùng id hoặc tên tiết mục nào thi thêm mới bình thường
     ds.add(moi);
     ghifile(ds);
