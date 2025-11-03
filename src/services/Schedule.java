@@ -146,21 +146,20 @@ public class Schedule {
         }
     }
     
-    public static Map<String, List<Map<String, String>>> returnData() {
+   public static Map<String, List<Map<String, String>>> returnData() {
         List<Schedule> allSchedules = loadFromFile();
         
         ArtistService artistService = new ArtistService();
-        Map<String, nghesi> artistMap = artistService.hienthitatcanghesi();
+        Map<String, nghesi> artistMap = artistService.xuat(); 
 
         PerformanceService performanceService = new PerformanceService();
-        Map<String, tietmuc> performanceMap = performanceService.hienthitatcatietmuc();
+        Map<String, tietmuc> performanceMap = performanceService.xuat();
         
         Map<String, List<Map<String, String>>> finalDataMap = new HashMap<>();
 
         for (Schedule schedule : allSchedules) {
             List<Map<String, String>> scheduleDetails = new ArrayList<>();
             
-            // Lịch trình cần phải có số lượng ID ca sĩ bằng số lượng ID tiết mục
             int size = Math.min(schedule.id_casi.size(), schedule.id_tietmuc.size());
 
             for (int i = 0; i < size; i++) {
@@ -170,22 +169,18 @@ public class Schedule {
                 nghesi artist = artistMap.get(casiId);
                 tietmuc performance = performanceMap.get(tietmucId);
 
-                // Tạo Map chứa thông tin chi tiết cho cặp này
                 Map<String, String> detailMap = new HashMap<>();
 
-                // Thêm thông tin Ca sĩ
                 detailMap.put("id_casi", casiId);
-                detailMap.put("ten", artist != null ? artist.getName() : "Không tìm thấy");
+                detailMap.put("ten", artist != null ? artist.getName() : "Không tìm thấy (Ca sĩ)");
 
-                // Thêm thông tin Tiết mục
                 detailMap.put("id_tietmuc", tietmucId);
-                detailMap.put("tentietmuc", performance != null ? performance.gettentietmuc() : "Không tìm thấy");
+                detailMap.put("tentietmuc", performance != null ? performance.gettentietmuc() : "Không tìm thấy (Tiết mục)");
                 detailMap.put("thoiluong", performance != null ? String.valueOf(performance.getthoiluong()) : "0");
                 
                 scheduleDetails.add(detailMap);
             }
             
-            // Thêm danh sách chi tiết vào Map kết quả với id_lichtrinh làm khóa
             finalDataMap.put(schedule.id_lichtrinh, scheduleDetails);
         }
 
