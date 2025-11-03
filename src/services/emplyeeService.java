@@ -117,7 +117,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
        return dsnhanvien;
     }
     }
-    public static Map<String, nhanvien> hienthi()
+    public Map<String, nhanvien> xuat()
     {
       Map<String, nhanvien> maptam= new HashMap();
       List<nhanvien> dstam= loadnvfile.loadnv(File_PATH);
@@ -202,3 +202,4 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     
 }
+
