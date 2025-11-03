@@ -59,9 +59,9 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
         return String.format("%s|%s|%d",idtietmuc,tentietmuc,thoiluong);
       }
     }
-    public static class loadtufile
+    private static class loadtufile
     {
-        public static List<tietmuc> loadtietmuc (String FILE_PATH)
+        private static List<tietmuc> loadtietmuc (String FILE_PATH)
         {
            List<tietmuc> danhsachtam=new ArrayList<>();
            try(BufferedReader bfr =new BufferedReader(new FileReader(FILE_PATH)))

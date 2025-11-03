@@ -98,9 +98,9 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
     }
    
     }
-    public static class loadtufile
+    private static class loadtufile
     {
-      public static List<nghesi>loadnghesi(String filePath)
+      private static List<nghesi>loadnghesi(String filePath)
       {
         List<nghesi> danhsachtam = new ArrayList<>();
         try(BufferedReader bfr= new BufferedReader(new FileReader(filePath)))
