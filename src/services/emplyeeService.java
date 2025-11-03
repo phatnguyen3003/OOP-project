@@ -155,7 +155,6 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
             }
         }
             dsnv.add(k);
-            ts.giamnv(k.getiddoi());
             ghinv(dsnv);
          return true;
 
@@ -191,7 +190,6 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
             {
                 found =true;
                 dsnv.remove(i);
-                ts.giamnv(ds.getiddoi());
                 break;
             }
         }
@@ -202,4 +200,5 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     
 }
+
 
