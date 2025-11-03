@@ -145,7 +145,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     public boolean them(nhanvien k)
     {
-        teamService ts= new teamService();
+       
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         for( nhanvien u: dsnv)
         {
@@ -162,7 +162,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     public boolean sua(nhanvien moi)
     {
-        teamService ts=new teamService();
+        
          List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
          boolean found=false;
         for( int i=0; i<dsnv.size(); i++ )
@@ -180,7 +180,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     public boolean xoa(String idnv)
     {
-        teamService ts= new teamService();
+        
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         boolean found=false;
         for( int i=0; i<dsnv.size(); i++)
@@ -200,5 +200,6 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     
 }
+
 
 
