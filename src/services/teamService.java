@@ -11,17 +11,19 @@ public class teamService implements IGeneralService<teamService.team> {
         String iddoi;
         String idleader;
         int songuoi;
+        List<String> ds_id;
         public static List<team> dsdn= new ArrayList<>();
         public team(){}
-        public team(String iddoi, String idleader, int songuoi)
+        public team(String iddoi, String idleader, List<String> ds_id)
         {
             this.iddoi=iddoi;
             this.idleader=idleader;
-            this.songuoi=songuoi;
+            this.ds_id= (ds_id !=null)? ds_id: new ArrayList<>();
+            this.songuoi=ds_id.size();
         }
         public String toString()
         {
-            return iddoi+"|"+ idleader+"|"+songuoi;
+            return iddoi+"|"+ idleader+"|"+String.join(",", ds_id);
         }
         public String getiddoi()
         {
@@ -39,14 +41,44 @@ public class teamService implements IGeneralService<teamService.team> {
         {
             this.idleader=idleader;
         }
-        public int getsonguoi()
-         {
-            return songuoi;
-         }
-         public void setsonguoi(int songuoi)
-         {
-            this.songuoi=songuoi;
-         }
+        public List<String> getds()
+        {
+            return ds_id;
+        }
+        public void setds(List<String> k)
+        {
+            this.ds_id=k;
+            this.songuoi= (k!=null) ? k.size(): 0; 
+        }
+        public void doi(String k, String cu)
+        {
+            for(int i=0; i<ds_id.size(); i++)
+            {
+                String ds= ds_id.get(i);
+                if(ds.trim().equalsIgnoreCase(cu.trim()))
+                {
+                    ds_id.set(i,k);
+                    break;
+                }
+            }
+        }
+        public void addds_id(String k)
+        {
+            if (ds_id==null) ds_id= new ArrayList<>();
+            if(ds_id.contains(k)==false) 
+            {
+                ds_id.add(k);
+                songuoi= ds_id.size();
+            }
+        }
+        public void remove(String k)
+        {
+            if(ds_id !=null)
+            {
+                ds_id.remove(k);
+                songuoi=ds_id.size();
+            }
+        }
     }
     
     public static class loadpt
@@ -60,11 +92,17 @@ public class teamService implements IGeneralService<teamService.team> {
                  
                  while((line=brg.readLine())!=null)
                  {
+
                     String[] path= line.split("\\|");
+                     if (path.length < 3) continue;
                     String iddoi= path[0].trim();
                     String idleader= path[1].trim();
-                    int songuoi=Integer.parseInt(path[2].trim());
-                    luu.add(new team(iddoi,idleader,songuoi));
+                    List<String> ds_id= new ArrayList<>();
+                    if(path[2].trim()!=null && path.length >2)
+                    {
+                        ds_id = Arrays.asList(path[2].trim().split(","));
+                    }
+                    luu.add(new team(iddoi,idleader,ds_id));
 
                  }
             }
@@ -112,7 +150,9 @@ public class teamService implements IGeneralService<teamService.team> {
                 return false;
             }
         }
+
         dsdoi.add(k);
+        ghidoi(dsdoi);
         return true;
     }
     public boolean sua(team moi)
@@ -126,6 +166,10 @@ public class teamService implements IGeneralService<teamService.team> {
                    if(moi.getidleader()!=null && !moi.getidleader().isEmpty())
                    {
                     ds.setidleader(moi.getidleader());
+                   }
+                   if(moi.getds()!=null && !moi.getds().isEmpty())
+                   {
+                    ds.setds(moi.getds());
                    }
                    ghidoi(dsdoi);
                    found=true;
@@ -151,3 +195,4 @@ public class teamService implements IGeneralService<teamService.team> {
     }
     
 }
+
