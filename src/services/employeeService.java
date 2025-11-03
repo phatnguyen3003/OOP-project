@@ -2,9 +2,15 @@ package services;
 
 import java.io.*;
 import java.util.*;
-public class emplyeeService {
+import Main_interface.main_interface.IGeneralService;
+public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> {
     private static final String File_PATH="src/database/employee.txt";
 
+    public interface INguoi
+    {
+       void getten();
+       String setten(String ten);
+    }
     public static abstract class Nguoi {
         String ten;
         String ngaysinh;
@@ -111,7 +117,7 @@ public class emplyeeService {
        return dsnhanvien;
     }
     }
-    public static Map<String, nhanvien> hienthi()
+    public Map<String, nhanvien> xuat()
     {
       Map<String, nhanvien> maptam= new HashMap();
       List<nhanvien> dstam= loadnvfile.loadnv(File_PATH);
@@ -139,7 +145,7 @@ public class emplyeeService {
     }
     public boolean them(nhanvien k)
     {
-        teamService ts= new teamService();
+       
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         for( nhanvien u: dsnv)
         {
@@ -149,33 +155,23 @@ public class emplyeeService {
             }
         }
             dsnv.add(k);
-            ts.giamnv(k.getiddoi());
             ghinv(dsnv);
          return true;
 
        
     }
-    public boolean sua(String idnvcu, String idnvmoi, String iddoi, String ngaysinh, String calamviec, String ten)
+    public boolean sua(nhanvien moi)
     {
-        teamService ts=new teamService();
+        
          List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
          boolean found=false;
-        for( nhanvien ds:dsnv )
+        for( int i=0; i<dsnv.size(); i++ )
         {
-            if(ds.getidnv().equalsIgnoreCase(idnvcu))
+            nhanvien ds= dsnv.get(i);
+            if(ds.getidnv().equalsIgnoreCase(moi.getidnv()))
             {
-                if(idnvmoi!=null && !idnvmoi.isEmpty())
-                   ds.setidnv(idnvmoi);
-                if(iddoi!=null && !iddoi.isEmpty())
-                   ds.setiddoi(iddoi);
-                if(ten!=null && !ten.isEmpty())
-                   ds.setten(ten);
-                if(ngaysinh!=null && !ngaysinh.isEmpty())
-                   ds.setngaysing(ngaysinh);
-                if(calamviec!=null && !calamviec.isEmpty()) 
-                   ds.setca(calamviec);
-                found=true;         
-                ts.giamnv(ds.getiddoi());
+                found=true;
+                dsnv.set(i,moi);
                 break;    
             }
         }
@@ -184,7 +180,7 @@ public class emplyeeService {
     }
     public boolean xoa(String idnv)
     {
-        teamService ts= new teamService();
+        
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         boolean found=false;
         for( int i=0; i<dsnv.size(); i++)
@@ -194,7 +190,6 @@ public class emplyeeService {
             {
                 found =true;
                 dsnv.remove(i);
-                ts.giamnv(ds.getiddoi());
                 break;
             }
         }
@@ -203,41 +198,8 @@ public class emplyeeService {
         if(found==true)  ghinv(dsnv);
         return found;
     }
-    public int demiddoi(String iddoi)// đếm số thành viên để cập nhật bên teamService
-    {
-        List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
-        int dem=0;
-        for( nhanvien ds: dsnv)
-        {
-            if(ds.getiddoi().equalsIgnoreCase(iddoi.trim()))
-            {
-                dem++;
-            }
-        }
-        return dem;
-    }
-    public boolean ktlai(String idnv)     // hỗ trợ xác đinh bên teamService xem một đội trưởng có phải nhân viên không//
-    {
-        List<nhanvien> dsnv =loadnvfile.loadnv(File_PATH);
-        for( nhanvien ds:dsnv)
-        {
-            if(ds.getidnv().equalsIgnoreCase(idnv))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    public void xoadoi(String iddoi)// hỗ trợ giải tán đội
-    {
-        List<nhanvien> dsnv =loadnvfile.loadnv(File_PATH);
-        for(nhanvien ds:dsnv)
-        {
-              if(ds.getiddoi().equalsIgnoreCase(iddoi.trim()))
-              {
-                ds.setiddoi("no team");
-              }
-        }
-        ghinv(dsnv);
-    }
+    
 }
+
+
+

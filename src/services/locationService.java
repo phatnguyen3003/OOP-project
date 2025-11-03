@@ -1,22 +1,21 @@
 package  services;
 import java.io.*;
 import java.util.*;
+import Main_interface.main_interface.IGeneralService;
 
-public class locationService {
+public class locationService implements IGeneralService<locationService.location> {
     private static final String FILE_PATH = "src/database/Location.txt";
     public static class location {
         private String tendiadiem;
         private int succhua;
-
+        private String iddiadiem;
+        
         public static List<location> dsdiadiem = new ArrayList<>();
-        public location(String tendiadiem, int succhua)
+        public location(String tendiadiem, int succhua,String iddiadiem)
         {
             this.tendiadiem= tendiadiem;
             this.succhua=succhua;
-        }
-        public void xuat()
-        {
-            System.out.println("dia diem to chuc: "+tendiadiem+" suc chua: "+succhua);
+            this.iddiadiem=iddiadiem;
         }
         public String getdiadiem()
         {
@@ -28,7 +27,7 @@ public class locationService {
         }
         public String toString()
         {
-            return tendiadiem+"|"+ succhua;
+            return iddiadiem+"|"+tendiadiem+"|"+ succhua;
         }
         public void setdiadiem(String tendiadiem)
         {
@@ -37,6 +36,14 @@ public class locationService {
         public void setsucchua(int succhua)
         {
             this.succhua=succhua;
+        }
+        public void setiddiadiem(String iddiadiem)
+        {
+            this.iddiadiem=iddiadiem;
+        }
+        public String getiddd()
+        {
+            return iddiadiem;
         }
         
        
@@ -53,9 +60,10 @@ public class locationService {
                  while( (line =br.readLine())!=null)
                  {
                     String[] path= line.split("\\|");
-                    String tendiadiem= path[0].trim();
-                    int succhua= Integer.parseInt(path[1].trim());
-                    ds.add(new location(tendiadiem, succhua));
+                    String iddiadiem= path[0].trim();
+                    String tendiadiem= path[1].trim();
+                    int succhua= Integer.parseInt(path[2].trim());
+                    ds.add(new location(tendiadiem, succhua, iddiadiem));
                  }
            }
            catch (IOException e)
@@ -66,13 +74,13 @@ public class locationService {
            return ds;
         }
     }
-   public static Map<String, location> chuyendoi()
+   public Map<String, location> xuat()
    {
     Map<String, location> maptam= new HashMap<>();
     List<location> ds= loadfile.loaddiadiem(FILE_PATH);
     for(location tam: ds)
     {
-        maptam.put(tam.tendiadiem, tam);
+        maptam.put(tam.getiddd(), tam);
     }
     return maptam;
    }
@@ -108,21 +116,18 @@ public class locationService {
                         return true; }
    }
 
-   public boolean sua(String cu,String diadiem, int succhua)
+   public boolean sua(location moi)
         {
              List<location> dsdiadiem= loadfile.loaddiadiem(FILE_PATH);
             boolean found=false;
-            for( location loc: dsdiadiem)
+            for( int i=0; i<dsdiadiem.size(); i++)
             {
-               if(loc.getdiadiem().equalsIgnoreCase(cu))
+                location loc=dsdiadiem.get(i);
+               if(loc.getiddd().equalsIgnoreCase(moi.getiddd()))
                {
-                       if(diadiem!=null&& !diadiem.trim().isEmpty())
-                           loc.setdiadiem(diadiem);
-                        if (succhua>0)
-                           loc.setsucchua(succhua);   
-                        found=true;
-                        System.out.println("Da cap nhat");
-                        break;   
+                      dsdiadiem.set(i,moi);
+                      found= true;
+                break;   
                }
                 
             }
@@ -133,14 +138,14 @@ public class locationService {
             return found; 
 
         }
-         public boolean xoa(String diadiem)
+         public boolean xoa(String iddiadiem)
         {
            List<location> dsdiadiem=loadfile.loaddiadiem(FILE_PATH);
            boolean found=false;
            for( int i=0; i<dsdiadiem.size(); i++)
            {
             location loc= dsdiadiem.get(i);
-            if(loc.getdiadiem().equalsIgnoreCase(diadiem))
+            if(loc.getiddd().equalsIgnoreCase(iddiadiem))
               {
                 found=true;
                 dsdiadiem.remove(i);
