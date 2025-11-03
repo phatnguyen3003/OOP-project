@@ -3,8 +3,9 @@ package services;
 import java.util.*;
 import java.io.*;
 import javax.imageio.IIOException;
+import Main_interface.main_interface.IGeneralService;
 
-public class teamService {
+public class teamService implements IGeneralService<teamService.team> {
     public static final String file_path= "src/database/team.txt";
     public static class team{
         String iddoi;
@@ -53,7 +54,6 @@ public class teamService {
         public static List<team> dsteam(String file_path)
         {
             List<team> luu= new ArrayList<>();
-            emplyeeService em= new emplyeeService();
             try(BufferedReader brg= new BufferedReader(new FileReader(file_path)))
             {
                  String line;
@@ -64,7 +64,6 @@ public class teamService {
                     String iddoi= path[0].trim();
                     String idleader= path[1].trim();
                     int songuoi=Integer.parseInt(path[2].trim());
-                    songuoi= em.demiddoi(iddoi);
                     luu.add(new team(iddoi,idleader,songuoi));
 
                  }
@@ -77,7 +76,7 @@ public class teamService {
             return luu;
         }
     }
-    public static Map<String, team> chuyendoidoi()
+    public Map<String, team> xuat()
     {
          List<team> dstam= loadpt.dsteam(file_path);
          Map<String, team> maptam= new HashMap();
@@ -89,13 +88,10 @@ public class teamService {
     }
     public static void ghidoi(List<team> dsdoi)
     {
-        emplyeeService em= new emplyeeService();
         try(BufferedWriter bfg= new BufferedWriter( new FileWriter(file_path)))
         {
                 for(team ds: dsdoi)
                 {
-                    int songuoi= em.demiddoi(ds.getiddoi());
-                    ds.setsonguoi(songuoi);   //để dùng khi thêm, xóa nhân viên bên employeeService//
                     bfg.write(ds.toString());
                     bfg.newLine();
                 }
@@ -119,18 +115,17 @@ public class teamService {
         dsdoi.add(k);
         return true;
     }
-    public boolean sua(String iddoi, String idleader)
+    public boolean sua(team moi)
     {
         List<team> dsdoi= loadpt.dsteam(file_path);
-        emplyeeService em= new emplyeeService();
         boolean found=false;
         for(team ds: dsdoi)
         {
-            if (ds.getiddoi().equalsIgnoreCase(iddoi.trim()))
+            if (ds.getiddoi().equalsIgnoreCase(moi.getiddoi().trim()))
             {
-                   if(idleader!=null && !idleader.isEmpty()&& em.ktlai(idleader))
+                   if(moi.getidleader()!=null && !moi.getidleader().isEmpty())
                    {
-                    ds.setidleader(idleader);
+                    ds.setidleader(moi.getidleader());
                    }
                    ghidoi(dsdoi);
                    found=true;
@@ -142,34 +137,17 @@ public class teamService {
     public boolean xoa(String iddoi)
     {
         List<team> dsdoi= loadpt.dsteam(file_path);
-        emplyeeService em = new emplyeeService();
         for(int i=0; i<dsdoi.size(); i++ )
         {
             team loc= dsdoi.get(i);
             if( loc.getiddoi().equalsIgnoreCase(iddoi.trim()))
             {
                 dsdoi.remove(i);
-                em.xoadoi(iddoi);
                 ghidoi(dsdoi);
                 return true;
             }
         }
         return false;
-    }
-    public void giamnv(String iddoi)
-    {
-        emplyeeService em= new emplyeeService();
-        int songuoi=em.demiddoi(iddoi);
-        List<team> dsdoi=loadpt.dsteam(file_path);
-        for( team ds: dsdoi)
-        {
-            if (ds.getiddoi().equalsIgnoreCase(iddoi))
-            {
-                ds.setsonguoi(songuoi);
-                break;
-            }
-        }
-        ghidoi(dsdoi);
     }
     
 }
