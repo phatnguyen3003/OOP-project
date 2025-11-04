@@ -1,5 +1,6 @@
 package services;
 
+import Main_interface.main_interface.IGeneralService;
 import services.ArtistService.nghesi;
 import services.PerformanceService.tietmuc;
  
@@ -53,17 +54,15 @@ public class Schedule {
                     Schedule schedule = new Schedule(id_lichtrinh, id_casi, id_tietmuc);
                     schedules.add(schedule);
                 } else {
-                    System.err.println("❌ Lỗi định dạng dòng trong file: " + line);
                 }
             }
         } catch (IOException e) {
-            System.err.println("❌ Lỗi khi đọc file " + FILE_PATH + ": " + e.getMessage());
         }
         
         return schedules;
     }
 
-    public static boolean createSchedule(Schedule newSchedule) {
+    public static boolean them(Schedule newSchedule) {
         String casiStr = String.join(" ", newSchedule.id_casi);
         String tietmucStr = String.join(" ", newSchedule.id_tietmuc);
         
@@ -74,15 +73,13 @@ public class Schedule {
 
         try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))) {
             pw.println(scheduleLine);
-            System.out.println("✅ Đã thêm lịch trình: " + scheduleLine);
             return true;
         } catch (IOException e) {
-            System.err.println("❌ Lỗi khi ghi vào file " + FILE_PATH + ": " + e.getMessage());
             return false;
         }
     }
 
-    public static boolean updateSchedule(Schedule updatedSchedule) {
+    public static boolean sua(Schedule updatedSchedule) {
         List<Schedule> allSchedules = loadFromFile();
         boolean found = false;
         
@@ -95,7 +92,6 @@ public class Schedule {
         }
         
         if (!found) {
-            System.err.println("❌ Lỗi: Không tìm thấy lịch trình có ID " + updatedSchedule.id_lichtrinh + " để sửa.");
             return false;
         }
 
@@ -109,12 +105,11 @@ public class Schedule {
             }
             return true;
         } catch (IOException e) {
-            System.err.println("❌ Lỗi khi ghi đè file " + FILE_PATH + ": " + e.getMessage());
             return false;
         }
     }
 
-    public static boolean deleteSchedule(String id_lichtrinh) {
+    public static boolean xoa(String id_lichtrinh) {
         List<Schedule> allSchedules = loadFromFile();
         
         // Dùng List.removeIf để tìm và xóa lịch trình dựa trên ID, 
@@ -124,7 +119,6 @@ public class Schedule {
         );
         
         if (!removed) {
-            System.err.println("❌ Lỗi: Không tìm thấy lịch trình có ID " + id_lichtrinh + " để xóa.");
             return false;
         }
 
@@ -138,52 +132,11 @@ public class Schedule {
                 
                 pw.println(scheduleLine);
             }
-            System.out.println("✅ Xóa lịch trình ID " + id_lichtrinh + " thành công.");
             return true;
         } catch (IOException e) {
-            System.err.println("❌ Lỗi khi ghi đè file " + FILE_PATH + ": " + e.getMessage());
             return false;
         }
     }
     
-   public static Map<String, List<Map<String, String>>> returnData() {
-        List<Schedule> allSchedules = loadFromFile();
-        
-        ArtistService artistService = new ArtistService();
-        Map<String, nghesi> artistMap = artistService.xuat(); 
 
-        PerformanceService performanceService = new PerformanceService();
-        Map<String, tietmuc> performanceMap = performanceService.xuat();
-        
-        Map<String, List<Map<String, String>>> finalDataMap = new HashMap<>();
-
-        for (Schedule schedule : allSchedules) {
-            List<Map<String, String>> scheduleDetails = new ArrayList<>();
-            
-            int size = Math.min(schedule.id_casi.size(), schedule.id_tietmuc.size());
-
-            for (int i = 0; i < size; i++) {
-                String casiId = schedule.id_casi.get(i);
-                String tietmucId = schedule.id_tietmuc.get(i);
-
-                nghesi artist = artistMap.get(casiId);
-                tietmuc performance = performanceMap.get(tietmucId);
-
-                Map<String, String> detailMap = new HashMap<>();
-
-                detailMap.put("id_casi", casiId);
-                detailMap.put("ten", artist != null ? artist.getName() : "Không tìm thấy (Ca sĩ)");
-
-                detailMap.put("id_tietmuc", tietmucId);
-                detailMap.put("tentietmuc", performance != null ? performance.gettentietmuc() : "Không tìm thấy (Tiết mục)");
-                detailMap.put("thoiluong", performance != null ? String.valueOf(performance.getthoiluong()) : "0");
-                
-                scheduleDetails.add(detailMap);
-            }
-            
-            finalDataMap.put(schedule.id_lichtrinh, scheduleDetails);
-        }
-
-        return finalDataMap;
-    }
 }
