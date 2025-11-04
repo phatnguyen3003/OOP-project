@@ -104,6 +104,18 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
                 String idnv= path[0].trim();
                 String ten= path[1].trim();
                 String calamviec= path[2].trim();
+                if( Integer.parseInt(calamviec)==1)
+                {
+                    calamviec ="sang";
+                }
+                else if( Integer.parseInt(calamviec)==2)
+                {
+                    calamviec = "chieu";
+                }
+                else if(Integer.parseInt(calamviec)==3)
+                {
+                    calamviec="toi";
+                }
                 String ngaysinh= path[3].trim();
                 String iddoi =path[4].trim();
                 dsnhanvien.add(new nhanvien(calamviec,idnv,iddoi,ten,ngaysinh));
@@ -123,6 +135,18 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
       List<nhanvien> dstam= loadnvfile.loadnv(File_PATH);
       for( nhanvien u: dstam)
       {
+         if( Integer.parseInt(u.getca())==1)
+                {
+                    u.setca("sang");
+                }
+                else if( Integer.parseInt(u.getca())==2)
+                {
+                   u.setca("chieu");
+                }    
+                else if(Integer.parseInt(u.getca())==3)
+                {
+                   u.setca("toi");
+                }
        maptam.put(u.getidnv(),u);
       }
       return maptam;
@@ -133,6 +157,19 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         {
             for(nhanvien ds: nv)
             {
+                String calamviec =ds.getca();
+                 if(calamviec== "sang")
+                {
+                    ds.setca("1");
+                }
+                else if(calamviec =="chieu")
+                {
+                    ds.setca("2");
+                }
+                else if(calamviec=="toi")
+                {
+                    ds.setca("3");
+                }
                brw.write(ds.toString());
                brw.newLine();
             }
@@ -200,6 +237,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     
 }
+
 
 
 
