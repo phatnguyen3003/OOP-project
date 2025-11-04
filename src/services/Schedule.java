@@ -138,5 +138,13 @@ public class Schedule {
         }
     }
     
-
+    public Map<String, Schedule> xuat() {
+        Map<String, Schedule> mapSchedule = new HashMap<>();
+        List<Schedule> allSchedules = loadFromFile();
+        
+        for (Schedule schedule : allSchedules) {
+            mapSchedule.put(schedule.id_lichtrinh, schedule);
+        }
+        return mapSchedule;
+    }
 }
