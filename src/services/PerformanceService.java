@@ -174,5 +174,18 @@ public boolean sua(tietmuc moi)
  
     return false;
 }
+ 
+ public ArtistService.nghesi timNgheSiTheoTietMuc(String idTietMuc) 
+ {
+    ArtistService artistService = new ArtistService();
+    Map<String, ArtistService.nghesi> mapNgheSi = artistService.xuat();
+
+    for (ArtistService.nghesi ns : mapNgheSi.values()) {
+        if (ns.getidtietmuc().contains(idTietMuc)) {
+            return ns; // Trả về nghệ sĩ đầu tiên tìm thấy
+        }
+    }
+    return null;
+}
 
 }
