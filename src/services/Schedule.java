@@ -11,8 +11,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import Main_interface.main_interface;
  
-public class Schedule {
+public class Schedule implements IGeneralService<Schedule>{
     private static final String FILE_PATH = "src/database/Schedule.txt";
     public String id_lichtrinh;              // Mã lịch trình
     public List<String> id_casi;             // Danh sách ID ca sĩ
@@ -62,7 +64,7 @@ public class Schedule {
         return schedules;
     }
 
-    public static boolean them(Schedule newSchedule) {
+    public  boolean them(Schedule newSchedule) {
         String casiStr = String.join(" ", newSchedule.id_casi);
         String tietmucStr = String.join(" ", newSchedule.id_tietmuc);
         
@@ -79,7 +81,7 @@ public class Schedule {
         }
     }
 
-    public static boolean sua(Schedule updatedSchedule) {
+    public  boolean sua(Schedule updatedSchedule) {
         List<Schedule> allSchedules = loadFromFile();
         boolean found = false;
         
@@ -109,7 +111,7 @@ public class Schedule {
         }
     }
 
-    public static boolean xoa(String id_lichtrinh) {
+    public  boolean xoa(String id_lichtrinh) {
         List<Schedule> allSchedules = loadFromFile();
         
         // Dùng List.removeIf để tìm và xóa lịch trình dựa trên ID, 
