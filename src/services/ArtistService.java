@@ -10,22 +10,22 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
 {
     private static final String FILE_PATH = "src/database/Artist.txt";
 
-     public interface IPerson
+     public interface INguoi
      {
        String getId();
        String getName();
        void setId(String id);
        void setName(String name);
      }
-    public static abstract class Person implements IPerson
+    public static abstract class Nguoi implements INguoi
     {
         String id;
         String ten;
-        public Person()
+        public Nguoi()
         {
 
         }
-        public Person(String id, String ten)
+        public Nguoi(String id, String ten)
         {
             this.id=id;
             this.ten=ten;
@@ -49,7 +49,7 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
         @Override 
         public abstract String toString();
     }
-    public  static class nghesi extends Person
+    public  static class nghesi extends Nguoi
     {  
         
 
