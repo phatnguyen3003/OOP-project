@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import Main_interface.main_interface;
  
-public class Schedule implements IGeneralService<Schedule>{
+public class Schedule{
     private static final String FILE_PATH = "src/database/Schedule.txt";
     public String id_lichtrinh;              // Mã lịch trình
     public List<String> id_casi;             // Danh sách ID ca sĩ
@@ -31,122 +31,126 @@ public class Schedule implements IGeneralService<Schedule>{
         this.id_tietmuc = id_tietmuc;
     }
 
-    public static List<Schedule> loadFromFile(){
-        List<Schedule> schedules = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty()) {
-                    continue;
-                }
-                
-                String[] parts = line.split("\\|");
-                
-                if (parts.length == 3) {
-                    String id_lichtrinh = parts[0].trim();
+    public class DanhSachLichTrinh implements IGeneralService<Schedule>{
+
+        public List<Schedule> loadFromFile(){
+            List<Schedule> schedules = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    if (line.trim().isEmpty()) {
+                        continue;
+                    }
                     
-                    List<String> id_casi = Arrays.stream(parts[1].trim().split("\\s+"))
-                                                 .filter(s -> !s.isEmpty())
-                                                 .collect(Collectors.toList());
+                    String[] parts = line.split("\\|");
                     
-                    List<String> id_tietmuc = Arrays.stream(parts[2].trim().split("\\s+"))
+                    if (parts.length == 3) {
+                        String id_lichtrinh = parts[0].trim();
+                        
+                        List<String> id_casi = Arrays.stream(parts[1].trim().split("\\s+"))
                                                     .filter(s -> !s.isEmpty())
                                                     .collect(Collectors.toList());
-                    
-                    Schedule schedule = new Schedule(id_lichtrinh, id_casi, id_tietmuc);
-                    schedules.add(schedule);
-                } else {
+                        
+                        List<String> id_tietmuc = Arrays.stream(parts[2].trim().split("\\s+"))
+                                                        .filter(s -> !s.isEmpty())
+                                                        .collect(Collectors.toList());
+                        
+                        Schedule schedule = new Schedule(id_lichtrinh, id_casi, id_tietmuc);
+                        schedules.add(schedule);
+                    } else {
+                    }
+                }
+            } catch (IOException e) {
+            }
+            
+            return schedules;
+        }
+
+        public  boolean them(Schedule newSchedule) {
+            String casiStr = String.join(" ", newSchedule.id_casi);
+            String tietmucStr = String.join(" ", newSchedule.id_tietmuc);
+            
+            String scheduleLine = String.format("%s|%s|%s", 
+                                                newSchedule.id_lichtrinh, 
+                                                casiStr, 
+                                                tietmucStr);
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))) {
+                pw.println(scheduleLine);
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
+        }
+
+        public  boolean sua(Schedule updatedSchedule) {
+            List<Schedule> allSchedules = loadFromFile();
+            boolean found = false;
+            
+            for (int i = 0; i < allSchedules.size(); i++) {
+                if (allSchedules.get(i).id_lichtrinh.equals(updatedSchedule.id_lichtrinh)) {
+                    allSchedules.set(i, updatedSchedule); 
+                    found = true;
+                    break;
                 }
             }
-        } catch (IOException e) {
+            
+            if (!found) {
+                return false;
+            }
+
+            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
+                for (Schedule s : allSchedules) {
+                    String casiStr = String.join(" ", s.id_casi);
+                    String tietmucStr = String.join(" ", s.id_tietmuc);
+                    String scheduleLine = String.format("%s|%s|%s", s.id_lichtrinh, casiStr, tietmucStr);
+                    
+                    pw.println(scheduleLine);
+                }
+                return true;
+            } catch (IOException e) {
+                return false;
+            }
         }
-        
-        return schedules;
-    }
 
-    public  boolean them(Schedule newSchedule) {
-        String casiStr = String.join(" ", newSchedule.id_casi);
-        String tietmucStr = String.join(" ", newSchedule.id_tietmuc);
-        
-        String scheduleLine = String.format("%s|%s|%s", 
-                                            newSchedule.id_lichtrinh, 
-                                            casiStr, 
-                                            tietmucStr);
+        public  boolean xoa(String id_lichtrinh) {
+            List<Schedule> allSchedules = loadFromFile();
+            // Dùng List.removeIf để tìm và xóa lịch trình dựa trên ID, 
+            // đồng thời trả về true nếu có bất kỳ phần tử nào bị xóa
+            boolean removed = allSchedules.removeIf(
+                schedule -> schedule.id_lichtrinh.equalsIgnoreCase(id_lichtrinh)
+            );
+            
+            if (!removed) {
+                return false;
+            }
 
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, true))) {
-            pw.println(scheduleLine);
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    public  boolean sua(Schedule updatedSchedule) {
-        List<Schedule> allSchedules = loadFromFile();
-        boolean found = false;
-        
-        for (int i = 0; i < allSchedules.size(); i++) {
-            if (allSchedules.get(i).id_lichtrinh.equals(updatedSchedule.id_lichtrinh)) {
-                allSchedules.set(i, updatedSchedule); 
-                found = true;
-                break;
+            // Tham số false trong FileWriter để GHI ĐÈ (overwrite) nội dung cũ
+            try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
+                for (Schedule s : allSchedules) {
+                    // Định dạng lại chuỗi để ghi vào file
+                    String casiStr = String.join(" ", s.id_casi);
+                    String tietmucStr = String.join(" ", s.id_tietmuc);
+                    String scheduleLine = String.format("%s|%s|%s", s.id_lichtrinh, casiStr, tietmucStr);
+                    
+                    pw.println(scheduleLine);
+                }
+                return true;
+            } catch (IOException e) {
+                return false;
             }
         }
         
-        if (!found) {
-            return false;
-        }
-
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
-            for (Schedule s : allSchedules) {
-                String casiStr = String.join(" ", s.id_casi);
-                String tietmucStr = String.join(" ", s.id_tietmuc);
-                String scheduleLine = String.format("%s|%s|%s", s.id_lichtrinh, casiStr, tietmucStr);
-                
-                pw.println(scheduleLine);
+        public Map<String, Schedule> xuat() {
+            Map<String, Schedule> mapSchedule = new HashMap<>();
+            List<Schedule> allSchedules = loadFromFile();
+            
+            for (Schedule schedule : allSchedules) {
+                mapSchedule.put(schedule.id_lichtrinh, schedule);
             }
-            return true;
-        } catch (IOException e) {
-            return false;
+            return mapSchedule;
         }
-    }
-
-    public  boolean xoa(String id_lichtrinh) {
-        List<Schedule> allSchedules = loadFromFile();
-        
-        // Dùng List.removeIf để tìm và xóa lịch trình dựa trên ID, 
-        // đồng thời trả về true nếu có bất kỳ phần tử nào bị xóa
-        boolean removed = allSchedules.removeIf(
-            schedule -> schedule.id_lichtrinh.equalsIgnoreCase(id_lichtrinh)
-        );
-        
-        if (!removed) {
-            return false;
-        }
-
-        // Tham số false trong FileWriter để GHI ĐÈ (overwrite) nội dung cũ
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
-            for (Schedule s : allSchedules) {
-                // Định dạng lại chuỗi để ghi vào file
-                String casiStr = String.join(" ", s.id_casi);
-                String tietmucStr = String.join(" ", s.id_tietmuc);
-                String scheduleLine = String.format("%s|%s|%s", s.id_lichtrinh, casiStr, tietmucStr);
-                
-                pw.println(scheduleLine);
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
-    }
-    
-    public Map<String, Schedule> xuat() {
-        Map<String, Schedule> mapSchedule = new HashMap<>();
-        List<Schedule> allSchedules = loadFromFile();
-        
-        for (Schedule schedule : allSchedules) {
-            mapSchedule.put(schedule.id_lichtrinh, schedule);
-        }
-        return mapSchedule;
     }
 }
+
+
