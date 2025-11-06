@@ -3,7 +3,7 @@ package services;
 import java.io.*;
 import java.util.*;
 import Main_interface.main_interface.IGeneralService;
-public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> {
+public class employeeService {
     private static final String File_PATH="src/database/employee.txt";
 
     public interface INguoi
@@ -81,7 +81,10 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
             return iddoi;
         }
     }
-    public static class loadnvfile{
+
+    public static class Danhsachnhanvien implements IGeneralService<employeeService.nhanvien>
+    {
+            public static class loadnvfile{
           public static List<nhanvien> loadnv(String File_PATH)
     {
        List<nhanvien> dsnhanvien= new ArrayList<>();
@@ -92,15 +95,15 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
              {
                 
                 String[] path= line.split("\\|");
-                if(path.length < 5)
+                if(path.length < 4)
                 continue;
                 String idnv= path[0].trim();
                 String ten= path[1].trim();
                 String calamviec= path[2].trim();
                 switch (calamviec) {
-                        case "1": calamviec = "sang"; break;
-                        case "2": calamviec = "chieu"; break;
-                        case "3": calamviec = "toi"; break;
+                        case "1": calamviec = "sáng"; break;
+                        case "2": calamviec = "chiều"; break;
+                        case "3": calamviec = "tối"; break;
                     }
                 String iddoi =path[3].trim();
                 dsnhanvien.add(new nhanvien(calamviec,idnv,iddoi,ten));
@@ -121,9 +124,9 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
       for( nhanvien u: dstam)
       {
          switch (u.calamviec) {
-                        case "1": u.calamviec = "sang"; break;
-                        case "2": u.calamviec = "chieu"; break;
-                        case "3": u.calamviec = "toi"; break;
+                        case "1": u.calamviec = "sáng"; break;
+                        case "2": u.calamviec = "chiều"; break;
+                        case "3": u.calamviec = "tối"; break;
                     }
 
        maptam.put(u.getid(),u);
@@ -140,9 +143,9 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
 
                 // 🔹 Chuyển đổi chữ → số
                 switch (ds.getca().trim()) {
-                    case "sang": ds.setca("1"); break;
-                    case "chieu": ds.setca("2"); break;
-                    case "toi": ds.setca("3"); break;
+                    case "sáng": ds.setca("1"); break;
+                    case "chiều": ds.setca("2"); break;
+                    case "tối": ds.setca("3"); break;
                 }
 
                brw.write(ds.toString());
@@ -210,9 +213,9 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         if(found==true)  ghinv(dsnv);
         return found;
     }
+    }
     
 }
-
 
 
 
