@@ -5,7 +5,7 @@ import java.io.*;
 import javax.imageio.IIOException;
 import Main_interface.main_interface.IGeneralService;
 
-public class teamService implements IGeneralService<teamService.team> {
+public class teamService {
     public static final String file_path= "src/database/team.txt";
     public static class team{
         String iddoi;
@@ -80,7 +80,10 @@ public class teamService implements IGeneralService<teamService.team> {
             }
         }
     }
-    
+
+    public static class DanhsachDoi implements IGeneralService<teamService.team>
+    {
+            
     public static class loadpt
     {
         public static List<team> dsteam(String file_path)
@@ -194,5 +197,6 @@ public class teamService implements IGeneralService<teamService.team> {
         return false;
     }
     
+    }
 }
 
