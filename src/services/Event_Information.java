@@ -13,16 +13,17 @@ public class Event_Information implements IGeneralService<Event_Information.thon
 
     public static class thongtin_sukien
     {
-        private String id_sk,id_lichtrinh,id_diadiem,id_doi_phutrach;
+        private String id_sk,ten_sk,id_lichtrinh,id_diadiem,id_doi_phutrach;
 
         public thongtin_sukien()
         {
 
         }
 
-        public thongtin_sukien(String id_sk,String id_lichtrinh,String id_diadiem,String id_doi_phutrach)
+        public thongtin_sukien(String id_sk,String ten_sk,String id_lichtrinh,String id_diadiem,String id_doi_phutrach)
         {
             this.id_sk=id_sk;
+            this.ten_sk=ten_sk;
             this.id_lichtrinh=id_lichtrinh;
             this.id_diadiem=id_diadiem;
             this.id_doi_phutrach=id_doi_phutrach;
@@ -31,6 +32,10 @@ public class Event_Information implements IGeneralService<Event_Information.thon
         public void set_id_sk(String id_sk)
         {
             this.id_sk=id_sk;
+        }
+         public void set_ten_sk(String ten_sk)
+        {
+            this.ten_sk=ten_sk;
         }
         public void set_id_lichtrinh(String id_lichtrinh)
         {
@@ -48,6 +53,10 @@ public class Event_Information implements IGeneralService<Event_Information.thon
         public String get_id_sk()
         {
             return id_sk;
+        }
+        public String get_ten_sk()
+        {
+            return ten_sk;
         }
         public String get_id_diadiem()
         {
@@ -76,17 +85,18 @@ public class Event_Information implements IGeneralService<Event_Information.thon
                         continue;
                     }
                     String[] data_parts = Line.split("\\|");
-                    if(data_parts.length<4)
+                    if(data_parts.length<5)
                     {
                         continue;
                     }
 
                     String id_sk = data_parts[0];
-                    String id_lichtrinh = data_parts[1];
-                    String id_diadiem = data_parts[2];
-                    String id_doi_phutrach = data_parts[3];
+                    String ten_sk = data_parts[1];
+                    String id_lichtrinh = data_parts[2];
+                    String id_diadiem = data_parts[3];
+                    String id_doi_phutrach = data_parts[4];
 
-                    thongtin_sukien tt_sk = new thongtin_sukien(id_sk,id_lichtrinh,id_diadiem,id_doi_phutrach);
+                    thongtin_sukien tt_sk = new thongtin_sukien(id_sk,ten_sk,id_lichtrinh,id_diadiem,id_doi_phutrach);
                     ds_thongtin.add(tt_sk);
                 }
             }
@@ -103,7 +113,7 @@ public class Event_Information implements IGeneralService<Event_Information.thon
             {
                 for(thongtin_sukien sukien: ds_sk)
                 {
-                    String line = String.join("|",sukien.get_id_sk(),sukien.get_id_lichtrinh(),sukien.get_id_diadiem(),sukien.get_id_doi_phutrach());
+                    String line = String.join("|",sukien.get_id_sk(),sukien.get_ten_sk(),sukien.get_id_lichtrinh(),sukien.get_id_diadiem(),sukien.get_id_doi_phutrach());
                     bfw.write(line);
                     bfw.newLine();
                 }
