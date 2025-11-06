@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.*;
 import Main_interface.main_interface.IGeneralService;
 
-public class locationService implements IGeneralService<locationService.location> {
+public class locationService {
     private static final String FILE_PATH = "src/database/Location.txt";
     public static class location {
         private String tendiadiem;
@@ -48,7 +48,9 @@ public class locationService implements IGeneralService<locationService.location
         
        
     }
-    public static class loadfile
+    public static class Danhsachdiadiem implements IGeneralService<locationService.location>
+    {
+            public static class loadfile
     {
         public static List<location> loaddiadiem(String FILE_PATH)
         {
@@ -107,13 +109,16 @@ public class locationService implements IGeneralService<locationService.location
             
             for(location f: dsdiadiem)
                  if(f.getdiadiem().equalsIgnoreCase(k.getdiadiem()))
-                    { found=true;  break;}
+                    { 
+                        found=true;  break;
+                    }
                 if(found==true) 
                       return false;
                         else
                       {  dsdiadiem.add(k); 
                         writerfile(dsdiadiem);
-                        return true; }
+                        return true; 
+                    }
    }
 
    public boolean sua(location moi)
@@ -138,7 +143,7 @@ public class locationService implements IGeneralService<locationService.location
             return found; 
 
         }
-         public boolean xoa(String iddiadiem)
+    public boolean xoa(String iddiadiem)
         {
            List<location> dsdiadiem=loadfile.loaddiadiem(FILE_PATH);
            boolean found=false;
@@ -157,7 +162,7 @@ public class locationService implements IGeneralService<locationService.location
                 writerfile(dsdiadiem);
             }
            return found;
-        }
+        }    
         
-        
+    }
 }
