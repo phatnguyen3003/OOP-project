@@ -14,27 +14,27 @@ import java.util.stream.Collectors;
 
 import Main_interface.main_interface;
  
-public class Schedule{
+public class ScheduleService{
     private static final String FILE_PATH = "src/database/Schedule.txt";
     public String id_lichtrinh;              // Mã lịch trình
     public List<String> id_casi;             // Danh sách ID ca sĩ
     public List<String> id_tietmuc;          // Danh sách ID tiết mục tương ứng
  
-    public Schedule() {
+    public ScheduleService() {
         id_casi = new ArrayList<>();
         id_tietmuc = new ArrayList<>();
     }
  
-    public Schedule(String id_lichtrinh, List<String> id_casi, List<String> id_tietmuc) {
+    public ScheduleService(String id_lichtrinh, List<String> id_casi, List<String> id_tietmuc) {
         this.id_lichtrinh = id_lichtrinh;
         this.id_casi = id_casi;
         this.id_tietmuc = id_tietmuc;
     }
 
-    public class DanhSachLichTrinh implements IGeneralService<Schedule>{
+    public static class DanhSachLichTrinh implements IGeneralService<ScheduleService>{
 
-        public List<Schedule> loadFromFile(){
-            List<Schedule> schedules = new ArrayList<>();
+        public List<ScheduleService> loadFromFile(){
+            List<ScheduleService> schedules = new ArrayList<>();
             try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -55,7 +55,7 @@ public class Schedule{
                                                         .filter(s -> !s.isEmpty())
                                                         .collect(Collectors.toList());
                         
-                        Schedule schedule = new Schedule(id_lichtrinh, id_casi, id_tietmuc);
+                        ScheduleService schedule = new ScheduleService(id_lichtrinh, id_casi, id_tietmuc);
                         schedules.add(schedule);
                     } else {
                     }
@@ -66,7 +66,7 @@ public class Schedule{
             return schedules;
         }
 
-        public  boolean them(Schedule newSchedule) {
+        public  boolean them(ScheduleService newSchedule) {
             String casiStr = String.join(" ", newSchedule.id_casi);
             String tietmucStr = String.join(" ", newSchedule.id_tietmuc);
             
@@ -83,8 +83,8 @@ public class Schedule{
             }
         }
 
-        public  boolean sua(Schedule updatedSchedule) {
-            List<Schedule> allSchedules = loadFromFile();
+        public  boolean sua(ScheduleService updatedSchedule) {
+            List<ScheduleService> allSchedules = loadFromFile();
             boolean found = false;
             
             for (int i = 0; i < allSchedules.size(); i++) {
@@ -100,7 +100,7 @@ public class Schedule{
             }
 
             try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
-                for (Schedule s : allSchedules) {
+                for (ScheduleService s : allSchedules) {
                     String casiStr = String.join(" ", s.id_casi);
                     String tietmucStr = String.join(" ", s.id_tietmuc);
                     String scheduleLine = String.format("%s|%s|%s", s.id_lichtrinh, casiStr, tietmucStr);
@@ -114,7 +114,7 @@ public class Schedule{
         }
 
         public  boolean xoa(String id_lichtrinh) {
-            List<Schedule> allSchedules = loadFromFile();
+            List<ScheduleService> allSchedules = loadFromFile();
             // Dùng List.removeIf để tìm và xóa lịch trình dựa trên ID, 
             // đồng thời trả về true nếu có bất kỳ phần tử nào bị xóa
             boolean removed = allSchedules.removeIf(
@@ -127,7 +127,7 @@ public class Schedule{
 
             // Tham số false trong FileWriter để GHI ĐÈ (overwrite) nội dung cũ
             try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH, false))) { 
-                for (Schedule s : allSchedules) {
+                for (ScheduleService s : allSchedules) {
                     // Định dạng lại chuỗi để ghi vào file
                     String casiStr = String.join(" ", s.id_casi);
                     String tietmucStr = String.join(" ", s.id_tietmuc);
@@ -141,16 +141,14 @@ public class Schedule{
             }
         }
         
-        public Map<String, Schedule> xuat() {
-            Map<String, Schedule> mapSchedule = new HashMap<>();
-            List<Schedule> allSchedules = loadFromFile();
+        public Map<String, ScheduleService> xuat() {
+            Map<String, ScheduleService> mapSchedule = new HashMap<>();
+            List<ScheduleService> allSchedules = loadFromFile();
             
-            for (Schedule schedule : allSchedules) {
+            for (ScheduleService schedule : allSchedules) {
                 mapSchedule.put(schedule.id_lichtrinh, schedule);
             }
             return mapSchedule;
         }
     }
 }
-
-
