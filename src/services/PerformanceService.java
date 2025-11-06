@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 
 
-public class PerformanceService implements IGeneralService<PerformanceService.tietmuc>
+public class PerformanceService
 {
     private static final String FILE_PATH = "src/database/Performance.txt";
     
@@ -59,7 +59,11 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
         return String.format("%s|%s|%d",idtietmuc,tentietmuc,thoiluong);
       }
     }
-    private static class loadtufile
+   
+  
+   public static class Danhsachtietmuc implements IGeneralService<PerformanceService.tietmuc>
+ {
+       private static class loadtufile
     {
         private static List<tietmuc> loadtietmuc (String FILE_PATH)
         {
@@ -92,7 +96,7 @@ public class PerformanceService implements IGeneralService<PerformanceService.ti
 
           return danhsachtam;
         }
-    }
+     }
      public Map<String,tietmuc> xuat()
     {
         Map<String,tietmuc> maptietmuc= new HashMap<>();
@@ -174,18 +178,17 @@ public boolean sua(tietmuc moi)
  
     return false;
 }
- 
- public ArtistService.nghesi timNgheSiTheoTietMuc(String idTietMuc) 
- {
-    ArtistService artistService = new ArtistService();
-    Map<String, ArtistService.nghesi> mapNgheSi = artistService.xuat();
 
+public String timIdNgheSiTheoTietMuc(String idTietMuc) {
+    ArtistService.Danhsachnghesi artistService = new ArtistService.Danhsachnghesi();
+    Map<String, ArtistService.nghesi> mapNgheSi = artistService.xuat();
+ 
     for (ArtistService.nghesi ns : mapNgheSi.values()) {
         if (ns.getidtietmuc().contains(idTietMuc)) {
-            return ns; // Trả về nghệ sĩ đầu tiên tìm thấy
+            return ns.getId(); // Trả về ID nghệ sĩ đầu tiên tìm thấy
         }
     }
-    return null;
-}
-
+    return null; // Không tìm thấy
+   }
+  }
 }
