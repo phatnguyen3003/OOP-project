@@ -2,64 +2,26 @@ package services;
 
 import Main_interface.main_interface;
 import Main_interface.main_interface.IGeneralService;
-
+import abstraction.abstraction;
 import java.io.*;
 import java.util.*;
 
-public class ArtistService implements IGeneralService<ArtistService.nghesi>
+public class ArtistService 
 {
     private static final String FILE_PATH = "src/database/Artist.txt";
 
-     public interface INguoi
-     {
-       String getId();
-       String getName();
-       void setId(String id);
-       void setName(String name);
-     }
-    public static abstract class Nguoi implements INguoi
-    {
-        String id;
-        String ten;
-        public Nguoi()
-        {
-
-        }
-        public Nguoi(String id, String ten)
-        {
-            this.id=id;
-            this.ten=ten;
-        }
-        public String getId()
-        {
-            return id;
-        }
-        public String getName()
-        {
-            return ten;
-        }
-        public void setId( String id)
-        {
-            this.id=id;
-        }
-        public void setName(String ten)
-        {
-            this.ten=ten;
-        }
-        @Override 
-        public abstract String toString();
-    }
-    public  static class nghesi extends Nguoi
+   
+    public  static class nghesi extends abstraction.Nguoi
     {  
         
-
+       private String vaitro;
        private String congty;
        private int giathanh;
        private List<String> idtietmuc = new ArrayList<>();
        public nghesi()
      {
      }      
-     public nghesi(String id,String ten,String congty,int giathanh,List<String> idtietmuc)
+     public nghesi(String id,String ten,String vaitro,String congty,int giathanh,List<String> idtietmuc)
      {
         super(id,ten);
         this.congty=congty;
@@ -90,14 +52,26 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
      {
           this.idtietmuc=idtietmuc;
      }
+     public String getvaitro()
+     {
+       return vaitro;
+     }
+     public void setvaitro(String vaitro)
+     {
+      this.vaitro=vaitro;
+     }
+
     @Override
     public String toString() 
     {
     String tietmucString = String.join(",", idtietmuc);
-    return String.format("%s|%s|%s|%d|%s", id, ten, congty, giathanh, tietmucString);
+    return String.format("%s|%s|%s|%s|%d|%s", id, ten,vaitro,congty, giathanh, tietmucString);
     }
    
     }
+    
+ public static class Danhsachnghesi implements IGeneralService<ArtistService.nghesi>
+ {
     private static class loadtufile
     {
       private static List<nghesi>loadnghesi(String filePath)
@@ -111,19 +85,20 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
                 if(line.trim().isEmpty()) //bo dong rong
                 continue;
                    String[] phan = line.split("\\|");
-                if(phan.length < 5)
+                if(phan.length < 6)
                 continue;
                 
                   String id = phan[0];
                 String ten = phan[1];
-                String congty= phan[2];
-                int giathanh = Integer.parseInt(phan[3]);
+                String vaitro =phan[2];
+                String congty= phan[3];
+                int giathanh = Integer.parseInt(phan[4]);
 
                 List<String> idtietmuc = new ArrayList<>();
-                String[] tietmucs= phan[4].split(",");
+                String[] tietmucs= phan[5].split(",");
                 idtietmuc.addAll(Arrays.asList(tietmucs));
                 
-                nghesi ns = new nghesi(id, ten, congty, giathanh, idtietmuc);
+                nghesi ns = new nghesi(id, ten, vaitro, congty, giathanh, idtietmuc);
                 danhsachtam.add(ns);
             }
         }
@@ -220,5 +195,6 @@ public class ArtistService implements IGeneralService<ArtistService.nghesi>
     }
 
     return false; // Không tìm thấy nghệ sĩ cần sửa
-}
+   }
+ }
 }
