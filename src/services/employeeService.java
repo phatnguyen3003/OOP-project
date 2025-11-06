@@ -8,34 +8,36 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
 
     public interface INguoi
     {
-       void getten();
-       String setten(String ten);
+       String getten();
+       String getid();
+       void setten(String ten);
+       void setid(String id);
     }
-    public static abstract class Nguoi {
+    public static abstract class Nguoi implements INguoi  {
         String ten;
-        String ngaysinh;
+        String id;
 
         public Nguoi() {}
 
-        public Nguoi(String ten, String ngaysinh) {
+        public Nguoi(String ten, String id) {
             this.ten = ten;
-            this.ngaysinh = ngaysinh;
+            this.id = id;
         }
         public void setten(String ten)
         {
              this.ten=ten;
         }
-        public void setngaysing(String ngaysinh)
+       public void setid(String id)
         {
-            this.ngaysinh=ngaysinh;
+            this.id=id;
         }
         public String getten()
         {
             return ten;
         }
-        public String getngaysinh()
+        public String getid()
         {
-            return ngaysinh;
+            return id;
         }
         public abstract String toString();
 
@@ -44,33 +46,28 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
   
     public static class nhanvien extends Nguoi{
         private String calamviec;
-        private String idnv;
         private String iddoi;
         public static List<nhanvien> dsnv= new ArrayList<>();
         public nhanvien()
         {
             super();
         }
-        public nhanvien(String calamviec, String idnv, String iddoi, String ten, String ngaysinh)
+        public nhanvien(String calamviec, String idnv, String iddoi, String ten)
         {
-             super(ten, ngaysinh);
+             super(ten, idnv);
              this.calamviec= calamviec;
              this.iddoi=iddoi;
-             this.idnv=idnv;   
         }
         @Override
         public String toString()
         {
-            return idnv +"|"+ten+"|"+calamviec+"|"+ngaysinh+"|"+iddoi;
+            return id +"|"+ten+"|"+calamviec+"|"+iddoi;
         }
         public void setca(String calamviec)
         {
             this.calamviec=calamviec;
         }
-        public void setidnv(String idnv)
-        {
-            this.idnv=idnv;
-        }
+        
         public void setiddoi(String iddoi)
         {
             this.iddoi=iddoi;
@@ -82,10 +79,6 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         public String getiddoi()
         {
             return iddoi;
-        }
-        public String getidnv()
-        {
-            return idnv;
         }
     }
     public static class loadnvfile{
@@ -104,21 +97,13 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
                 String idnv= path[0].trim();
                 String ten= path[1].trim();
                 String calamviec= path[2].trim();
-                if( Integer.parseInt(calamviec)==1)
-                {
-                    calamviec ="sang";
-                }
-                else if( Integer.parseInt(calamviec)==2)
-                {
-                    calamviec = "chieu";
-                }
-                else if(Integer.parseInt(calamviec)==3)
-                {
-                    calamviec="toi";
-                }
-                String ngaysinh= path[3].trim();
-                String iddoi =path[4].trim();
-                dsnhanvien.add(new nhanvien(calamviec,idnv,iddoi,ten,ngaysinh));
+                switch (calamviec) {
+                        case "1": calamviec = "sang"; break;
+                        case "2": calamviec = "chieu"; break;
+                        case "3": calamviec = "toi"; break;
+                    }
+                String iddoi =path[3].trim();
+                dsnhanvien.add(new nhanvien(calamviec,idnv,iddoi,ten));
              }
        }
        catch (IOException e)
@@ -135,19 +120,13 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
       List<nhanvien> dstam= loadnvfile.loadnv(File_PATH);
       for( nhanvien u: dstam)
       {
-         if( Integer.parseInt(u.getca())==1)
-                {
-                    u.setca("sang");
-                }
-                else if( Integer.parseInt(u.getca())==2)
-                {
-                   u.setca("chieu");
-                }    
-                else if(Integer.parseInt(u.getca())==3)
-                {
-                   u.setca("toi");
-                }
-       maptam.put(u.getidnv(),u);
+         switch (u.calamviec) {
+                        case "1": u.calamviec = "sang"; break;
+                        case "2": u.calamviec = "chieu"; break;
+                        case "3": u.calamviec = "toi"; break;
+                    }
+
+       maptam.put(u.getid(),u);
       }
       return maptam;
     }
@@ -157,19 +136,15 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         {
             for(nhanvien ds: nv)
             {
-                String calamviec =ds.getca();
-                 if(calamviec== "sang")
-                {
-                    ds.setca("1");
+                
+
+                // 🔹 Chuyển đổi chữ → số
+                switch (ds.getca().trim()) {
+                    case "sang": ds.setca("1"); break;
+                    case "chieu": ds.setca("2"); break;
+                    case "toi": ds.setca("3"); break;
                 }
-                else if(calamviec =="chieu")
-                {
-                    ds.setca("2");
-                }
-                else if(calamviec=="toi")
-                {
-                    ds.setca("3");
-                }
+
                brw.write(ds.toString());
                brw.newLine();
             }
@@ -186,7 +161,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         for( nhanvien u: dsnv)
         {
-            if(u.getidnv().equalsIgnoreCase(k.getidnv().trim()))
+            if(u.getid().equalsIgnoreCase(k.getid().trim()))
             {
                 return false;
             }
@@ -205,7 +180,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         for( int i=0; i<dsnv.size(); i++ )
         {
             nhanvien ds= dsnv.get(i);
-            if(ds.getidnv().equalsIgnoreCase(moi.getidnv()))
+            if(ds.getid().equalsIgnoreCase(moi.getid()))
             {
                 found=true;
                 dsnv.set(i,moi);
@@ -223,7 +198,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
         for( int i=0; i<dsnv.size(); i++)
         {
             nhanvien ds= dsnv.get(i);
-            if(ds.getidnv().equalsIgnoreCase(idnv))
+            if(ds.getid().equalsIgnoreCase(idnv))
             {
                 found =true;
                 dsnv.remove(i);
@@ -237,6 +212,7 @@ public class emplyeeService implements IGeneralService<emplyeeService.nhanvien> 
     }
     
 }
+
 
 
 
