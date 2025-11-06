@@ -3,48 +3,13 @@ package services;
 import java.io.*;
 import java.util.*;
 import Main_interface.main_interface.IGeneralService;
+import abstraction.abstraction;
 public class employeeService {
     private static final String File_PATH="src/database/employee.txt";
 
-    public interface INguoi
-    {
-       String getten();
-       String getid();
-       void setten(String ten);
-       void setid(String id);
-    }
-    public static abstract class Nguoi implements INguoi  {
-        String ten;
-        String id;
-
-        public Nguoi() {}
-
-        public Nguoi(String ten, String id) {
-            this.ten = ten;
-            this.id = id;
-        }
-        public void setten(String ten)
-        {
-             this.ten=ten;
-        }
-       public void setid(String id)
-        {
-            this.id=id;
-        }
-        public String getten()
-        {
-            return ten;
-        }
-        public String getid()
-        {
-            return id;
-        }
-        public abstract String toString();
-
-        
-    }
+   
   
-    public static class nhanvien extends Nguoi{
+    public static class nhanvien extends abstraction.Nguoi{
         private String calamviec;
         private String iddoi;
         public static List<nhanvien> dsnv= new ArrayList<>();
@@ -129,7 +94,7 @@ public class employeeService {
                         case "3": u.calamviec = "tối"; break;
                     }
 
-       maptam.put(u.getid(),u);
+       maptam.put(u.getId(),u);
       }
       return maptam;
     }
@@ -164,7 +129,7 @@ public class employeeService {
         List<nhanvien> dsnv= loadnvfile.loadnv(File_PATH);
         for( nhanvien u: dsnv)
         {
-            if(u.getid().equalsIgnoreCase(k.getid().trim()))
+            if(u.getId().equalsIgnoreCase(k.getId().trim()))
             {
                 return false;
             }
@@ -183,7 +148,7 @@ public class employeeService {
         for( int i=0; i<dsnv.size(); i++ )
         {
             nhanvien ds= dsnv.get(i);
-            if(ds.getid().equalsIgnoreCase(moi.getid()))
+            if(ds.getId().equalsIgnoreCase(moi.getId()))
             {
                 found=true;
                 dsnv.set(i,moi);
@@ -201,7 +166,7 @@ public class employeeService {
         for( int i=0; i<dsnv.size(); i++)
         {
             nhanvien ds= dsnv.get(i);
-            if(ds.getid().equalsIgnoreCase(idnv))
+            if(ds.getId().equalsIgnoreCase(idnv))
             {
                 found =true;
                 dsnv.remove(i);
