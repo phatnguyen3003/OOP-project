@@ -12,18 +12,21 @@ import java.util.Calendar;
 import java.util.Map;
 
 
-import services.ArtistService;
+import services.locationService;
 import services.MainFunction;
-import services.PerformanceService;
-public class performance_manage {
 
-    public static class PerformanceDialog extends JDialog
+
+
+
+public class location_manage {
+
+  public static class LocationDialog extends JDialog
     {
-        public PerformanceDialog(JFrame parent)
+        public LocationDialog(JFrame parent)
         {
 
 
-            super(parent,"Quản lý dữ liệu Tiết mục",false);
+            super(parent,"Quản lý dữ liệu địa điểm",false);
             setSize(800,600);
             setLocationRelativeTo(parent);
             setLayout(new BorderLayout());
@@ -33,9 +36,9 @@ public class performance_manage {
 
 
 
-            PerformanceService performance = new PerformanceService();
-            Map <String, PerformanceService.tietmuc> Maptietmuc = new HashMap<>();
-            List<String> ds_idtietmuc = new ArrayList<>();
+            locationService location = new locationService();
+            Map <String, locationService.location> Mapdiadiem = new HashMap<>();
+            List<String> ds_iddiadiem = new ArrayList<>();
             Map<String,JPanel> dspanel = new HashMap<>();
             Map<String, JCheckBox> quanlyselect = new HashMap<>();
 
@@ -44,70 +47,70 @@ public class performance_manage {
             
 
 
-            JPanel themtietmuc = new JPanel(new GridBagLayout());
-            themtietmuc.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            themtietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY,1,true));
-            GridBagConstraints themtietmuc_bgc = new GridBagConstraints();
+            JPanel themdiadiem = new JPanel(new GridBagLayout());
+            themdiadiem.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            themdiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY,1,true));
+            GridBagConstraints themdiadiem_bgc = new GridBagConstraints();
 
-            JLabel Label_ID_them = new JLabel("ID tiết mục:");
+            JLabel Label_ID_them = new JLabel("ID địa điểm:");
             Label_ID_them.setPreferredSize(new Dimension(300,20));
-            themtietmuc_bgc.weightx = 0;
-            themtietmuc_bgc.gridx=0;
-            themtietmuc_bgc.gridy=0;
-            themtietmuc_bgc.weightx = 0;
-            themtietmuc.add(Label_ID_them,themtietmuc_bgc);
+            themdiadiem_bgc.weightx = 0;
+            themdiadiem_bgc.gridx=0;
+            themdiadiem_bgc.gridy=0;
+            themdiadiem_bgc.weightx = 0;
+            themdiadiem.add(Label_ID_them,themdiadiem_bgc);
 
             JTextField ID_them = new JTextField();
             ID_them.setPreferredSize(new Dimension(450,20));
             ID_them.setName("ID_them");
-            themtietmuc_bgc.gridx=1;
-            themtietmuc_bgc.gridy=0;
-            themtietmuc_bgc.weightx = 1.0;
-            themtietmuc.add(ID_them,themtietmuc_bgc);
+            themdiadiem_bgc.gridx=1;
+            themdiadiem_bgc.gridy=0;
+            themdiadiem_bgc.weightx = 1.0;
+            themdiadiem.add(ID_them,themdiadiem_bgc);
 
-            JLabel Label_ten_them = new JLabel("Tên tiết mục:");
+            JLabel Label_ten_them = new JLabel("Tên địa điểm:");
             Label_ten_them.setPreferredSize(new Dimension(300,20));
-            themtietmuc_bgc.gridx=0;
-            themtietmuc_bgc.gridy=3;
-            themtietmuc_bgc.weightx = 0;
-            themtietmuc.add(Label_ten_them,themtietmuc_bgc);
+            themdiadiem_bgc.gridx=0;
+            themdiadiem_bgc.gridy=3;
+            themdiadiem_bgc.weightx = 0;
+            themdiadiem.add(Label_ten_them,themdiadiem_bgc);
 
             JTextField ten_them = new JTextField();
             ten_them.setPreferredSize(new Dimension(450,20));
             ten_them.setName("ten_them");
-            themtietmuc_bgc.gridx=1;
-            themtietmuc_bgc.gridy=3;
-            themtietmuc_bgc.weightx = 1.0;
-            themtietmuc.add(ten_them,themtietmuc_bgc);
+            themdiadiem_bgc.gridx=1;
+            themdiadiem_bgc.gridy=3;
+            themdiadiem_bgc.weightx = 1.0;
+            themdiadiem.add(ten_them,themdiadiem_bgc);
 
-            JLabel Label_thoiluong_them = new JLabel("Thời lượng:");
-            Label_thoiluong_them.setPreferredSize(new Dimension(300,20));
-            themtietmuc_bgc.gridx=0;
-            themtietmuc_bgc.gridy=5;
-            themtietmuc_bgc.weightx = 0;
-            themtietmuc.add(Label_thoiluong_them,themtietmuc_bgc);
+            JLabel Label_succhua_them_1 = new JLabel("Sức chứa:");
+            Label_succhua_them_1.setPreferredSize(new Dimension(300,20));
+            themdiadiem_bgc.gridx=0;
+            themdiadiem_bgc.gridy=5;
+            themdiadiem_bgc.weightx = 0;
+            themdiadiem.add(Label_succhua_them_1,themdiadiem_bgc);
 
-            JTextField thoiluong_them = new JTextField();
-            thoiluong_them.setPreferredSize(new Dimension(450,20));
-            thoiluong_them.setName("thoi_luong");
-            themtietmuc_bgc.gridx=1;
-            themtietmuc_bgc.gridy=5;
-            themtietmuc_bgc.weightx = 1.0;
-            themtietmuc.add(thoiluong_them,themtietmuc_bgc);
+            JTextField succhua_them = new JTextField();
+            succhua_them.setPreferredSize(new Dimension(450,20));
+            succhua_them.setName("suc_chua");
+            themdiadiem_bgc.gridx=1;
+            themdiadiem_bgc.gridy=5;
+            themdiadiem_bgc.weightx = 1.0;
+            themdiadiem.add(succhua_them,themdiadiem_bgc);
 
-            ContentContainer.add(themtietmuc,BorderLayout.NORTH);
-
-
-
-            JPanel B_MainContainer = new JPanel();
-            B_MainContainer.setLayout(new BoxLayout(B_MainContainer, BoxLayout.Y_AXIS));
-
-
-            refresh(B_MainContainer, dspanel, quanlyselect, ds_idtietmuc);
+            ContentContainer.add(themdiadiem,BorderLayout.NORTH);
 
 
 
-            JScrollPane scrollbar = new JScrollPane(B_MainContainer);
+            JPanel D_MainContainer = new JPanel();
+            D_MainContainer.setLayout(new BoxLayout(D_MainContainer, BoxLayout.Y_AXIS));
+
+
+            refresh(D_MainContainer, dspanel, quanlyselect, ds_iddiadiem);
+
+
+
+            JScrollPane scrollbar = new JScrollPane(D_MainContainer);
             scrollbar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             scrollbar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             ContentContainer.add(scrollbar,BorderLayout.CENTER);
@@ -116,7 +119,7 @@ public class performance_manage {
 
 
 
-            JPanel B_ButtonContainer = new JPanel(new GridBagLayout());
+            JPanel D_ButtonContainer = new JPanel(new GridBagLayout());
             GridBagConstraints A_ButtonGBC = new GridBagConstraints();
             A_ButtonGBC.gridx=0;
             A_ButtonGBC.gridy=GridBagConstraints.RELATIVE;
@@ -135,13 +138,13 @@ public class performance_manage {
 
             deletehButton.addActionListener(e ->
             {
-                goixoatietmuc(dspanel);
-                refresh(B_MainContainer, dspanel, quanlyselect, ds_idtietmuc);
+                goixoadiadiem(dspanel);
+                refresh(D_MainContainer, dspanel, quanlyselect, ds_iddiadiem);
             });
 
             refreshButton.addActionListener(e->
             {
-                refresh(B_MainContainer, dspanel, quanlyselect, ds_idtietmuc);
+                refresh(D_MainContainer, dspanel, quanlyselect, ds_iddiadiem);
                 StringBuilder message = new StringBuilder();
                 message.append("Đã làm mới!!");
 
@@ -150,8 +153,8 @@ public class performance_manage {
 
             changeButton.addActionListener(e->
             {
-                goisuanghesi(dspanel, () -> {
-                    refresh(B_MainContainer, dspanel, quanlyselect, ds_idtietmuc);
+                goisuadiadiem(dspanel, () -> {
+                    refresh(D_MainContainer, dspanel, quanlyselect, ds_iddiadiem);
                 });
             });
 
@@ -159,15 +162,15 @@ public class performance_manage {
 
             /*
              * 1: success
-             * 201: duplicate id
-             * 202: special character in time_cost
+             * 401: duplicate id
+             * 402: special character in container_capapility
              */
 
             addButton.addActionListener(e->
             {
-                String id = get_add_information(themtietmuc,"ID_them");                
-                String ten = get_add_information(themtietmuc,"ten_them");
-                String thoi_luong = get_add_information(themtietmuc,"thoi_luong");
+                String id = get_add_information(themdiadiem,"ID_them");                
+                String ten = get_add_information(themdiadiem,"ten_them");
+                String thoi_luong = get_add_information(themdiadiem,"suc_chua");
 
                 if(id==null||ten==null||thoi_luong==null||id.isEmpty()||ten.isEmpty()||thoi_luong.isEmpty())
                 {
@@ -175,48 +178,48 @@ public class performance_manage {
                     return;
                 }
 
-                int checked = MainFunction.function.performance_adding(id,ten,thoi_luong,ds_idtietmuc);
+                int checked = MainFunction.function.performance_adding(id,ten,thoi_luong,ds_iddiadiem);
 
                 StringBuilder message = new StringBuilder();
                 if(checked==1)
                 {
-                    message.append("Đã thêm tiết mục thành công!");
+                    message.append("Đã thêm địa điểm thành công!");
                     JOptionPane.showMessageDialog(null,message,"Thông báo",JOptionPane.INFORMATION_MESSAGE);
                 }
-                else if(checked== 201)
+                else if(checked== 401)
                 {
-                    message.append("ID của Tiết mục không được trùng với ID đã có sẵn");
+                    message.append("ID của địa điểm không được trùng với ID đã có sẵn");
                     JOptionPane.showMessageDialog(null,message,"Thông báo",JOptionPane.ERROR_MESSAGE);
                 }
-                else if (checked==202)
+                else if (checked==402)
                 {
-                    message.append("Thời lượng tiết mục không thể có ký tự khác ngoài số");
+                    message.append("Sức chứa của địa điểm không thể có ký tự khác ngoài số");
                     JOptionPane.showMessageDialog(null,message,"Thông báo",JOptionPane.ERROR_MESSAGE);
                 }
                 else
                 {
-                    message.append("Xảy ra lỗi trong lúc thêm tiết mục");
+                    message.append("Xảy ra lỗi trong lúc thêm địa điểm");
                     JOptionPane.showMessageDialog(null,message,"Thông báo",JOptionPane.ERROR_MESSAGE);
                 }
-                refresh(B_MainContainer, dspanel, quanlyselect, ds_idtietmuc);
+                refresh(D_MainContainer, dspanel, quanlyselect, ds_iddiadiem);
             });
 
 
 
-            B_ButtonContainer.add(refreshButton,A_ButtonGBC);
-            B_ButtonContainer.add(addButton,A_ButtonGBC);
-            B_ButtonContainer.add(deletehButton,A_ButtonGBC);
-            B_ButtonContainer.add(changeButton,A_ButtonGBC);
+            D_ButtonContainer.add(refreshButton,A_ButtonGBC);
+            D_ButtonContainer.add(addButton,A_ButtonGBC);
+            D_ButtonContainer.add(deletehButton,A_ButtonGBC);
+            D_ButtonContainer.add(changeButton,A_ButtonGBC);
 
 
-            ContentContainer.add(B_ButtonContainer,BorderLayout.EAST);
+            ContentContainer.add(D_ButtonContainer,BorderLayout.EAST);
 
 
             add(ContentContainer);
             setVisible(true);
 
         }
-        protected static void goixoatietmuc(Map<String,JPanel> dulieutruyen)
+        protected static void goixoadiadiem(Map<String,JPanel> dulieutruyen)
         {
             List<String>id_can_xoa =new ArrayList<>();
 
@@ -237,28 +240,28 @@ public class performance_manage {
                     }
                 }
             }
-            MainFunction.function.deleter(id_can_xoa,2);
+            MainFunction.function.deleter(id_can_xoa,4);
         }
 
-        protected void refresh(JPanel B_MainContainer,Map<String, JPanel> dspanel,Map<String, JCheckBox> quanlyselect,List<String> ds_idtietmuc)
+        protected void refresh(JPanel D_MainContainer,Map<String, JPanel> dspanel,Map<String, JCheckBox> quanlyselect,List<String> ds_iddiadiem)
         {
-            B_MainContainer.removeAll();
+            D_MainContainer.removeAll();
 
             dspanel.clear();
             quanlyselect.clear();
-            ds_idtietmuc.clear();
+            ds_iddiadiem.clear();
 
-            PerformanceService.Danhsachtietmuc performances = new PerformanceService.Danhsachtietmuc();
-            Map<String,PerformanceService.tietmuc> ds_tietmuc = performances.xuat();
-            ds_idtietmuc.addAll(ds_tietmuc.keySet());
+            locationService.Danhsachdiadiem locations = new locationService.Danhsachdiadiem();
+            Map<String,locationService.location> ds_diadiem = locations.xuat();
+            ds_iddiadiem.addAll(ds_diadiem.keySet());
 
 
 
-            for(String id : ds_idtietmuc)
+            for(String id : ds_iddiadiem)
             {
-                JPanel khungTietmuc = MainFunction.taoKhung(id,2);
-                khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
+                JPanel khungDiadiem = MainFunction.taoKhung(id,4);
+                khungDiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                khungDiadiem.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 
                 JCheckBox checkbox = new JCheckBox();
@@ -267,14 +270,14 @@ public class performance_manage {
 
                 JPanel khungchucnang = new JPanel(new BorderLayout());
                 khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungTietmuc,BorderLayout.CENTER);
+                khungchucnang.add(khungDiadiem,BorderLayout.CENTER);
                 dspanel.put(id,khungchucnang);
 
-                B_MainContainer.add(khungchucnang);
+                D_MainContainer.add(khungchucnang);
             }
 
-            B_MainContainer.revalidate();
-            B_MainContainer.repaint();
+            D_MainContainer.revalidate();
+            D_MainContainer.repaint();
         }
 
         protected static String get_add_information(JPanel them,String name)
@@ -319,7 +322,7 @@ public class performance_manage {
         }
 
 
-        protected void configWindow(List<String>ds_id_tietmuc, Runnable refresh)
+        protected void configWindow(List<String>ds_id_diadiem, Runnable refresh)
         {
             JDialog cogfigureWindow = new JDialog(this,"Giao diện sửa",true);
             cogfigureWindow.setSize(400,400);
@@ -328,15 +331,15 @@ public class performance_manage {
             JPanel Container = new JPanel();
             Container.setLayout(new BoxLayout(Container, BoxLayout.Y_AXIS));
 
-            for(String id: ds_id_tietmuc)
+            for(String id: ds_id_diadiem)
             {
                 JPanel paneltam = MainFunction.taoKhung(id,2);
 
-                String id_tietmuc = get_configure_information(paneltam,"ID_them");
-                String ten_tietmuc = get_configure_information(paneltam,"ten_them");
-                String thoiluong_tietmuc = get_configure_information(paneltam,"thoi_luong");
+                String id_diadiem = get_configure_information(paneltam,"ID_them");
+                String ten_diadiem = get_configure_information(paneltam,"ten_them");
+                String thoiluong_diadiem = get_configure_information(paneltam,"suc_chua");
 
-                JPanel khung_sua_tietmuc = new JPanel(new GridBagLayout());
+                JPanel khung_sua_diadiem = new JPanel(new GridBagLayout());
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridx=0;
                 gbc.gridy= GridBagConstraints.RELATIVE;
@@ -344,55 +347,72 @@ public class performance_manage {
                 gbc.fill = GridBagConstraints.HORIZONTAL;
 
 
-                JLabel label_id_tietmuc = new JLabel("id:"+id);
+                JLabel label_id_diadiem = new JLabel("id:"+id);
                 gbc.gridx=0;
                 gbc.gridy= 0;
-                label_id_tietmuc.setName("id");
-                khung_sua_tietmuc.add(label_id_tietmuc,gbc);
+                label_id_diadiem.setName("id");
+                khung_sua_diadiem.add(label_id_diadiem,gbc);
 
 
-                JLabel label_id = new JLabel("Tên tiết mục: ");
+                JLabel label_id = new JLabel("Tên địa điểm: ");
                 gbc.gridx=0;
                 gbc.gridy= 1;
                 gbc.weightx=0;
-                khung_sua_tietmuc.add(label_id,gbc);
+                khung_sua_diadiem.add(label_id,gbc);
 
-                JTextField input_ten_tietmuc = new JTextField(ten_tietmuc);
+                JTextField input_ten_diadiem = new JTextField(ten_diadiem);
                 gbc.gridx=1;
                 gbc.gridy= 1;
                 gbc.weightx=1;
-                khung_sua_tietmuc.add(input_ten_tietmuc,gbc);
+                khung_sua_diadiem.add(input_ten_diadiem,gbc);
 
 
-                JLabel label_thoi_luong_1 = new JLabel("Thời lượng: ");
+                JLabel label_suc_Chua_1 = new JLabel("Sức chứa: ");
                 gbc.gridx=0;
                 gbc.gridy= 2;
                 gbc.weightx=0;
-                khung_sua_tietmuc.add(label_thoi_luong_1,gbc);
+                khung_sua_diadiem.add(label_suc_Chua_1,gbc);
                 
-                JTextField input_thoiluong_tietmuc = new JTextField(thoiluong_tietmuc);
+                JTextField input_succhua_diadiem = new JTextField(thoiluong_diadiem);
                 gbc.gridx=1;
                 gbc.gridy= 2;
                 gbc.weightx=0.9;
-                khung_sua_tietmuc.add(input_thoiluong_tietmuc,gbc);
+                khung_sua_diadiem.add(input_succhua_diadiem,gbc);
 
-                JLabel label_thoiluong_tietmuc_2 = new JLabel(" phút");
+                JLabel label_suc_Chua_2 = new JLabel(" khách");
                 gbc.gridx=2;
                 gbc.gridy= 2;
                 gbc.weightx=0.1;
-                khung_sua_tietmuc.add(label_thoiluong_tietmuc_2,gbc);
+                khung_sua_diadiem.add(label_suc_Chua_2,gbc);
 
-                Container.add(khung_sua_tietmuc);
+                Container.add(khung_sua_diadiem);
             }
 
             JButton saveButton = new JButton("Lưu thay đổi");
             saveButton.addActionListener(e -> {
-                MainFunction.function.configurer(Container,2);
-                JOptionPane.showMessageDialog(cogfigureWindow, "Đã lưu thay đổi!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                if (refresh != null) {
-                    refresh.run();
+                Map<String,Integer> checked = MainFunction.function.configurer(Container,4);
+                StringBuilder message = new StringBuilder();
+                int errorcheck=0;
+                for(String id: ds_id_diadiem)
+                {
+                    int error = checked.get(id);
+                    if(error == 402)
+                    {
+                        errorcheck+=1;
+                        message.append(id);
+                        message.append("==> Không thể sửa: sức chứa không thể chứa ký tự khác ngoài số");
+                    }
+                    else if(error==0)
+                    {
+                        errorcheck+=1;
+                        message.append(id);
+                        message.append("==> Không thể sửa: gặp lỗi khi thực hiện thao tác sửa");
+                    }
                 }
-                cogfigureWindow.dispose();
+                if(errorcheck==0)
+                {
+                    message.append("Sửa thành công");
+                }
             });
 
 
@@ -406,7 +426,7 @@ public class performance_manage {
             cogfigureWindow.setVisible(true);
         }
 
-        protected void goisuanghesi(Map<String,JPanel> dulieutruyen,Runnable refreshAction)
+        protected void goisuadiadiem(Map<String,JPanel> dulieutruyen,Runnable refreshAction)
         {
             List<String>id_can_sua =new ArrayList<>();
 
@@ -432,3 +452,4 @@ public class performance_manage {
 
     }
 }
+

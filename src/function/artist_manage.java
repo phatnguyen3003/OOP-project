@@ -79,6 +79,22 @@ public class artist_manage {
             themnghesi_bgc.weightx = 1.0;
             themnghesi.add(ten_them,themnghesi_bgc);
 
+            JLabel Label_vaitro_them = new JLabel("vai trò của ca / nghệ sĩ:");
+            Label_vaitro_them.setPreferredSize(new Dimension(300,20));
+            themnghesi_bgc.gridx=0;
+            themnghesi_bgc.gridy=4;
+            themnghesi_bgc.weightx = 0;
+            themnghesi.add(Label_vaitro_them,themnghesi_bgc);
+
+            JTextField vaitro_them = new JTextField();
+            vaitro_them.setPreferredSize(new Dimension(450,20));
+            vaitro_them.setName("vai_tro");
+            themnghesi_bgc.gridx=1;
+            themnghesi_bgc.gridy=4;
+            themnghesi_bgc.weightx = 1.0;
+            themnghesi.add(vaitro_them,themnghesi_bgc);
+            
+
             JLabel Label_ten_congty_them = new JLabel("Tên của công ty phụ trách cho ca / nghệ sĩ:");
             Label_ten_congty_them.setPreferredSize(new Dimension(300,20));
             themnghesi_bgc.gridx=0;
@@ -97,7 +113,7 @@ public class artist_manage {
             JLabel Label_gia_motbuoi = new JLabel("Giá thành 1 buổi diễn của ca / nghệ sĩ(đ):");
             Label_gia_motbuoi.setPreferredSize(new Dimension(300,20));
             themnghesi_bgc.gridx=0;
-            themnghesi_bgc.gridy=7;
+            themnghesi_bgc.gridy=6;
             themnghesi_bgc.weightx = 0;
             themnghesi.add(Label_gia_motbuoi,themnghesi_bgc);
 
@@ -105,14 +121,14 @@ public class artist_manage {
             gia_mot_buoi_dien.setPreferredSize(new Dimension(450,20));
             gia_mot_buoi_dien.setName("gia_motbuoi_dien");
             themnghesi_bgc.gridx=1;
-            themnghesi_bgc.gridy=7;
+            themnghesi_bgc.gridy=6;
             themnghesi_bgc.weightx = 1.0;
             themnghesi.add(gia_mot_buoi_dien,themnghesi_bgc);
 
             JLabel Label_danhsach_tietmuc = new JLabel("id các tiết mục(Cách nhau bằng dấu phẩy ','):");
             Label_danhsach_tietmuc.setPreferredSize(new Dimension(300,20));
             themnghesi_bgc.gridx=0;
-            themnghesi_bgc.gridy=9;
+            themnghesi_bgc.gridy=7;
             themnghesi_bgc.weightx = 0;
             themnghesi.add(Label_danhsach_tietmuc,themnghesi_bgc);
 
@@ -120,7 +136,7 @@ public class artist_manage {
             danhsach_tietmuc.setPreferredSize(new Dimension(450,20));
             danhsach_tietmuc.setName("ds_tietmuc");
             themnghesi_bgc.gridx=1;
-            themnghesi_bgc.gridy=9;
+            themnghesi_bgc.gridy=7;
             themnghesi_bgc.weightx = 1.0;
             themnghesi.add(danhsach_tietmuc,themnghesi_bgc);
 
@@ -197,6 +213,7 @@ public class artist_manage {
                 ArtistService.nghesi nghesi = new ArtistService.nghesi();
                 String id = get_add_information(themnghesi,"ID_them");                
                 String ten = get_add_information(themnghesi,"ten_them");
+                String vaitro = get_add_information(themnghesi,"vai_tro");
                 String congty = get_add_information(themnghesi,"ten_congty_them");
                 String giathanhstring =get_add_information(themnghesi,"gia_motbuoi_dien");
                 String listtietmuc_string = get_add_information(themnghesi, "ds_tietmuc");
@@ -207,7 +224,7 @@ public class artist_manage {
                     return;
                 }
 
-                int checked = MainFunction.function.artist_adding(id,ten,congty,giathanhstring,listtietmuc_string,ds_idnghesi);
+                int checked = MainFunction.function.artist_adding(id,ten,vaitro,congty,giathanhstring,listtietmuc_string,ds_idnghesi);
 
                 StringBuilder message = new StringBuilder();
                 if(checked==1)
@@ -279,7 +296,7 @@ public class artist_manage {
             quanlyselect.clear();
             ds_idnghesi.clear();
 
-            ArtistService artist = new ArtistService();
+            ArtistService.Danhsachnghesi artist = new ArtistService.Danhsachnghesi();
             Map<String,ArtistService.nghesi> dsnghesi = artist.xuat();
             ds_idnghesi.addAll(dsnghesi.keySet());
 
@@ -396,36 +413,48 @@ public class artist_manage {
                 gbc.weightx=1;
                 khung_sua_nghe_Si.add(inputtennghesi,gbc);
 
+                JLabel label_vaitro = new JLabel("Vai trò: ");
+                gbc.gridx=0;
+                gbc.gridy= 2;
+                gbc.weightx=0;
+                khung_sua_nghe_Si.add(label_vaitro,gbc);
+
+                JTextField inputlabel_vaitro = new JTextField(ten_nghesi);
+                gbc.gridx=1;
+                gbc.gridy= 2;
+                gbc.weightx=1;
+                khung_sua_nghe_Si.add(inputlabel_vaitro,gbc);
+
 
                 JLabel label_contgty = new JLabel("Công ty quản lý: ");
                 gbc.gridx=0;
-                gbc.gridy= 2;
+                gbc.gridy= 3;
                 gbc.weightx=0;
 
                 khung_sua_nghe_Si.add(label_contgty,gbc);
 
                 JTextField inputcongty = new JTextField(ten_congty);
                 gbc.gridx=1;
-                gbc.gridy= 2;
+                gbc.gridy= 3;
                 gbc.weightx=1;
                 khung_sua_nghe_Si.add(inputcongty,gbc);
 
 
                 JLabel label_gia_1 = new JLabel("Giá một buổi diễn: ");
                 gbc.gridx=0;
-                gbc.gridy= 3;
+                gbc.gridy= 4;
                 gbc.weightx=0;
                 khung_sua_nghe_Si.add(label_gia_1,gbc);
                 
                 JTextField inputgia = new JTextField(giabieudien);
                 gbc.gridx=1;
-                gbc.gridy= 3;
+                gbc.gridy= 4;
                 gbc.weightx=0.9;
                 khung_sua_nghe_Si.add(inputgia,gbc);
 
                 JLabel label_gia_2 = new JLabel(" đ");
                 gbc.gridx=2;
-                gbc.gridy= 3;
+                gbc.gridy= 4;
                 gbc.weightx=0.1;
                 khung_sua_nghe_Si.add(label_gia_2,gbc);
 
@@ -433,13 +462,13 @@ public class artist_manage {
 
                 JLabel label_id_tietmuc = new JLabel("ID các tiết mục có thể biểu diễn: ");
                 gbc.gridx=0;
-                gbc.gridy= 4;
+                gbc.gridy= 5;
                 gbc.weightx=0;
                 khung_sua_nghe_Si.add(label_id_tietmuc,gbc);
 
                 JTextField inputidtietmuc = new JTextField(id_cac_tiet_muc);
                 gbc.gridx=1;
-                gbc.gridy= 4;
+                gbc.gridy= 5;
                 gbc.weightx=1;
                 khung_sua_nghe_Si.add(inputidtietmuc,gbc);
 
