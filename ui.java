@@ -10,7 +10,9 @@ import java.util.Calendar;
 import function.artist_manage;
 import function.framefunction;
 import function.performance_manage;
-
+import function.location_manage;
+import function.employee_manage;
+import function.schedule_manage;
 
 
 
@@ -131,6 +133,8 @@ public class ui {
             employeeDataButton.setPreferredSize(new Dimension(300,60));
             JButton locationDataButton = new JButton("Dữ liệu địa điểm tổ chức sự kiện");
             locationDataButton.setPreferredSize(new Dimension(300,60));
+            JButton scheduleButton = new JButton("Dữ liệu lịch trình cài đặt sẵn");
+            scheduleButton.setPreferredSize(new Dimension(300,60));
 
 
 
@@ -144,11 +148,31 @@ public class ui {
                 performancedialog.setVisible(true);
             });
 
+            locationDataButton.addActionListener(e->
+            {
+                location_manage.LocationDialog locationdialog = new location_manage.LocationDialog(frame);
+                locationdialog.setVisible(true);
+            });
+
+            employeeDataButton.addActionListener(e->
+            {
+                employee_manage.EmployeeDialog employeeDialog = new employee_manage.EmployeeDialog(frame);
+                employeeDialog.setVisible(true);
+            });
+            scheduleButton.addActionListener(e->
+            {
+                schedule_manage.ScheduleDialog scheduleDialog = new schedule_manage.ScheduleDialog(frame);
+                scheduleDialog.setVisible(true);
+            });
+
+
+
 
             ButtonContainer.add(artistDataButton,grid);
             ButtonContainer.add(performanceDataButton,grid);
             ButtonContainer.add(employeeDataButton,grid);
             ButtonContainer.add(locationDataButton,grid);
+            ButtonContainer.add(scheduleButton,grid);
 
 
             mainframe2.add(ButtonContainer,BorderLayout.CENTER);
