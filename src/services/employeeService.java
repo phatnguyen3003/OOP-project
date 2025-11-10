@@ -65,11 +65,6 @@ public class employeeService {
                 String idnv= path[0].trim();
                 String ten= path[1].trim();
                 String calamviec= path[2].trim();
-                switch (calamviec) {
-                        case "1": calamviec = "sáng"; break;
-                        case "2": calamviec = "chiều"; break;
-                        case "3": calamviec = "tối"; break;
-                    }
                 String iddoi =path[3].trim();
                 dsnhanvien.add(new nhanvien(calamviec,idnv,iddoi,ten));
              }
@@ -88,12 +83,6 @@ public class employeeService {
       List<nhanvien> dstam= loadnvfile.loadnv(File_PATH);
       for( nhanvien u: dstam)
       {
-         switch (u.calamviec) {
-                        case "1": u.calamviec = "sáng"; break;
-                        case "2": u.calamviec = "chiều"; break;
-                        case "3": u.calamviec = "tối"; break;
-                    }
-
        maptam.put(u.getId(),u);
       }
       return maptam;
@@ -104,15 +93,6 @@ public class employeeService {
         {
             for(nhanvien ds: nv)
             {
-                
-
-                // 🔹 Chuyển đổi chữ → số
-                switch (ds.getca().trim()) {
-                    case "sáng": ds.setca("1"); break;
-                    case "chiều": ds.setca("2"); break;
-                    case "tối": ds.setca("3"); break;
-                }
-
                brw.write(ds.toString());
                brw.newLine();
             }
@@ -181,7 +161,6 @@ public class employeeService {
     }
     
 }
-
 
 
 
