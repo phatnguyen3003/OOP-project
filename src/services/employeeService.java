@@ -23,7 +23,7 @@ public class employeeService {
         }
 
        
-        public nhanvien(String calamviec, String idnv, String iddoi, String ten, String vaitro) {
+        public nhanvien(String idnv,String ten, String calamviec, String iddoi, String vaitro) {
             super(idnv, ten);
             this.calamviec = calamviec;
             this.iddoi = iddoi;
@@ -85,7 +85,7 @@ public class employeeService {
                         String iddoi = path[3].trim();
                         String vaitro = path[4].trim();
 
-                        dsnhanvien.add(new nhanvien(calamviec, idnv, iddoi, ten, vaitro));
+                        dsnhanvien.add(new nhanvien(idnv,ten,calamviec,iddoi,vaitro));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
