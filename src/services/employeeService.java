@@ -23,7 +23,7 @@ public class employeeService {
         }
 
        
-        public nhanvien(String idnv,String ten, String calamviec, String iddoi, String vaitro) {
+        public nhanvien(String idnv,String ten, String vaitro, String calamviec, String iddoi) {
             super(idnv, ten);
             this.calamviec = calamviec;
             this.iddoi = iddoi;
@@ -60,8 +60,7 @@ public class employeeService {
         
         @Override
         public String toString() {
-            // Dạng: id|tên|ca|idđội|vai trò
-            return id + "|" + ten + "|" + calamviec + "|" + iddoi + "|" + vaitro;
+            return id + "|" + ten + "|" + vaitro + "||" + calamviec + "|" + iddoi;
         }
     }
 
@@ -81,11 +80,11 @@ public class employeeService {
 
                         String idnv = path[0].trim();
                         String ten = path[1].trim();
-                        String calamviec = path[2].trim();
-                        String iddoi = path[3].trim();
-                        String vaitro = path[4].trim();
+                        String calamviec = path[3].trim();
+                        String iddoi = path[4].trim();
+                        String vaitro = path[2].trim();
 
-                        dsnhanvien.add(new nhanvien(idnv,ten,calamviec,iddoi,vaitro));
+                        dsnhanvien.add(new nhanvien(idnv,ten,vaitro,calamviec,iddoi));
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -163,3 +162,4 @@ public class employeeService {
         }
     }
 }
+
