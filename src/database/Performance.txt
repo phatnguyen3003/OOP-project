@@ -1,2 +1,50 @@
-1|Chạy ngay đi|10
-2|Đưa nhau đi trốn|8
+P001|Chạy ngay đi|4
+P002|Lạc trôi|5
+P003|Hãy trao cho anh|4
+P004|Nơi này có anh|5
+P005|Bùa yêu|4
+P006|Sóng gió|4
+P007|Có chắc yêu là đây|5
+P008|Em của ngày hôm qua|6
+P009|Anh ơi ở lại|5
+P010|Yêu một người có lẽ|4
+P011|Người âm phủ|5
+P012|Sau lời từ khước|6
+P013|Việt Nam tôi|4
+P014|Đen đá không đường|3
+P015|Bigcityboi|4
+P016|Ai là rapper số 1|5
+P017|Khu tao sống|4
+P018|Mượn rượu tỏ tình|4
+P019|Thằng điên|5
+P020|Một nhà|4
+P021|Bạc phận|6
+P022|Như anh đã thấy em|5
+P023|Đường tôi chở em về|4
+P024|3107|5
+P025|Muộn rồi mà sao còn|4
+P026|Hơn cả yêu|5
+P027|Anh đếch cần gì nhiều ngoài em|4
+P028|Cô đơn trên sofa|5
+P029|Buồn của anh|4
+P030|Sao anh chưa về nhà|5
+P031|Hoa hải đường|6
+P032|Duyên mình lỡ|5
+P033|Tình đầu quá chén|4
+P034|Phía sau một cô gái|5
+P035|Cưới thôi|4
+P036|Anh là ngoại lệ của em|5
+P037|Đom đóm|4
+P038|Bông hoa đẹp nhất|5
+P039|Cô gái M52|4
+P040|Tháng năm|6
+P041|Vì yêu cứ đâm đầu|4
+P042|Yêu 5|5
+P043|Anh nhà ở đâu thế|4
+P044|Có em chờ|5
+P045|Đi để trở về|7
+P046|Mashup Anh trai say hi|10
+P047|Mashup Anh trai vượt ngàn chông gai|12
+P048|Những thành phố mơ màng|8
+P049|Medley CAM|15
+P050|Countdown Special|10

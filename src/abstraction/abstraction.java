@@ -38,6 +38,8 @@ public class abstraction {
         {
             this.ten=ten;
         }
+        public abstract String getVaitro();
+        
         @Override
         public abstract String toString();
     }

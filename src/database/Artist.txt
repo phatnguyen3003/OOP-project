@@ -1,2 +1,50 @@
-1|Sơn Tùng MTP|MTP Entertainment|100000000|1
-2|Đen Vâu|Đen Music|70000000|2
+A001|Sơn Tùng MTP|ca sĩ|MTP Entertainment|300000000|P002,P024,P046
+A002|Wowy|rapper|SpaceSpeakers|150000000|P013,P016,P047
+A003|Karik|rapper|SpaceSpeakers|150000000|P015,P017,P047
+A004|Hiếu Thứ Hai|ca sĩ|DTAP Entertainment|100000000|P019,P020,P046
+A005|Mono|ca sĩ|Mono Production|120000000|P008,P029,P048
+A006|Phương Mỹ Chi|ca sĩ|Mỹ Chi Entertainment|80000000|P031,P038,P048
+A007|Đen Vâu|rapper|Đen Music|180000000|P014,P018,P047
+A008|Hoàng Thùy Linh|ca sĩ|HTL Entertainment|200000000|P005,P007,P046
+A009|Bích Phương|ca sĩ|Bích Phương Production|150000000|P006,P025,P048
+A010|Hương Tràm|ca sĩ|Tràm Music|140000000|P009,P011,P049
+A011|Noo Phước Thịnh|ca sĩ|Noo Entertainment|160000000|P003,P027,P046
+A012|Mỹ Tâm|ca sĩ|Tâm Production|250000000|P012,P032,P049
+A013|Đức Phúc|ca sĩ|Phúc Music|90000000|P010,P026,P048
+A014|Erik|ca sĩ|Erik Entertainment|110000000|P022,P030,P046
+A015|Min|ca sĩ|Min Production|100000000|P023,P028,P048
+A016|Amee|ca sĩ|Amee Entertainment|95000000|P021,P037,P049
+A017|Hoàng Dũng|ca sĩ|Dũng Music|85000000|P033,P040,P048
+A018|Vũ Cát Tường|ca sĩ|VCT Production|130000000|P034,P041,P049
+A019|Hà Anh Tuấn|ca sĩ|HAT Entertainment|220000000|P035,P042,P049
+A020|Lê Bảo Bình|ca sĩ|Bảo Bình Music|70000000|P036,P043,P048
+A021|Trúc Nhân|ca sĩ|Nhân Production|75000000|P039,P044,P046
+A022|Orange|ca sĩ|Orange Entertainment|80000000|P001,P004,P048
+A023|Binz|rapper|SpaceSpeakers|170000000|P013,P015,P047
+A024|Suboi|rapper|Suboi Production|140000000|P016,P017,P047
+A025|Rhymastic|rapper|Rhymastic Music|130000000|P014,P018,P047
+A026|Tlinh|rapper|Tlinh Entertainment|60000000|P013,P016,P047
+A027|Wxrdie|rapper|Wxrdie Production|55000000|P015,P017,P047
+A028|Andree Right Hand|rapper|Andree Music|65000000|P014,P016,P047
+A029|Lăng LD|rapper|LD Entertainment|70000000|P013,P015,P047
+A030|Kimmese|ca sĩ|Kimmese Production|50000000|P021,P025,P048
+A031|Justatee|rapper|Justatee Music|90000000|P014,P017,P047
+A032|Đạt G|ca sĩ|Đạt G Entertainment|85000000|P019,P029,P046
+A033|Du Uyên|ca sĩ|Du Uyên Production|45000000|P022,P030,P048
+A034|Thịnh Suy|ca sĩ|Thịnh Suy Music|60000000|P023,P028,P048
+A035|Vũ|ca sĩ|Vũ Entertainment|95000000|P008,P011,P049
+A036|Phan Mạnh Quỳnh|ca sĩ|PMQ Production|80000000|P012,P032,P049
+A037|Trịnh Thăng Bình|ca sĩ|TTB Entertainment|100000000|P010,P026,P046
+A038|Ưng Hoàng Phúc|ca sĩ|UHP Music|110000000|P003,P027,P049
+A039|Lam Trường|ca sĩ|Lam Trường Production|120000000|P034,P041,P049
+A040|Tuấn Hưng|ca sĩ|Tuấn Hưng Entertainment|150000000|P035,P042,P049
+A041|Quang Hà|ca sĩ|Quang Hà Music|130000000|P031,P038,P049
+A042|Lệ Quyên|ca sĩ|Lệ Quyên Production|140000000|P032,P040,P049
+A043|Thanh Lam|ca sĩ|Thanh Lam Entertainment|180000000|P033,P041,P049
+A044|Mỹ Linh|ca sĩ|Mỹ Linh Music|170000000|P034,P042,P049
+A045|Hồng Nhung|ca sĩ|Hồng Nhung Production|160000000|P035,P043,P049
+A046|Tùng Dương|ca sĩ|Tùng Dương Entertainment|150000000|P036,P044,P049
+A047|Hồ Ngọc Hà|ca sĩ|HNH Production|250000000|P001,P045,P050
+A048|Đông Nhi|ca sĩ|Đông Nhi Entertainment|200000000|P004,P045,P050
+A049|Isaac|ca sĩ|Isaac Music|90000000|P020,P037,P046
+A050|Chi Pu|ca sĩ|Chi Pu Production|100000000|P039,P044,P050
