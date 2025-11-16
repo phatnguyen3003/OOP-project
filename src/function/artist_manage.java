@@ -209,36 +209,12 @@ public class artist_manage {
 
 
 
-
-
-
-
-        protected String get_configure_information(JPanel themnghesi,String name)
-        {
-            for(Component c : themnghesi.getComponents())
-            {
-                if(c instanceof JLabel && name.equals(c.getName()))
-                {
-                    JLabel label = (JLabel) c;
-                    String text = label.getText();
-
-                    int index = text.indexOf(":");
-                    if(index!=-1 && index+1<text.length())
-                    {
-                        return text.substring(index+1).trim();
-                    }
-                    else
-                    {
-                        return text.trim();
-                    }
-                }
-            }
-            return null;
-        }
-
-
         protected void configWindow(List<String>id_casi, Runnable refresh)
         {
+
+            ArtistService.Danhsachnghesi danhsachnghesi = new ArtistService.Danhsachnghesi();
+            Map<String,ArtistService.nghesi> MapNgheSi = danhsachnghesi.xuat();
+
             JDialog cogfigureWindow = new JDialog(this,"Giao diện sửa",true);
             cogfigureWindow.setSize(400,400);
             cogfigureWindow.setLocationRelativeTo(this);
@@ -248,13 +224,16 @@ public class artist_manage {
 
             for(String id: id_casi)
             {
+                ArtistService.nghesi nghesixet = MapNgheSi.get(id);
+
                 JPanel paneltam = MainFunction.taoKhung(id,1,null,null);
 
-                String id_nghesi = get_configure_information(paneltam,"id_artist");
-                String ten_nghesi = get_configure_information(paneltam,"name_artist");
-                String ten_congty = get_configure_information(paneltam,"congty");
-                String giabieudien = get_configure_information(paneltam,"giathanh");
-                String id_cac_tiet_muc = get_configure_information(paneltam,"idtietmuc");
+                String id_nghesi = nghesixet.getId();
+                String ten_nghesi = nghesixet.getName();
+                String ten_congty = nghesixet.getcongty();
+                String vai_tro = nghesixet.getVaitro();
+                String giabieudien = String.valueOf(nghesixet.getgiathanh());
+                String id_cac_tiet_muc = String.join(",",(nghesixet.getidtietmuc()));
 
                 JPanel khung_sua_nghe_Si = new JPanel(new GridBagLayout());
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -289,7 +268,7 @@ public class artist_manage {
                 gbc.weightx=0;
                 khung_sua_nghe_Si.add(label_vaitro,gbc);
 
-                JTextField inputlabel_vaitro = new JTextField(ten_nghesi);
+                JTextField inputlabel_vaitro = new JTextField(vai_tro);
                 gbc.gridx=1;
                 gbc.gridy= 2;
                 gbc.weightx=1;
