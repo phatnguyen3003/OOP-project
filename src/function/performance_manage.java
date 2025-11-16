@@ -213,32 +213,14 @@ public class performance_manage {
 
 
 
-        protected String get_configure_information(JPanel themnghesi,String name)
-        {
-            for(Component c : themnghesi.getComponents())
-            {
-                if(c instanceof JLabel && name.equals(c.getName()))
-                {
-                    JLabel label = (JLabel) c;
-                    String text = label.getText();
-
-                    int index = text.indexOf(":");
-                    if(index!=-1 && index+1<text.length())
-                    {
-                        return text.substring(index+1).trim();
-                    }
-                    else
-                    {
-                        return text.trim();
-                    }
-                }
-            }
-            return null;
-        }
-
 
         protected void configWindow(List<String>ds_id_tietmuc, Runnable refresh)
         {
+
+            PerformanceService.Danhsachtietmuc danhsachtietmuc = new PerformanceService.Danhsachtietmuc();
+            Map<String,PerformanceService.tietmuc> MapTietMuc = danhsachtietmuc.xuat();
+
+
             JDialog cogfigureWindow = new JDialog(this,"Giao diện sửa",true);
             cogfigureWindow.setSize(400,400);
             cogfigureWindow.setLocationRelativeTo(this);
@@ -248,11 +230,14 @@ public class performance_manage {
 
             for(String id: ds_id_tietmuc)
             {
+                PerformanceService.tietmuc tietmucxet = MapTietMuc.get(id);
+
+
                 JPanel paneltam = MainFunction.taoKhung(id,2,null,null);
 
-                String id_tietmuc = get_configure_information(paneltam,"ID_them");
-                String ten_tietmuc = get_configure_information(paneltam,"ten_them");
-                String thoiluong_tietmuc = get_configure_information(paneltam,"thoi_luong");
+                String id_tietmuc = tietmucxet.getidtietmuc();
+                String ten_tietmuc = tietmucxet.gettentietmuc();
+                String thoiluong_tietmuc = String.valueOf(tietmucxet.getthoiluong());
 
                 JPanel khung_sua_tietmuc = new JPanel(new GridBagLayout());
                 GridBagConstraints gbc = new GridBagConstraints();
