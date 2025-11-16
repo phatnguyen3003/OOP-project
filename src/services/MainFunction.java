@@ -458,6 +458,11 @@ public class MainFunction {
                     ScheduleService.DanhsachLichtrinh lichtrinhcanxoa = new ScheduleService.DanhsachLichtrinh();
                     flag.put(id,lichtrinhcanxoa.xoa(id));
                 }
+                else if(chedo==6)
+                {
+                    teamService.DanhsachDoi doicanxoa = new teamService.DanhsachDoi();
+                    flag.put(id,doicanxoa.xoa(id));
+                }
                 else if(chedo==0)
                 {
                     Event_Information.DanhsachThongtinSukien sukiencanxoa = new Event_Information.DanhsachThongtinSukien();
@@ -492,6 +497,10 @@ public class MainFunction {
                 {
                     message.append(entry.getValue() ? "Đã xóa thành công\n" : "Không tìm thấy lịch trình hoặc có lỗi\n");
                 }
+                else if(chedo==6)
+                {
+                    message.append(entry.getValue() ? "Đã xóa thành công\n" : "Không tìm thấy đội hoặc có lỗi\n");
+                }
                 else if(chedo==0)
                 {
                     message.append(entry.getValue() ? "Đã xóa thành công\n" : "Không tìm thấy sự kiện hoặc có lỗi\n");
@@ -519,7 +528,7 @@ public class MainFunction {
                         JTextField ten_ = (JTextField) comp[2];
                         JTextField vaitro_ = (JTextField) comp[4];
                         JTextField congty_ = (JTextField) comp[6];
-                        JTextField gia_ = (JTextField) comp[9];
+                        JTextField gia_ = (JTextField) comp[8];
                         JTextField listtietmuc_ = (JTextField) comp[11];
 
 
@@ -2195,8 +2204,14 @@ public class MainFunction {
 
 
         }
-              public static void createAddDialog(JFrame parent, int chedo)
+        public static void createAddDialog(JFrame parent, int chedo)
         {
+
+            List<String> ds_thanhvien = new ArrayList<>();
+            final String[] idLeader = new String[1];
+            idLeader[0]="";
+
+
             JDialog addDialog = new JDialog(parent, getTitleByMode(chedo), true);
             addDialog.setSize(600, 400);
             addDialog.setLocationRelativeTo(parent);
@@ -2236,8 +2251,10 @@ public class MainFunction {
                 teamService.DanhsachDoi teams = new teamService.DanhsachDoi();
                 Map<String, teamService.team> ds_doi = teams.xuat();
                 List<String> ds_id_doi = new ArrayList<>(ds_doi.keySet());
+                ds_id_doi.add(0,"0");
                 JComboBox<String> doiCombo = new JComboBox<>(ds_id_doi.toArray(new String[0]));
-                addFormField(formPanel, gbc, 4, "ID đội:", doiCombo);
+                addFormField(formPanel, gbc, 4, " ", new JLabel("0 nếu chưa cần phân về đội nào"));
+                addFormField(formPanel, gbc, 5, "ID đội:", doiCombo);
             }
             else if(chedo == 4) // Location
             {
@@ -2247,9 +2264,124 @@ public class MainFunction {
             }
             else if(chedo == 6) // Team
             {
+                addDialog.setSize(950, 400);
+
+                Runnable[] refreshselectpanel = new Runnable[1];
+                Runnable[] refreshviewpanel = new Runnable[1];
+
                 addFormField(formPanel, gbc, 0, "ID đội:", new JTextField(20));
-                addFormField(formPanel, gbc, 1, "ID đội trưởng:", new JTextField(20));
-                addFormField(formPanel, gbc, 2, "ID nhân viên (cách nhau bởi dấu phẩy):", new JTextField(20));
+                gbc.gridy=1;
+                JPanel selectPanel = new JPanel(new GridLayout(1,3,5,5));
+                formPanel.add(selectPanel,gbc);
+
+                gbc.gridy=2;
+                JPanel viewPanel = new JPanel(new GridLayout(1,1,0,0));
+                formPanel.add(viewPanel,gbc);
+
+
+
+
+                refreshviewpanel[0] = () ->
+                {
+                    JPanel panel = new JPanel(new GridLayout(0,4,0,0));
+
+
+                    employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+                    Map<String,employeeService.nhanvien>MapNhanVien = danhsachnhanvien.xuat();
+
+
+                    viewPanel.removeAll();
+
+                    panel.add(new JLabel("ID nhân viên"));
+                    panel.add(new JLabel("Tên nhân viên"));
+                    panel.add(new JLabel("Ca làm"));
+                    panel.add(new JLabel("Thao tác"));
+
+
+                    for(String id_nhanvien:ds_thanhvien)
+                    {
+                        employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_nhanvien);
+                        panel.add(new JLabel(nhanvienxet.getId()));
+                        panel.add(new JLabel(nhanvienxet.getName()));
+                        panel.add(new JLabel(nhanvienxet.getVaitro()));
+                        if(!id_nhanvien.equalsIgnoreCase(idLeader[0]))
+                        {
+                            JButton switch_to_leader = new JButton("Đổi đội trưởng");
+
+                            switch_to_leader.addActionListener(e->{
+                                idLeader[0] = nhanvienxet.getId();
+                                refreshviewpanel[0].run();
+                            });
+
+                            panel.add(switch_to_leader);
+                        }
+                        else
+                        {
+                            panel.add(new JLabel(""));
+                        }
+                    }
+
+                    JScrollPane thanhcuon = new JScrollPane(panel);
+                    thanhcuon.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+                    thanhcuon.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                    thanhcuon.setPreferredSize(new Dimension(450, 200));
+                    viewPanel.add(thanhcuon);
+
+                    viewPanel.validate();
+                    viewPanel.repaint();
+                };
+                
+
+                refreshselectpanel[0] = ()->
+                {
+                    selectPanel.removeAll();
+
+                    employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+                    Map<String,employeeService.nhanvien>MapNhanVien = danhsachnhanvien.xuat();
+
+                    selectPanel.add(new JLabel("Chọn nhân viên chưa phân đội để thêm: "));
+
+                    List<String> danhsachtoanbonhanvien = new ArrayList<>(MapNhanVien.keySet());
+                    List<String> nhanvienchuacodoi = new ArrayList<>();
+
+                    for(String id_nhanvien : danhsachtoanbonhanvien)
+                    {
+                        employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_nhanvien);
+                        if(nhanvienxet.getiddoi().equalsIgnoreCase("0") && !ds_thanhvien.contains(id_nhanvien))
+                        {
+                            nhanvienchuacodoi.add(id_nhanvien);
+                        }
+                    }
+
+                    Map<String,employeeService.nhanvien> MapChonNhanVien = new HashMap<>();
+
+                    for(String id_nhanvien: nhanvienchuacodoi)
+                    {
+                        MapChonNhanVien.put(id_nhanvien, MapNhanVien.get(id_nhanvien));
+                    }
+
+                    JComboBox<employeeService.nhanvien> optionnhanvien = new JComboBox<>(MapChonNhanVien.values().toArray(new employeeService.nhanvien[0]));
+
+                    selectPanel.add(optionnhanvien);
+
+                    JButton add_button = new JButton("Thêm nhân viên vào đội");
+                    selectPanel.add(add_button);
+
+
+                    add_button.addActionListener(e->{
+                        employeeService.nhanvien nhanvienxet =(employeeService.nhanvien) optionnhanvien.getSelectedItem();
+                        ds_thanhvien.add(nhanvienxet.getId());
+                        refreshviewpanel[0].run();
+                        refreshselectpanel[0].run();
+                    });
+
+
+                    selectPanel.validate();
+                    selectPanel.repaint();
+                };
+
+                refreshviewpanel[0].run();
+                refreshselectpanel[0].run();
             }
 
             JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -2427,7 +2559,7 @@ public class MainFunction {
                     JTextField input_ten= (JTextField) parts[3];
                     JTextField input_vai_tro= (JTextField) parts[5];
                     JComboBox input_ca_lam_viec = (JComboBox) parts[7];
-                    JComboBox input_id_doinv= (JComboBox) parts[9];
+                    JComboBox input_id_doinv= (JComboBox) parts[11];
 
                     String idnv = input_idnv.getText().trim();
                     String ten = input_ten.getText().trim();
@@ -2524,37 +2656,43 @@ public class MainFunction {
                     Component[] parts = formPanel.getComponents();
  
                     JTextField input_id_doi = (JTextField) parts[1];
-                    JTextField input_id_leader = (JTextField) parts[3];
-                    JTextField input_ds_doivien = (JTextField) parts[5];
- 
                     String id_doi = input_id_doi.getText().trim();
-                    String id_leader = input_id_leader.getText().trim();
-                    String[] string_ds_id = (input_ds_doivien.getText()).split(",");
+
+
+                    String id_leader = idLeader[0];
  
-                    List<String> ds_id_doivien = new ArrayList<>();
-                    ds_id_doivien.addAll(Arrays.asList(string_ds_id));
+                    List<String> ds_id_doivien = new ArrayList<>(ds_thanhvien);
  
  
                     teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
  
                     Map<String,teamService.team> danh_sach_doi = danhsachdoi.xuat();
                     List<String> list_id_doi = new ArrayList<>(danh_sach_doi.keySet());
- 
                     
                     
+                    if(id_doi.isEmpty()||id_leader.isEmpty()||ds_id_doivien.isEmpty()||id_doi==null||id_leader==null||ds_id_doivien==null)
+                    {
+                        message.append("Vui lòng nhập đủ thông tin");
+                        checked=false;
+                    }
+                    else if(id_leader == "") {
+                        message.append("Chưa có đội trưởng");
+                        checked = false;
+                    }
+                    else if(ds_id_doivien.isEmpty())
+                    {
+                        message.append("Danh sách đội viên trống");
+                        checked=false;
+                    }
+
  
                     for(String id_doixet: list_id_doi)
                     {
                         if(id_doixet.equalsIgnoreCase(id_doi))
                         {
-                            message.append("ID thêm mới không được trùng");
+                            message.append("\nID thêm mới không được trùng");
                             checked=false;
                         }
-                    }
-                    if(id_doi.isEmpty()||id_leader.isEmpty()||ds_id_doivien.isEmpty()||id_doi==null||id_leader==null||ds_id_doivien==null)
-                    {
-                        message.append("Vui lòng nhập đủ thông tin");
-                        checked=false;
                     }
  
  
@@ -2576,7 +2714,11 @@ public class MainFunction {
  
                 }
                 JOptionPane.showMessageDialog(formPanel,message,"Thông báo",JOptionPane.INFORMATION_MESSAGE);
-                addDialog.dispose();
+                if(checked)
+                {
+                    addDialog.dispose();
+                }
+                
             });
  
 
