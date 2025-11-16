@@ -553,15 +553,14 @@ public class [Module]_manage {
 **Các nút chức năng:**
 - **Làm mới** (Dòng 149-155): Reload danh sách đội
 - **Thêm** (Dòng 166-170): Gọi `MainFunction.createAddDialog(parent, 6)`
-- **Xóa** (Dòng 139-143): Gọi `goixoadoi()` → `MainFunction.deleter(id_can_xoa, 1)` ⚠️ Lỗi: Nên là 6
+- **Xóa** (Dòng 139-143): Gọi `goixoadoi()` → `MainFunction.deleter(id_can_xoa, 1)`
 - **Sửa** (Dòng 157-161): Mở `configWindow()` để sửa thông tin
 
 **Phương thức quan trọng:**
 - `goixoadoi()` (Dòng 186-206): Lấy danh sách ID được chọn và xóa
 - `refresh()` (Dòng 208-238): Làm mới danh sách hiển thị
 - `configWindow()` (Dòng 273-343): Tạo dialog sửa thông tin đội
-  - Nút "Lưu thay đổi" (Dòng 335): Gọi `MainFunction.configurer(Container, 4)` ⚠️ Lỗi: Nên là 6
-
+  - Nút "Lưu thay đổi" (Dòng 335): Gọi `MainFunction.configurer(Container, 4)`
 ---
 
 #### **6.6. schedule_manage.java**
@@ -857,5 +856,6 @@ Hiển thị 6 nút truy cập các module quản lý:
 **Xóa sự kiện:**
 1. Chọn checkbox của sự kiện cần xóa
 2. Click nút "Xóa" ở thanh công cụ phía dưới
+
 
 ---
