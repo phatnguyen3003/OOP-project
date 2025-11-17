@@ -156,24 +156,30 @@ public class schedule_manage {
             ds_idlichtrinh.addAll(ds_lichtrinh.keySet());
 
 
-
-            for(String id : ds_idlichtrinh)
+            if(ds_idlichtrinh.isEmpty())
             {
-                JPanel khungTietmuc = MainFunction.taoKhung(id,5,null,null);
-                khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
+                E_MainContainer.add(new JLabel("Không có lịch trình trong dữ liệu"));
+            }
+            else
+            {
+                for(String id : ds_idlichtrinh)
+                {
+                    JPanel khungTietmuc = MainFunction.taoKhung(id,5,null,null);
+                    khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 
-                JCheckBox checkbox = new JCheckBox();
-                checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-                quanlyselect.put(id,checkbox);
+                    JCheckBox checkbox = new JCheckBox();
+                    checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                    quanlyselect.put(id,checkbox);
 
-                JPanel khungchucnang = new JPanel(new BorderLayout());
-                khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungTietmuc,BorderLayout.CENTER);
-                dspanel.put(id,khungchucnang);
+                    JPanel khungchucnang = new JPanel(new BorderLayout());
+                    khungchucnang.add(checkbox,BorderLayout.WEST);
+                    khungchucnang.add(khungTietmuc,BorderLayout.CENTER);
+                    dspanel.put(id,khungchucnang);
 
-                E_MainContainer.add(khungchucnang);
+                    E_MainContainer.add(khungchucnang);
+                }
             }
 
             E_MainContainer.revalidate();

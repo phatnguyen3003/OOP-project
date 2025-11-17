@@ -168,26 +168,33 @@ public class location_manage {
             Map<String,locationService.location> ds_diadiem = locations.xuat();
             ds_iddiadiem.addAll(ds_diadiem.keySet());
 
-
-
-            for(String id : ds_iddiadiem)
+            if(ds_diadiem.isEmpty())
             {
-                JPanel khungDiadiem = MainFunction.taoKhung(id,4,null,null);
-                khungDiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungDiadiem.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-
-                JCheckBox checkbox = new JCheckBox();
-                checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-                quanlyselect.put(id,checkbox);
-
-                JPanel khungchucnang = new JPanel(new BorderLayout());
-                khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungDiadiem,BorderLayout.CENTER);
-                dspanel.put(id,khungchucnang);
-
-                D_MainContainer.add(khungchucnang);
+                D_MainContainer.add(new JLabel("Không có địa điểm trong dữ liệu"));
             }
+            else
+            {
+                for(String id : ds_iddiadiem)
+                {
+                    JPanel khungDiadiem = MainFunction.taoKhung(id,4,null,null);
+                    khungDiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    khungDiadiem.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+
+                    JCheckBox checkbox = new JCheckBox();
+                    checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                    quanlyselect.put(id,checkbox);
+
+                    JPanel khungchucnang = new JPanel(new BorderLayout());
+                    khungchucnang.add(checkbox,BorderLayout.WEST);
+                    khungchucnang.add(khungDiadiem,BorderLayout.CENTER);
+                    dspanel.put(id,khungchucnang);
+
+                    D_MainContainer.add(khungchucnang);
+                }
+            }
+
+            
 
             D_MainContainer.revalidate();
             D_MainContainer.repaint();

@@ -49,15 +49,15 @@ public class team_manage {
             ContentContainer.add(label, BorderLayout.NORTH);
 
 
-            JPanel A_MainContainer = new JPanel();
-            A_MainContainer.setLayout(new BoxLayout(A_MainContainer, BoxLayout.Y_AXIS));
+            JPanel F_MainContainer = new JPanel();
+            F_MainContainer.setLayout(new BoxLayout(F_MainContainer, BoxLayout.Y_AXIS));
 
 
-            refresh(A_MainContainer, dspanel, quanlyselect, ds_doi);
+            refresh(F_MainContainer, dspanel, quanlyselect, ds_doi);
 
 
 
-            JScrollPane scrollbar = new JScrollPane(A_MainContainer);
+            JScrollPane scrollbar = new JScrollPane(F_MainContainer);
             scrollbar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
             scrollbar.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             ContentContainer.add(scrollbar,BorderLayout.CENTER);
@@ -86,12 +86,12 @@ public class team_manage {
             deletehButton.addActionListener(e ->
             {
                 goixoadoi(dspanel);
-                refresh(A_MainContainer, dspanel, quanlyselect, ds_doi);
+                refresh(F_MainContainer, dspanel, quanlyselect, ds_doi);
             });
 
             refreshButton.addActionListener(e->
             {
-                refresh(A_MainContainer, dspanel, quanlyselect, ds_doi);
+                refresh(F_MainContainer, dspanel, quanlyselect, ds_doi);
                 StringBuilder message = new StringBuilder();
                 message.append("Đã làm mới!!");
 
@@ -101,7 +101,7 @@ public class team_manage {
             changeButton.addActionListener(e->
             {
                 goisuadoi(dspanel, () -> {
-                    refresh(A_MainContainer, dspanel, quanlyselect, ds_doi);
+                    refresh(F_MainContainer, dspanel, quanlyselect, ds_doi);
                 });
             });
 
@@ -110,7 +110,7 @@ public class team_manage {
             addButton.addActionListener(e->
             {
                 MainFunction.function.createAddDialog(null, 6);
-                 refresh(A_MainContainer, dspanel, quanlyselect, ds_doi);
+                 refresh(F_MainContainer, dspanel, quanlyselect, ds_doi);
             });
 
 
@@ -152,9 +152,9 @@ public class team_manage {
             MainFunction.function.deleter(id_can_xoa,6);
         }
 
-        protected void refresh(JPanel A_MainContainer,Map<String, JPanel> dspanel,Map<String, JCheckBox> quanlyselect,List<String> ds_doi)
+        protected void refresh(JPanel F_MainContainer,Map<String, JPanel> dspanel,Map<String, JCheckBox> quanlyselect,List<String> ds_doi)
         {
-            A_MainContainer.removeAll();
+            F_MainContainer.removeAll();
 
             dspanel.clear();
             quanlyselect.clear();
@@ -164,29 +164,37 @@ public class team_manage {
             Map<String,teamService.team> dsnghesi = team.xuat();
             ds_doi.addAll(dsnghesi.keySet());
 
-
-
-            for(String id : ds_doi)
+            if(ds_doi.isEmpty())
             {
-                JPanel khungdoi = MainFunction.taoKhung(id,6,null,null);
-                khungdoi.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungdoi.setAlignmentX(Component.LEFT_ALIGNMENT);
+                F_MainContainer.add(new JLabel("Không có đội trong dữ liệu"));
+            }
+            else
+            {
+                for(String id : ds_doi)
+                {
+                    JPanel khungdoi = MainFunction.taoKhung(id,6,null,null);
+                    khungdoi.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    khungdoi.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 
-                JCheckBox checkbox = new JCheckBox();
-                checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-                quanlyselect.put(id,checkbox);
+                    JCheckBox checkbox = new JCheckBox();
+                    checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                    quanlyselect.put(id,checkbox);
 
-                JPanel khungchucnang = new JPanel(new BorderLayout());
-                khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungdoi,BorderLayout.CENTER);
-                dspanel.put(id,khungchucnang);
+                    JPanel khungchucnang = new JPanel(new BorderLayout());
+                    khungchucnang.add(checkbox,BorderLayout.WEST);
+                    khungchucnang.add(khungdoi,BorderLayout.CENTER);
+                    dspanel.put(id,khungchucnang);
 
-                A_MainContainer.add(khungchucnang);
+                    F_MainContainer.add(khungchucnang);
+                }
             }
 
-            A_MainContainer.revalidate();
-            A_MainContainer.repaint();
+
+            
+
+            F_MainContainer.revalidate();
+            F_MainContainer.repaint();
         }
 
         protected static String get_add_information(JPanel themdoi,String name)
@@ -297,7 +305,7 @@ public class team_manage {
 
             JDialog secondaryWindow = new JDialog(this, "Thông tin các nhân viên", false);
             secondaryWindow.setSize(1000, 400);
-            secondaryWindow.setLocation(configureWindow.getX() + 300, configureWindow.getY());
+            secondaryWindow.setLocation(configureWindow.getX() + 400, configureWindow.getY());
 
             employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
             Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();

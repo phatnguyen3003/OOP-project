@@ -134,29 +134,44 @@ public class performance_manage {
             setVisible(true);
 
         }
-        protected static void goixoatietmuc(Map<String,JPanel> dulieutruyen)
+        protected static void goixoatietmuc(Map<String, JPanel> dulieutruyen) 
         {
-            List<String>id_can_xoa =new ArrayList<>();
+            List<String> id_can_xoa = new ArrayList<>();
 
-            for(Map.Entry<String,JPanel> entry : dulieutruyen.entrySet())
-            {
+            for (Map.Entry<String, JPanel> entry : dulieutruyen.entrySet()) {
                 String id = entry.getKey();
                 JPanel trangthai = entry.getValue();
 
-                for(Component c: trangthai.getComponents())
-                {
-                    if(c instanceof JCheckBox)
-                    {
+                for (Component c : trangthai.getComponents()) {
+                    if (c instanceof JCheckBox) {
                         JCheckBox checkbox = (JCheckBox) c;
-                        if(checkbox.isSelected())
-                        {
+                        if (checkbox.isSelected()) {
                             id_can_xoa.add(id);
                         }
                     }
                 }
             }
-            MainFunction.function.deleter(id_can_xoa,2);
+
+            if (!id_can_xoa.isEmpty()) {
+                // Hỏi xác nhận
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        "Bạn có chắc chắn muốn xóa " + id_can_xoa.size() + " tiết mục không?\nCác nghệ sĩ có tiết mục này trong danh sách sẽ bị xoa khỏi danh sách đó",
+                        "Xác nhận xóa",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    MainFunction.function.deleter(id_can_xoa, 2);
+                } else {
+                    JOptionPane.showMessageDialog(null, " Đã Hủy xóa!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Không có tiết mục nào được chọn để xóa.");
+            }
         }
+
 
         protected void refresh(JPanel B_MainContainer,Map<String, JPanel> dspanel,Map<String, JCheckBox> quanlyselect,List<String> ds_idtietmuc)
         {
@@ -170,27 +185,31 @@ public class performance_manage {
             Map<String,PerformanceService.tietmuc> ds_tietmuc = performances.xuat();
             ds_idtietmuc.addAll(ds_tietmuc.keySet());
 
-
-
-            for(String id : ds_idtietmuc)
+            if(ds_idtietmuc.isEmpty())
             {
-                JPanel khungTietmuc = MainFunction.taoKhung(id,2,null,null);
-                khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-
-                JCheckBox checkbox = new JCheckBox();
-                checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-                quanlyselect.put(id,checkbox);
-
-                JPanel khungchucnang = new JPanel(new BorderLayout());
-                khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungTietmuc,BorderLayout.CENTER);
-                dspanel.put(id,khungchucnang);
-
-                B_MainContainer.add(khungchucnang);
+                B_MainContainer.add(new JLabel("Không có dữ liệu tiết mục"));
             }
+            else
+            {
+                for(String id : ds_idtietmuc)
+                {
+                    JPanel khungTietmuc = MainFunction.taoKhung(id,2,null,null);
+                    khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+
+                    JCheckBox checkbox = new JCheckBox();
+                    checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                    quanlyselect.put(id,checkbox);
+
+                    JPanel khungchucnang = new JPanel(new BorderLayout());
+                    khungchucnang.add(checkbox,BorderLayout.WEST);
+                    khungchucnang.add(khungTietmuc,BorderLayout.CENTER);
+                    dspanel.put(id,khungchucnang);
+
+                    B_MainContainer.add(khungchucnang);
+                }
+            }
             B_MainContainer.revalidate();
             B_MainContainer.repaint();
         }

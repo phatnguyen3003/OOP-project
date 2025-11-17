@@ -170,25 +170,30 @@ public class artist_manage {
             Map<String,ArtistService.nghesi> dsnghesi = artist.xuat();
             ds_idnghesi.addAll(dsnghesi.keySet());
 
-
-
-            for(String id : ds_idnghesi)
+            if(ds_idnghesi.isEmpty())
             {
-                JPanel khungNgheSi = MainFunction.taoKhung(id,1,null,null);
-                khungNgheSi.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-                khungNgheSi.setAlignmentX(Component.LEFT_ALIGNMENT);
+                A_MainContainer.add(new JLabel("Không có ca / nghệ sĩ trong dữ liệu"));
+            }
+            else
+            {
+                for(String id : ds_idnghesi)
+                {
+                    JPanel khungNgheSi = MainFunction.taoKhung(id,1,null,null);
+                    khungNgheSi.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    khungNgheSi.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 
-                JCheckBox checkbox = new JCheckBox();
-                checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-                quanlyselect.put(id,checkbox);
+                    JCheckBox checkbox = new JCheckBox();
+                    checkbox.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+                    quanlyselect.put(id,checkbox);
 
-                JPanel khungchucnang = new JPanel(new BorderLayout());
-                khungchucnang.add(checkbox,BorderLayout.WEST);
-                khungchucnang.add(khungNgheSi,BorderLayout.CENTER);
-                dspanel.put(id,khungchucnang);
+                    JPanel khungchucnang = new JPanel(new BorderLayout());
+                    khungchucnang.add(checkbox,BorderLayout.WEST);
+                    khungchucnang.add(khungNgheSi,BorderLayout.CENTER);
+                    dspanel.put(id,khungchucnang);
 
-                A_MainContainer.add(khungchucnang);
+                    A_MainContainer.add(khungchucnang);
+                }
             }
 
             A_MainContainer.revalidate();
