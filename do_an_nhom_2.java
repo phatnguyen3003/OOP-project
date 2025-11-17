@@ -210,49 +210,4 @@ public class do_an_nhom_2 {
 
         });
     }
-
-
-
-
-
-    /*
-    public static void refresh(JPanel mainframe1,Map<String,JCheckBox> quanlyselect)
-    {
-        mainframe1.removeAll();
-        quanlyselect.clear();
-
-        Event_Information.DanhsachThongtinSukien danhsachttsk = new Event_Information.DanhsachThongtinSukien();
-        Map<String, Event_Information.thongtin_sukien> MapSukien = danhsachttsk.xuat();
-        List<String> ds_id_sk = new ArrayList<>(MapSukien.keySet());
-
-        int count = 1;
-        for(String id_sk : ds_id_sk)
-        {
-
-
-            JPanel dangtao = MainFunction.taoKhung(id_sk, 0);
-            dangtao.setBorder(BorderFactory.createLineBorder(Color.GRAY,2));
-            dangtao.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-            JCheckBox checkbox = new JCheckBox();
-            checkbox.setBorder(BorderFactory.createEmptyBorder(0,5,0,5));
-            quanlyselect.put(id_sk, checkbox);
-
-
-            JPanel khungChucNang = new JPanel(new BorderLayout());
-            khungChucNang.add(checkbox, BorderLayout.WEST);
-            khungChucNang.add(dangtao, BorderLayout.CENTER);
-
-            if(count%2!=0){
-                khungChucNang.setBackground(new Color(230, 245, 255));
-            } else {
-                khungChucNang.setBackground(new Color(255, 240, 245));
-            }
-            mainframe1.add(khungChucNang);
-            count++;
-        }
-
-        mainframe1.validate();
-        mainframe1.repaint();
-    }*/
 }

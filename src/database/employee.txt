@@ -99,3 +99,4 @@ E098|Ngô Văn Tú|kỹ thuật viên|chiều|T010
 E099|Dương Thị Hằng|nhân viên hỗ trợ|tối|T010
 E100|Lý Văn Thành|nhân viên hỗ trợ|sáng|T010
 E101|Ngô Hồ Đăng Khoa|Lao Công|tối|T010
+GG|GG|G|sáng|0
