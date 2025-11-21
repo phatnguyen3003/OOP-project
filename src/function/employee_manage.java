@@ -95,10 +95,15 @@ public class employee_manage {
 
 
 
-            deletehButton.addActionListener(e ->
+            deletehButton.addActionListener(e -> 
             {
-                goixoanhanvien(dspanel);
-                refresh(C_MainContainer, dspanel, quanlyselect, ds_id_nhanvien);
+                int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa các nhân viên đã chọn không?\nCác đội chứa nhân viên cũng sẽ trống vị trí của nhân viên đó\nNếu nhân viên là đội trưởng thì nhân viên đầu danh sách sẽ thay thế làm đội trưởng","Xác nhận xóa",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+                if (confirm == JOptionPane.YES_OPTION) 
+                {
+                    goixoanhanvien(dspanel);
+                    refresh(C_MainContainer, dspanel, quanlyselect, ds_id_nhanvien);
+                }
             });
 
             refreshButton.addActionListener(e->
@@ -185,7 +190,7 @@ public class employee_manage {
             {
                 for(String id : ds_id_nhanvien)
                 {
-                    JPanel khungDiadiem = MainFunction.taoKhung(id,3,null,null);
+                    JPanel khungDiadiem = MainFunction.taoKhung(id,3,null,null,null);
                     khungDiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                     khungDiadiem.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -253,7 +258,7 @@ public class employee_manage {
                 employeeService.nhanvien nhanvienxet = MapNhanVien.get(id);
 
 
-                JPanel paneltam = MainFunction.taoKhung(id,3,null,null);
+                JPanel paneltam = MainFunction.taoKhung(id,3,null,null,null);
 
                 String id_nhanvien = nhanvienxet.getId();
                 String ten_nhanvien = nhanvienxet.getName();

@@ -1,1 +1,20 @@
-GG|GG|3
+TM01|Em của ngày hôm qua|6
+TM02|Viết tiếp câu chuyện hòa bình|4
+TM03|Sóng gió|6
+TM04|Chạy ngay đi|5
+TM05|Bài hát yêu thích|4
+TM06|Một nhà|5
+TM07|Ngày mai|6
+TM08|Đi để trở về|4
+TM09|Lạc trôi|5
+TM10|Nơi này có anh|4
+TM11|Cảm ơn vì đã rời đi|5
+TM12|Hồng nhan|6
+TM13|Từ đó|5
+TM14|Anh nhà ở đâu thế|4
+TM15|Sài Gòn đau lòng quá|5
+TM16|Màu nước mắt|4
+TM17|Một đêm say|5
+TM18|Có em chờ|6
+TM19|Anh ơi ở lại|4
+TM20|Cơn mưa ngang qua|5

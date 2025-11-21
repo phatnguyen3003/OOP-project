@@ -179,16 +179,19 @@ public boolean sua(tietmuc moi)
     return false;
 }
 
-public String timIdNgheSiTheoTietMuc(String idTietMuc) {
-    ArtistService.Danhsachnghesi artistService = new ArtistService.Danhsachnghesi();
-    Map<String, ArtistService.nghesi> mapNgheSi = artistService.xuat();
- 
-    for (ArtistService.nghesi ns : mapNgheSi.values()) {
-        if (ns.getidtietmuc().contains(idTietMuc)) {
-            return ns.getId(); // Trả về ID nghệ sĩ đầu tiên tìm thấy
+public List<String> timIdNgheSiTheoTietMuc(String idTietMuc) {
+        ArtistService.Danhsachnghesi artistService = new ArtistService.Danhsachnghesi();
+        Map<String, ArtistService.nghesi> mapNgheSi = artistService.xuat();
+
+        List<String> ketQua = new ArrayList<>();
+
+        for (ArtistService.nghesi ns : mapNgheSi.values()) {
+            if (ns.getidtietmuc().contains(idTietMuc)) {
+                ketQua.add(ns.getId()); 
+            }
         }
+
+        return ketQua.isEmpty() ? null : ketQua;
     }
-    return null; // Không tìm thấy
-   }
   }
 }

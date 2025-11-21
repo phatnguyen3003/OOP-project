@@ -178,7 +178,7 @@ public class artist_manage {
             {
                 for(String id : ds_idnghesi)
                 {
-                    JPanel khungNgheSi = MainFunction.taoKhung(id,1,null,null);
+                    JPanel khungNgheSi = MainFunction.taoKhung(id,1,null,null,null);
                     khungNgheSi.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                     khungNgheSi.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -231,7 +231,6 @@ public class artist_manage {
             {
                 ArtistService.nghesi nghesixet = MapNgheSi.get(id);
 
-                JPanel paneltam = MainFunction.taoKhung(id,1,null,null);
 
                 String id_nghesi = nghesixet.getId();
                 String ten_nghesi = nghesixet.getName();

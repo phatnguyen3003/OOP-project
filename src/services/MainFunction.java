@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import services.PerformanceService;
 import services.ArtistService;
 import services.employeeService;
+import services.employeeService.nhanvien;
 import services.teamService.team;
 import services.ScheduleService;
 import services.Event_Information;
@@ -27,7 +28,7 @@ import function.team_manage;
 
 public class MainFunction {
 
-    public static JPanel taoKhung(String id,int chedo, JPanel mainframe1, Map<String,JCheckBox> quanlyselect)
+    public static JPanel taoKhung(String id,int chedo, JPanel mainframe1, Map<String,JCheckBox> quanlyselect, Runnable refresh)
     {
         JPanel panel = new JPanel();
         
@@ -237,7 +238,7 @@ public class MainFunction {
         }
         else if(chedo==6)
         {
-            panel.setLayout(new GridLayout(3,1,5,0));
+            panel.setLayout(new GridLayout(5,1,5,0));
 
             teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
             Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
@@ -296,6 +297,12 @@ public class MainFunction {
 
                 JLabel ds_doivien = new JLabel("Danh sách ID của đội viên: "+String.join(",",doi_dangxet.getds()));
                 panel.add(ds_doivien);
+
+                JButton sua = new JButton("Sửa");
+                sua.addActionListener(e->{
+                    configure_schedule_dialog(id,refresh);
+                });
+                panel.add(sua);
             }
 
             
@@ -375,7 +382,7 @@ public class MainFunction {
                 Id_leader.setName("Id_leader ");
                 panel.add(Id_leader);
 
-                JButton infor_Button = new JButton("Xem thông tin chi tiết lịch trình");
+                JButton infor_Button = new JButton("Xem thông tin chi tiết sự kiện");
 
                 infor_Button.addActionListener(e->{
                 function.Function_Dialog infor_dialog = new function.Function_Dialog(null,id,4);
@@ -385,7 +392,7 @@ public class MainFunction {
                 panel.add(infor_Button);
 
 
-                JButton changing_Button = new JButton("Sửa lịch trình");
+                JButton changing_Button = new JButton("Sửa sự kiện");
 
                 changing_Button.addActionListener(e->{
                     function.Function_Dialog changing_dialog = new function.Function_Dialog(null, id, 5);
@@ -421,7 +428,7 @@ public class MainFunction {
                     int count = 1;
                     for (String id_sk : ds_id_sk) {
 
-                        JPanel dangtao = MainFunction.taoKhung(id_sk, 0,mainframe1,quanlyselect);
+                        JPanel dangtao = MainFunction.taoKhung(id_sk, 0,mainframe1,quanlyselect,null);
                         dangtao.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
                         dangtao.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -482,8 +489,31 @@ public class MainFunction {
                 }
                 else if(chedo==3)
                 {
-                    employeeService.Danhsachnhanvien nhanviencanxoa = new employeeService.Danhsachnhanvien();
-                    flag.put(id,nhanviencanxoa.xoa(id));
+                    employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+                    Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();
+                    employeeService.nhanvien nhanvienxet = MapNhanVien.get(id);
+
+                    String iddoi = nhanvienxet.getiddoi();
+
+                    teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
+                    Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
+                    teamService.team doixet = MapDoi.get(iddoi);
+
+                    List<String>ds_doivien = new ArrayList<>(doixet.getds());
+
+                    if(ds_doivien.size()>1)
+                    {
+                        ds_doivien.remove(id);
+                        doixet.setds(ds_doivien);
+                        danhsachdoi.sua(doixet);
+                        
+                        flag.put(id,danhsachnhanvien.xoa(id));
+                    }
+                    else
+                    {
+                        flag.put(id,false);
+                    }
+                    
                 }
                 else if(chedo==4)
                 {
@@ -494,6 +524,28 @@ public class MainFunction {
                 {
                     ScheduleService.DanhsachLichtrinh lichtrinhcanxoa = new ScheduleService.DanhsachLichtrinh();
                     flag.put(id,lichtrinhcanxoa.xoa(id));
+                }
+                else if(chedo==6)
+                {
+                    teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
+                    Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
+                    teamService.team doicanxoa = MapDoi.get(id);
+                    List<String> ds_doivien = doicanxoa.getds();
+
+                    employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+                    Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();
+
+
+                    Boolean success = danhsachdoi.xoa(id);
+                    flag.put(id,success);
+                    if(success)
+                    {
+                        for(String id_doivien:ds_doivien)
+                        {
+                            employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_doivien);
+                            nhanvienxet.setiddoi("0");
+                        }
+                    }
                 }
                 else if(chedo==0)
                 {
@@ -519,7 +571,7 @@ public class MainFunction {
                 }
                 else if(chedo==3)
                 {
-                    message.append(entry.getValue() ? "Đã xóa thành công\n" : "Không tìm thấy nhân viên hoặc có lỗi\n");
+                    message.append(entry.getValue() ? "Đã xóa thành công\n" : "Không tìm thấy nhân viên, danh sách đội viên của đội mà nhân viên đang công tác chỉ có 1 nhân viên hoặc lỗi khi xóa\n");
                 }
                 else if(chedo==4)
                 {
@@ -556,7 +608,7 @@ public class MainFunction {
                         JTextField ten_ = (JTextField) comp[2];
                         JTextField vaitro_ = (JTextField) comp[4];
                         JTextField congty_ = (JTextField) comp[6];
-                        JTextField gia_ = (JTextField) comp[9];
+                        JTextField gia_ = (JTextField) comp[8];
                         JTextField listtietmuc_ = (JTextField) comp[11];
 
 
@@ -1024,7 +1076,10 @@ public class MainFunction {
                                 checked=false;
                             }
 
-                            List<String> danh_sach_lich_trinh = new ArrayList<>(MapLichtrinh.keySet());
+
+                            ScheduleService.DanhsachLichtrinh ds = new ScheduleService.DanhsachLichtrinh();
+                            Map<String, ScheduleService.Schedule> map = ds.xuat();
+                            List<String> danh_sach_lich_trinh = new ArrayList<>(map.keySet());
                             for(String id_xet : danh_sach_lich_trinh)
                             {
                                 if(id_xet.equalsIgnoreCase(id_lichtrinh))
@@ -1304,6 +1359,10 @@ public class MainFunction {
                         List<String>danh_sach_id_doi_vien = new ArrayList<>(MapDoi.keySet());
 
                         JComboBox<String> option_doi = new JComboBox<>(danh_sach_id_doi_vien.toArray(new String[0]));
+                        if (option_doi.getItemCount() == 0) 
+                        {
+                            option_doi.addItem("— Không có dữ liệu —");
+                        }
 
                         TopPanel.add(option_doi);
 
@@ -1320,6 +1379,10 @@ public class MainFunction {
                         List<String>danh_sach_id_dia_diem = new ArrayList<>(MapDiadiem.keySet());
 
                         JComboBox<String> option_dia_diem = new JComboBox<>(danh_sach_id_dia_diem.toArray(new String[0]));
+                        if (option_dia_diem.getItemCount() == 0) 
+                        {
+                            option_dia_diem.addItem("— Không có dữ liệu —");
+                        }
                         TopPanel.add(option_dia_diem);
 
                         JButton them_dia_diem = new JButton("Thêm địa điểm");
@@ -1334,6 +1397,10 @@ public class MainFunction {
                         List<String>danh_sach_id_lich_trinh = new ArrayList<>(MapLichtrinh.keySet());
 
                         JComboBox<String>option_lich_trinh = new JComboBox<>(danh_sach_id_lich_trinh.toArray(new String[0]));
+                        if (option_lich_trinh.getItemCount() == 0) 
+                        {
+                            option_lich_trinh.addItem("— Không có dữ liệu —");
+                        }
 
                         TopPanel.add(option_lich_trinh);
 
@@ -1764,16 +1831,32 @@ public class MainFunction {
                                 thong_tin.add(new JLabel("Thời lượng: "+tietmucxet.getthoiluong()));
                                 thong_tin.add(new JLabel(""));
 
-                                String id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
-                                if(id_nghe_si_bieu_dien==null)
+                                List<String>ds_id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
+                                if(ds_id_nghe_si_bieu_dien==null)
                                 {
                                     thong_tin.add(new JLabel(" Không có nghệ sĩ biểu diễn"));
                                 }
                                 else
                                 {
-                                    ArtistService.nghesi nghesixet = MapNgheSi.get(id_nghe_si_bieu_dien);
-                                    thong_tin.add(new JLabel("Biểu diễn bởi: "+nghesixet.getName()));
-                                    thong_tin.add(new JLabel("Vai trò: "+nghesixet.getVaitro()));
+                                    StringBuilder ten_ns = new StringBuilder();
+                                    int counting=0;
+
+                                    for(String id_ns:ds_id_nghe_si_bieu_dien)
+                                    {
+                                        ArtistService.nghesi nghesixet = MapNgheSi.get(id_ns);
+                                        ten_ns.append(nghesixet.getVaitro() +" "+nghesixet.getName());
+                                        if(counting<ds_id_nghe_si_bieu_dien.size()-1 && ds_id_nghe_si_bieu_dien.size()>1)
+                                        {
+                                            ten_ns.append(",");
+                                        }
+                                        else
+                                        {
+                                            ten_ns.append(" và ");
+                                        }
+                                        String ten_nghe_si = ten_ns.toString();
+                                    }
+                                    String ten_nghe_si = ten_ns.toString();
+                                    thong_tin.add(new JLabel("Biểu diễn bởi: "+ten_nghe_si));
                                 }
                                 if(count%2!=0)
                                 {
@@ -1850,41 +1933,44 @@ public class MainFunction {
                             part_2.add(new JLabel(""));
                             part_2.add(new JLabel(""));
                             part_2.add(new JLabel(""));
-
-                            if(currentIndex>0)
+                            if(chedo==2)
                             {
-                                JButton up_Button = new JButton("Di chuyển lên ⬆️");
-                                up_Button.addActionListener(e -> {
-                                    index_swaper(ds_id_tietmuc, currentIndex, 1);
-                                    refreshMidPanel(chedo, id);
-                                            
-                                });
-                                part_2.add(up_Button);
-                            }
-                            
-                            if(currentIndex<ds_id_tietmuc.size())
-                            {
-                                JButton down_Button = new JButton("Di chuyển xuống ⬇️");
-                                down_Button.addActionListener(e -> {
-                                    index_swaper(ds_id_tietmuc, currentIndex, 2);
-                                    refreshMidPanel(chedo, id);
+                                if(currentIndex>0)
+                                {
+                                    JButton up_Button = new JButton("Di chuyển lên ⬆️");
+                                    up_Button.addActionListener(e -> {
+                                        index_swaper(ds_id_tietmuc, currentIndex, 1);
+                                        refreshMidPanel(chedo, id);
                                                 
+                                    });
+                                    part_2.add(up_Button);
+                                }
+                                
+                                if(currentIndex<ds_id_tietmuc.size()-1)
+                                {
+                                    JButton down_Button = new JButton("Di chuyển xuống ⬇️");
+                                    down_Button.addActionListener(e -> {
+                                        index_swaper(ds_id_tietmuc, currentIndex, 2);
+                                        refreshMidPanel(chedo, id);
+                                                    
+                                    });
+                                    part_2.add(down_Button);
+                                }
+                                
+                                JButton delete_Button = new JButton("Xóa 🚮");
+
+                                delete_Button.addActionListener(e->{
+                                    index_deleter(ds_id_tietmuc,currentIndex);
+                                    refreshMidPanel(chedo, id);
                                 });
-                                part_2.add(down_Button);
+
+                                part_2.add(delete_Button);
                             }
                             
-                            JButton delete_Button = new JButton("Xóa 🚮");
-
-                            delete_Button.addActionListener(e->{
-                                index_deleter(ds_id_tietmuc,currentIndex);
-                                refreshMidPanel(chedo, id);
-                            });
-
-                            part_2.add(delete_Button);
 
                             part_2.setBackground(Color.getHSBColor(237, 233, 233));
                             part_2.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
-
+                            index+=1;
                             
 
 
@@ -1907,51 +1993,68 @@ public class MainFunction {
 
                                 thong_tin.add(new JLabel("Thời lượng: "+tietmucxet.getthoiluong()));
 
-                                String id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
-                                if(id_nghe_si_bieu_dien==null)
+                                List<String>ds_id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
+                                if(ds_id_nghe_si_bieu_dien==null)
                                 {
                                     thong_tin.add(new JLabel(" Không có nghệ sĩ biểu diễn"));
                                 }
                                 else
                                 {
-                                    ArtistService.nghesi nghesixet = MapNgheSi.get(id_nghe_si_bieu_dien);
-                                    thong_tin.add(new JLabel("Biểu diễn bởi: "+nghesixet.getName()));
-                                    thong_tin.add(new JLabel("Vai trò: "+nghesixet.getVaitro()));
+                                    StringBuilder ten_ns = new StringBuilder();
+                                    int counting=0;
+
+                                    for(String id_ns:ds_id_nghe_si_bieu_dien)
+                                    {
+                                        ArtistService.nghesi nghesixet = MapNgheSi.get(id_ns);
+                                        ten_ns.append(nghesixet.getVaitro() +" "+nghesixet.getName());
+                                        if(counting<ds_id_nghe_si_bieu_dien.size()-1 && ds_id_nghe_si_bieu_dien.size()>1)
+                                        {
+                                            ten_ns.append(",");
+                                        }
+                                        else
+                                        {
+                                            ten_ns.append(" và ");
+                                        }
+                                        String ten_nghe_si = ten_ns.toString();
+                                    }
+                                    String ten_nghe_si = ten_ns.toString();
+                                    thong_tin.add(new JLabel("Biểu diễn bởi: "+ten_nghe_si));
+                                }
+                                if(chedo==2)
+                                {
+                                    if(currentIndex>0)
+                                    {
+                                        JButton up_Button = new JButton("Di chuyển lên ⬆️");
+                                        up_Button.addActionListener(e -> {
+                                            index_swaper(ds_id_tietmuc, currentIndex, 1);
+                                            refreshMidPanel(chedo, id);
+                                                    
+                                        });
+                                        thong_tin.add(up_Button);
+                                    }
+                                
+                                    if(currentIndex<ds_id_tietmuc.size())
+                                    {
+                                        JButton down_Button = new JButton("Di chuyển xuống ⬇️");
+                                        down_Button.addActionListener(e -> {
+                                            index_swaper(ds_id_tietmuc, currentIndex, 2);
+                                            refreshMidPanel(chedo, id);
+                                                        
+                                        });
+                                        thong_tin.add(down_Button);
+                                    }
+                                    
+                                    JButton delete_Button = new JButton("Xóa 🚮");
+
+                                    delete_Button.addActionListener(e->{
+                                        index_deleter(ds_id_tietmuc,currentIndex);
+                                        refreshMidPanel(chedo, id);
+                                    });
+
+                                    thong_tin.add(delete_Button);
+
                                     thong_tin.add(new JLabel(""));
                                 }
-
-                                if(currentIndex>0)
-                                {
-                                    JButton up_Button = new JButton("Di chuyển lên ⬆️");
-                                    up_Button.addActionListener(e -> {
-                                        index_swaper(ds_id_tietmuc, currentIndex, 1);
-                                        refreshMidPanel(chedo, id);
-                                                
-                                    });
-                                    thong_tin.add(up_Button);
-                                }
-                            
-                                if(currentIndex<ds_id_tietmuc.size())
-                                {
-                                    JButton down_Button = new JButton("Di chuyển xuống ⬇️");
-                                    down_Button.addActionListener(e -> {
-                                        index_swaper(ds_id_tietmuc, currentIndex, 2);
-                                        refreshMidPanel(chedo, id);
-                                                    
-                                    });
-                                    thong_tin.add(down_Button);
-                                }
-                                
-                                JButton delete_Button = new JButton("Xóa 🚮");
-
-                                delete_Button.addActionListener(e->{
-                                    index_deleter(ds_id_tietmuc,currentIndex);
-                                    refreshMidPanel(chedo, id);
-                                });
-
-                                thong_tin.add(delete_Button);
-
-                                thong_tin.add(new JLabel(""));
 
 
                                 
@@ -2037,7 +2140,7 @@ public class MainFunction {
                                         part_2.add(up_Button);
                                     }
                                 
-                                    if(currentIndex<ds_id_tietmuc.size())
+                                    if(currentIndex<ds_id_tietmuc.size()-1)
                                     {
                                         JButton down_Button = new JButton("Di chuyển xuống ⬇️");
                                         down_Button.addActionListener(e -> {
@@ -2060,7 +2163,7 @@ public class MainFunction {
                                 
                                 part_2.setBackground(Color.getHSBColor(237, 233, 233));
                                 part_2.setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
-
+                                index+=1;
 
                                 
 
@@ -2084,18 +2187,33 @@ public class MainFunction {
 
                                     thong_tin.add(new JLabel("Thời lượng: "+tietmucxet.getthoiluong()));
 
-                                    String id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
-                                    if(id_nghe_si_bieu_dien==null)
+                                    List<String>ds_id_nghe_si_bieu_dien = danhsachtietmuc.timIdNgheSiTheoTietMuc(id_tietmuc);
+                                if(ds_id_nghe_si_bieu_dien==null)
+                                {
+                                    thong_tin.add(new JLabel(" Không có nghệ sĩ biểu diễn"));
+                                }
+                                else
+                                {
+                                    StringBuilder ten_ns = new StringBuilder();
+                                    int counting=0;
+
+                                    for(String id_ns:ds_id_nghe_si_bieu_dien)
                                     {
-                                        thong_tin.add(new JLabel(" Không có nghệ sĩ biểu diễn"));
+                                        ArtistService.nghesi nghesixet = MapNgheSi.get(id_ns);
+                                        ten_ns.append(nghesixet.getVaitro() +" "+nghesixet.getName());
+                                        if(counting<ds_id_nghe_si_bieu_dien.size()-1 && ds_id_nghe_si_bieu_dien.size()>1)
+                                        {
+                                            ten_ns.append(",");
+                                        }
+                                        else
+                                        {
+                                            ten_ns.append(" và ");
+                                        }
+                                        String ten_nghe_si = ten_ns.toString();
                                     }
-                                    else
-                                    {
-                                        ArtistService.nghesi nghesixet = MapNgheSi.get(id_nghe_si_bieu_dien);
-                                        thong_tin.add(new JLabel("Biểu diễn bởi: "+nghesixet.getName()));
-                                        thong_tin.add(new JLabel("Vai trò: "+nghesixet.getVaitro()));
-                                        thong_tin.add(new JLabel(""));
-                                    }
+                                    String ten_nghe_si = ten_ns.toString();
+                                    thong_tin.add(new JLabel("Biểu diễn bởi: "+ten_nghe_si));
+                                }
                                     if(chedo==3)
                                     {
                                         if(currentIndex>0)
@@ -2109,7 +2227,7 @@ public class MainFunction {
                                             thong_tin.add(up_Button);
                                         }
                                     
-                                        if(currentIndex<ds_id_tietmuc.size())
+                                        if(currentIndex<ds_id_tietmuc.size()-1)
                                         {
                                             JButton down_Button = new JButton("Di chuyển xuống ⬇️");
                                             down_Button.addActionListener(e -> {
@@ -2335,7 +2453,12 @@ public class MainFunction {
             {
                 addFormField(formPanel, gbc, 0, "ID tiết mục:", new JTextField(20));
                 addFormField(formPanel, gbc, 1, "Tên tiết mục:", new JTextField(20));
-                addFormField(formPanel, gbc, 2, "Thời lượng (phút):", new JTextField(20));
+                List<Integer>list_thoiluong = new ArrayList<>();
+                for(int i=1;i<=30;i++)
+                {
+                    list_thoiluong.add(i);
+                }
+                addFormField(formPanel, gbc, 2, "Thời lượng (phút):", new JComboBox<>(list_thoiluong.toArray(new Integer[0])));
             }
             else if(chedo == 3) // Employee
             {
@@ -2633,11 +2756,11 @@ public class MainFunction {
 
                         JTextField input_id_tiet_muc = (JTextField) parts[1];
                         JTextField input_ten_tiet_muc = (JTextField) parts[3];
-                        JTextField input_thoi_luong = (JTextField) parts[5];
+                        JComboBox input_thoi_luong = (JComboBox) parts[5];
 
                         String id_tiet_muc = input_id_tiet_muc.getText().trim();
                         String ten_tiet_muc = input_ten_tiet_muc.getText().trim();
-                        String thoi_luong_Text = input_thoi_luong.getText().trim();
+                        int thoi_luong = (int) input_thoi_luong.getSelectedItem();
 
                         PerformanceService.Danhsachtietmuc danhsachtietmuc = new PerformanceService.Danhsachtietmuc();
                         Map<String, PerformanceService.tietmuc> danh_sach_tiet_muc = danhsachtietmuc.xuat();
@@ -2655,25 +2778,11 @@ public class MainFunction {
                         }
 
                         // 🔹 Kiểm tra thiếu thông tin
-                        if (id_tiet_muc.isEmpty() || ten_tiet_muc.isEmpty() || thoi_luong_Text.isEmpty()) {
+                        if (id_tiet_muc.isEmpty() || ten_tiet_muc.isEmpty()) {
                             message.append("Vui lòng nhập đủ thông tin\n");
                             checked = false;
                         }
 
-                        // 🔹 Kiểm tra thời lượng hợp lệ
-                        int thoi_luong = 0;
-                        if (checked) {
-                            try {
-                                thoi_luong = Integer.parseInt(thoi_luong_Text);
-                                if (thoi_luong <= 0) {
-                                    message.append("Thời lượng phải là số dương\n");
-                                    checked = false;
-                                }
-                            } catch (NumberFormatException e1) {
-                                message.append("Thời lượng phải là số hợp lệ\n");
-                                checked = false;
-                            }
-                        }
 
                         // 🔹 Thực hiện thêm nếu mọi thứ hợp lệ
                         if (checked) 
@@ -2711,32 +2820,53 @@ public class MainFunction {
                     Map<String,employeeService.nhanvien> danh_sach_nv= danhsachnv.xuat();
                     List<String> list_id_nv = new ArrayList<>(danh_sach_nv.keySet());
 
-                    for( String id_nvxet: list_id_nv)
+                    
+                    if(idnv==null||idnv.isEmpty())
                     {
-                        if(id_nvxet.equalsIgnoreCase(idnv))
-                        {
-                            message.append("ID nhân viên mới không được trùng!");
-                            checked= false;
-                        }
-
-                    }
-                    if(idnv.isEmpty()||idnv==null||ten.isEmpty()||ten==null||vaitro.isEmpty()||vaitro==null||ca_lam_viec.isEmpty()||ca_lam_viec==null||id_doinv==null||id_doinv.isEmpty())
-                    {
-                        message.append("Vui lòng nhập đủ thông tin!");
+                        message.append("ID nhân viên rỗng");
                         checked=false;
                     }
-                    employeeService.nhanvien nhanvienmoi=new employeeService.nhanvien(idnv, ten, vaitro, ca_lam_viec, id_doinv);
+                    if(ten==null||ten.isEmpty())
+                    {
+                        message.append("Tên nhân viên rỗng");
+                        checked=false;
+                    }
+                    if(vaitro==null||vaitro.isEmpty())
+                    {
+                        message.append("Vai trò của nhân viên rỗng");
+                        checked=false;
+                    }
+
+                    employeeService.nhanvien nhanvienmoi = new employeeService.nhanvien(idnv, ten, vaitro, ca_lam_viec, id_doinv);
+
                     if(checked)
                     {
                         if(danhsachnv.them(nhanvienmoi))
                         {
                             message.append("Thêm thành công");
+
+                            if(!id_doinv.equalsIgnoreCase("0"))
+                            {
+                                teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
+                                Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
+
+                                teamService.team doixet = MapDoi.get(id_doinv);
+
+                                List<String> ds_doivien = new ArrayList<>(doixet.getds());
+                                ds_doivien.add(idnv);
+                                doixet.setds(ds_doivien);
+                                danhsachdoi.sua(doixet);
+                            }
+                            
                         }
-                        else{
-                            message.append("Xảy ra lỗi khi thêm, kiểm tra lại hàm thêm!");
-                            checked=false;
+                        else
+                        {
+                            message.append("Thêm thất bại, kiểm tra phương thức thêm");
                         }
                     }
+                    
+
+
                 }    
               else if(chedo == 4) // Location
                 {
@@ -2843,6 +2973,7 @@ public class MainFunction {
  
                 }
                 JOptionPane.showMessageDialog(formPanel,message,"Thông báo",JOptionPane.INFORMATION_MESSAGE);
+                if(checked)
                 addDialog.dispose();
             });
  
@@ -2885,5 +3016,216 @@ public class MainFunction {
         
     }
 
+
+
+    public static void configure_schedule_dialog(String id,Runnable refresh)
+    {
+        teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
+        Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
+        teamService.team doixet = MapDoi.get(id);
+
+        List<String> ds_thanhvien = new ArrayList<>(doixet.getds());
+        StringBuilder leader = new StringBuilder(doixet.getidleader());
+
+        JDialog sua_lichtrinh_dialog = new JDialog();
+        sua_lichtrinh_dialog.setLayout(new GridBagLayout());
+        sua_lichtrinh_dialog.setSize(800,600);
+        sua_lichtrinh_dialog.setLocationRelativeTo(null);
+        sua_lichtrinh_dialog.setModal(true);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+
+
+
+        gbc.gridy = 0;
+        JLabel label_id = new JLabel(id, SwingConstants.CENTER);
+        label_id.setFont(new Font("Arial", Font.BOLD, 24));
+        sua_lichtrinh_dialog.add(label_id, gbc);
+
+
+
+
+
+        gbc.gridy = 1;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weighty = 0.2;
+        JPanel panel_them = new JPanel(new GridLayout(1,2,5,5));
+        sua_lichtrinh_dialog.add(panel_them, gbc);
+
+
+
+
+
+        gbc.gridy = 2;
+        gbc.weighty = 0.7;
+        JPanel panel_xem = new JPanel(new GridLayout(0,5,5,5));
+        JScrollPane scrollPanel = new JScrollPane(panel_xem);
+        scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPanel.setPreferredSize(new Dimension(800,300));
+        sua_lichtrinh_dialog.add(scrollPanel, gbc);
+
+
+
+        refreshpanel_them(panel_them,panel_xem, ds_thanhvien,leader);
+        refreshpanel_xem(panel_them,panel_xem,ds_thanhvien,leader);
+
+        gbc.gridy = 3;
+        gbc.weighty = 0.1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel_save = new JPanel();
+        JButton save = new JButton("Lưu");
+        panel_save.add(save);
+        sua_lichtrinh_dialog.add(panel_save, gbc);
+
+
+        save.addActionListener(e->{
+            StringBuilder message = new StringBuilder();
+            Boolean checked=true;
+            if(leader.toString() == null || leader.length()==0)
+            {
+                message.append("Thiếu đội trưởng\n");
+                checked=false;
+            }
+            if(ds_thanhvien.isEmpty())
+            {
+                message.append("Đội rỗng\n");
+                checked=false;
+            }
+
+            if(checked)
+            {
+                teamService.team doidangxet = new teamService.team(id,leader.toString(),ds_thanhvien);
+                if(danhsachdoi.sua(doidangxet))
+                {
+                    message.append("Sửa thành công");
+
+                    employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+                    Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();
+                    for(String id_doi_vien:ds_thanhvien)
+                    {
+                        employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_doi_vien);
+                        nhanvienxet.setiddoi(id);
+                        danhsachnhanvien.sua(nhanvienxet);
+                    }
+                }
+                else
+                {
+                    message.append("Sửa thất bại, kiểm tra lại phương thức sửa");
+                }
+            }
+            JOptionPane.showMessageDialog(sua_lichtrinh_dialog, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if(checked)
+            {
+                sua_lichtrinh_dialog.dispose();
+                refresh.run();
+            }
+
+        });
+
+        sua_lichtrinh_dialog.setVisible(true);
     }
+
+    private static void refreshpanel_them(JPanel panel_them,JPanel panel_xem,List<String>ds_thanhvien,StringBuilder leader)
+    {
+        teamService.DanhsachDoi danhsachdoi = new teamService.DanhsachDoi();
+        Map<String,teamService.team> MapDoi = danhsachdoi.xuat();
+        
+        employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+        Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();
+        List<String> ds_id_nhanvien = new ArrayList<>(MapNhanVien.keySet());
+
+        panel_them.removeAll();
+
+        Map<String,employeeService.nhanvien> ds_nhanvien_chuadoi = new HashMap<>();
+        for(String id_nv: ds_id_nhanvien)
+        {
+            employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_nv);
+            if ("0".equalsIgnoreCase(nhanvienxet.getiddoi()) && !ds_thanhvien.contains(id_nv))
+            {
+                ds_nhanvien_chuadoi.put(id_nv,nhanvienxet);
+            }
+        }
+
+        JComboBox<employeeService.nhanvien> option_nhanvien = new JComboBox<>(ds_nhanvien_chuadoi.values().toArray(new employeeService.nhanvien[0]));
+
+        panel_them.add(option_nhanvien);
+
+        JButton them_nv_vao_list = new JButton("Thêm nhân viên vào đội");
+        panel_them.add(them_nv_vao_list);
+
+        them_nv_vao_list.addActionListener(e->{
+        employeeService.nhanvien nhanvienthem = (employeeService.nhanvien) option_nhanvien.getSelectedItem();
+        String id_them = nhanvienthem.getId();
+        ds_thanhvien.add(id_them);
+        refreshpanel_them(panel_them,panel_xem,ds_thanhvien,leader);
+        refreshpanel_xem(panel_them,panel_xem,ds_thanhvien,leader);
+        });
+
+        panel_them.validate();
+        panel_them.repaint();
+    }
+
+
+    private static void refreshpanel_xem(JPanel panel_them,JPanel panel_xem,List<String>ds_thanhvien,StringBuilder leader)
+    {
+        employeeService.Danhsachnhanvien danhsachnhanvien = new employeeService.Danhsachnhanvien();
+        Map<String,employeeService.nhanvien> MapNhanVien = danhsachnhanvien.xuat();
+
+
+        panel_xem.removeAll();
+        panel_xem.add(new JLabel("ID nhân viên"));
+        panel_xem.add(new JLabel("Tên nhân viên"));
+        panel_xem.add(new JLabel("Ca làm"));
+        panel_xem.add(new JLabel("Thao tác"));
+        panel_xem.add(new JLabel(""));
+
+        for(String id_nhanvien : ds_thanhvien)
+        {
+            employeeService.nhanvien nhanvienxet = MapNhanVien.get(id_nhanvien);
+            panel_xem.add(new JLabel(id_nhanvien));
+            panel_xem.add(new JLabel(nhanvienxet.getName()));
+            panel_xem.add(new JLabel(nhanvienxet.getca()));
+            
+            if(!leader.toString().equalsIgnoreCase(id_nhanvien))
+            {
+                JButton switch_captain = new JButton("Đặt đội trưởng");
+                panel_xem.add(switch_captain);
+
+                switch_captain.addActionListener(e->{
+                leader.setLength(0);
+                leader.append(nhanvienxet.getId());
+                refreshpanel_xem(panel_them,panel_xem,ds_thanhvien,leader);
+                });
+            }
+            else
+            {
+                panel_xem.add(new JLabel(""));
+            }
+            
+            JButton delete = new JButton("Xóa khỏi danh sách");
+            panel_xem.add(delete);
+
+            delete.addActionListener(e->{
+                ds_thanhvien.remove(id_nhanvien);
+                if(leader.length()>0 && leader.toString().equalsIgnoreCase(id_nhanvien))
+                {
+                    leader.setLength(0);
+                }
+                refreshpanel_xem(panel_them,panel_xem,ds_thanhvien,leader);
+                refreshpanel_them(panel_them, panel_xem, ds_thanhvien, leader);
+            });
+
+            panel_xem.validate();
+            panel_xem.repaint();
+        }
+
+    }
+
+
+}
 

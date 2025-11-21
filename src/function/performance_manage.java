@@ -193,7 +193,7 @@ public class performance_manage {
             {
                 for(String id : ds_idtietmuc)
                 {
-                    JPanel khungTietmuc = MainFunction.taoKhung(id,2,null,null);
+                    JPanel khungTietmuc = MainFunction.taoKhung(id,2,null,null,null);
                     khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                     khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -252,7 +252,7 @@ public class performance_manage {
                 PerformanceService.tietmuc tietmucxet = MapTietMuc.get(id);
 
 
-                JPanel paneltam = MainFunction.taoKhung(id,2,null,null);
+                JPanel paneltam = MainFunction.taoKhung(id,2,null,null,null);
 
                 String id_tietmuc = tietmucxet.getidtietmuc();
                 String ten_tietmuc = tietmucxet.gettentietmuc();

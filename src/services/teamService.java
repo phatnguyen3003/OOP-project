@@ -120,7 +120,7 @@ public class teamService {
     public Map<String, team> xuat()
     {
          List<team> dstam= loadpt.dsteam(file_path);
-         Map<String, team> maptam= new HashMap();
+         Map<String, team> maptam= new HashMap<>();
          for( team ds: dstam)
          {
             maptam.put(ds.getiddoi(), ds);

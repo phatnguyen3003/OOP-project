@@ -176,7 +176,7 @@ public class location_manage {
             {
                 for(String id : ds_iddiadiem)
                 {
-                    JPanel khungDiadiem = MainFunction.taoKhung(id,4,null,null);
+                    JPanel khungDiadiem = MainFunction.taoKhung(id,4,null,null,null);
                     khungDiadiem.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                     khungDiadiem.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -236,7 +236,7 @@ public class location_manage {
                 locationService.location diadiemxet = MapDiaDiem.get(id);
 
 
-                JPanel paneltam = MainFunction.taoKhung(id,4,null,null);
+                JPanel paneltam = MainFunction.taoKhung(id,4,null,null,null);
 
                 String id_diadiem = diadiemxet.getiddd();
                 String ten_diadiem = diadiemxet.getdiadiem();
@@ -319,6 +319,7 @@ public class location_manage {
                     cogfigureWindow.dispose();
                 }
                 JOptionPane.showMessageDialog(Container, message);
+                refresh.run();
             });
 
 

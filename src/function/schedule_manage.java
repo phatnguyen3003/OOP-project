@@ -164,7 +164,7 @@ public class schedule_manage {
             {
                 for(String id : ds_idlichtrinh)
                 {
-                    JPanel khungTietmuc = MainFunction.taoKhung(id,5,null,null);
+                    JPanel khungTietmuc = MainFunction.taoKhung(id,5,null,null,null);
                     khungTietmuc.setBorder(BorderFactory.createLineBorder(Color.GRAY));
                     khungTietmuc.setAlignmentX(Component.LEFT_ALIGNMENT);
 

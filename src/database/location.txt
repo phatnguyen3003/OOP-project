@@ -1,0 +1,20 @@
+DD01|Sân vận Động Mỹ ĐÌnh|5000
+DD02|Nhà thể thao Quận 1|500
+DD03|Hồ Gươm|1000
+DD04|Sân vận động Quận 7|2000
+DD05|Nhà thi đấu Thủ Đức|800
+DD06|Công viên 23/9|1500
+DD07|Sân vận động Cần Thơ|3000
+DD08|Nhà thi đấu Nguyễn Du|600
+DD09|Sân vận động Hà Tĩnh|1200
+DD10|Nhà thi đấu Bến Tre|500
+DD11|Cung thể thao Quần Ngựa|700
+DD12|Sân vận động Pleiku|2500
+DD13|Nhà thi đấu Phú Thọ|1000
+DD14|Công viên Lê Văn Tám|1500
+DD15|Sân vận động Thống Nhất|3000
+DD16|Nhà thi đấu Trịnh Hoài Đức|400
+DD17|Công viên Tao Đàn|800
+DD18|Sân vận động Vinh|2500
+DD19|Nhà thi đấu Quảng Ninh|1000
+DD20|Công viên Gia Định|1200

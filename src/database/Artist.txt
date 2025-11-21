@@ -1,2 +1,20 @@
-GG|GG|GG|GG|6|GG
-GGG|GGG|GGG|GGGG|66666|
+NS01|J97|ca sĩ|J97-ENTERTAINMENT|5000000|TM03
+NS02|Sơn Tùng MTP|ca sĩ|MTP-ENTERTAINMENT|1600000000|TM01
+NS03|Tùng Dương|ca sĩ|Youtube|7000000|TM02
+NS04|Min|ca sĩ|MIN-MUSIC|4500000|TM04
+NS05|Đen Vâu|ca sĩ|Đen-Records|5500000|TM05
+NS06|Bích Phương|ca sĩ|BichPhuong-ENT|4800000|TM06
+NS07|Isaac|ca sĩ|IS-Music|6000000|TM07
+NS08|Noo Phước Thịnh|ca sĩ|Noo-Music|7000000|TM08
+NS09|Hòa Minzy|ca sĩ|Hoa-Music|5000000|TM09
+NS10|Erik|ca sĩ|Erik-Entertainment|65000000|TM10
+NS11|HuyR|ca sĩ|HuyR-Records|4000000|TM11
+NS12|AMEE|ca sĩ|AMEE-Records|4500000|TM12
+NS13|Tlinh|rapper|Tlinh-Music|3000000|TM13
+NS14|Binz|rapper|Binz-Music|8000000|TM14
+NS15|Karik|rapper|Karik-Records|7000000|TM15
+NS16|W/n|ca sĩ|Wn-Music|5000000|TM16
+NS17|Vũ|ca sĩ|Vu-Music|5500000|TM17
+NS18|Quang Vinh|ca sĩ|QuangVinh-Records|5000000|TM18
+NS19|Lệ Quyên|ca sĩ|LeQuyen-Music|6000000|TM19
+NS20|Đức Phúc|ca sĩ|DucPhuc-Music|5500000|TM20

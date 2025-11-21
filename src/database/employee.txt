@@ -1,0 +1,30 @@
+NV01|Trần Thị B|Kỹ thuật viên|sáng|D03
+NV02|Phạm Phước VĨnh Quang|Kỹ thuật viên ktv|tối|D12
+NV03|Ngô Hồ Đăng Khoa|Bảo vệ|sáng|D13
+NV04|Thái Đặng Quốc Bảo|âm thanh|sáng|D13
+NV05|Trần Trung Hậu|Hậu cần|chiều|D02
+NV06|Nguyễn Văn A|Kỹ thuật viên|tối|D04
+NV07|Lê Thị B|Bảo vệ|chiều|D15
+NV08|Phan Văn C|Hậu cần|sáng|D15
+NV09|Trần Hùng|âm thanh|tối|D16
+NV10|Vũ Thị D|Kỹ thuật viên|sáng|D06
+NV11|Nguyễn Thị E|Bảo vệ|tối|D17
+NV12|Lê Văn F|âm thanh|chiều|D17
+NV13|Phạm Hùng G|Hậu cần|sáng|D18
+NV14|Nguyễn Thị H|Kỹ thuật viên|chiều|D08
+NV15|Đỗ Văn I|Bảo vệ|sáng|D19
+NV16|Trần Thị J|âm thanh|tối|D19
+NV17|Nguyễn Văn K|Hậu cần|sáng|D09
+NV18|Lê Thị L|Kỹ thuật viên|chiều|D20
+NV19|Phạm Văn M|Bảo vệ|tối|D10
+NV20|Nguyễn Thị N|âm thanh|sáng|D11
+NV21|Nguyễn Tấn T|âm thanh|sáng|0
+NV22|Trần Trung Hậu|Lao Công|chiều|0
+NV23|Phạm Thị T|hình ảnh|tối|0
+NV26|Phan Minh T|nhân viên|sáng|D20
+NV025|Phan Minh K|ánh sáng|chiều|D10
+NV026|Trịnh Trần Phương Hướng|lao công|sáng|0
+NV51|Nguyễn Tiến T|Hậu Cần|sáng|0
+NV52|Đỗ Như T|Kỹ thuật Viên|sáng|0
+NV53|Hồ Quý Ly|Âm thanh|sáng|0
+NV54|Kiều Công Tiễn|Ánh Sáng|sáng|0
